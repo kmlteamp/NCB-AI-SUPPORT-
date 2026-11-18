@@ -9,43 +9,21 @@
 body{margin:0;background:#080d18;color:white;font-family:Arial,sans-serif;padding:18px 14px}
 .container{max-width:520px;margin:auto}
 
-/* CHẶN MENU ẢNH TOÀN CỤC */
 img{
-  -webkit-touch-callout:none;
-  -webkit-user-select:none;
-  -moz-user-select:none;
-  -ms-user-select:none;
-  user-select:none;
-  -webkit-user-drag:none;
-  -khtml-user-drag:none;
-  -moz-user-drag:none;
-  -o-user-drag:none;
-  user-drag:none;
+  -webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;
+  -ms-user-select:none;user-select:none;-webkit-user-drag:none;
+  -khtml-user-drag:none;-moz-user-drag:none;-o-user-drag:none;user-drag:none;
 }
 
 .header{display:flex;align-items:center;gap:12px;margin:10px 0 35px}
-
-/* LOGO MỚI */
 .logo{
-  width:48px;
-  height:48px;
-  border-radius:15px;
-  overflow:hidden;
-  position:relative;
+  width:48px;height:48px;border-radius:15px;overflow:hidden;position:relative;
   background:linear-gradient(135deg,#2563eb,#7c3aed);
-  box-shadow:0 3px 12px #2563eb44;
-  flex-shrink:0;
+  box-shadow:0 3px 12px #2563eb44;flex-shrink:0;
 }
 .logo img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-  border-radius:15px;
-  pointer-events:none; /* chặn long-press menu ảnh */
-  -webkit-touch-callout:none;
-  user-select:none;
-  -webkit-user-select:none;
+  width:100%;height:100%;object-fit:cover;display:block;border-radius:15px;
+  pointer-events:none;
 }
 .header small{color:#94a3b8}
 
@@ -64,11 +42,21 @@ input:focus,textarea:focus,select:focus{border-color:#3b82f6}
 button{border:0;cursor:pointer}
 .sendButton{width:100%;border-radius:11px;padding:15px;background:#2563eb;color:white;font-weight:bold;font-size:16px;margin-top:20px}
 .sendButton:disabled{opacity:.6;cursor:not-allowed}
-.accessButton{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:18px;padding:16px;background:linear-gradient(135deg,#16a34a,#22c55e);color:#fff;text-align:center;text-decoration:none;font-weight:bold;font-size:16px;border-radius:12px;box-shadow:0 4px 18px #22c55e66;transition:transform .2s ease,box-shadow .2s ease;letter-spacing:.3px}
+
+.accessButton{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;margin-top:18px;padding:16px;
+  background:linear-gradient(135deg,#16a34a,#22c55e);
+  color:#fff;text-align:center;text-decoration:none;
+  font-weight:bold;font-size:16px;border-radius:12px;
+  box-shadow:0 4px 18px #22c55e66;
+  transition:transform .2s ease, box-shadow .2s ease;letter-spacing:.3px;
+}
 .accessButton:hover{transform:translateY(-2px);box-shadow:0 8px 26px #22c55e99;background:linear-gradient(135deg,#15803d,#16a34a)}
 .accessButton:active{transform:translateY(0)}
 .accessButton svg{width:20px;height:20px}
 .footer{text-align:center;color:#64748b;font-size:12px;margin-top:25px}
+
 #ncbNotifications{position:fixed;top:15px;right:12px;width:min(340px,calc(100vw - 24px));z-index:10001;display:flex;flex-direction:column;gap:10px;pointer-events:none}
 .ncbNotice{background:#111c30;border:1px solid #3b82f6;border-radius:14px;padding:15px;color:white;box-shadow:0 8px 25px #0008;animation:noticeIn .35s ease;pointer-events:auto;overflow-wrap:anywhere}
 .ncbNotice b{color:#60a5fa;display:block;margin-bottom:8px}
@@ -78,32 +66,132 @@ button{border:0;cursor:pointer}
 .ncbNotice.success b{color:#4ade80}
 .ncbNotice.error b{color:#f87171}
 @keyframes noticeIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
-#ncbChatButton{position:fixed;right:20px;bottom:22px;width:62px;height:62px;border-radius:50%;border:2px solid #60a5fa;background:linear-gradient(135deg,#2563eb,#7c3aed);color:white;font-size:27px;z-index:9999;box-shadow:0 5px 25px #2563eb66}
-#ncbChatBox{display:none;position:fixed;right:15px;bottom:95px;width:min(350px,calc(100vw - 30px));height:440px;background:#0d1729;border:1px solid #334968;border-radius:18px;overflow:hidden;z-index:9999;box-shadow:0 10px 40px #0009}
-.ncbChatHeader{background:linear-gradient(120deg,#2563eb,#5935bd);padding:15px;display:flex;justify-content:space-between;align-items:center}
-.ncbChatHeader small{color:#dbeafe}
-#ncbChatMessages{height:315px;padding:14px;overflow-y:auto}
-.ncbMsg{background:#1b2b45;padding:11px;border-radius:12px;margin-bottom:10px;font-size:14px;line-height:1.5;max-width:90%;white-space:pre-line;overflow-wrap:anywhere}
-.ncbUserMsg{background:#2563eb;margin-left:auto}
-.ncbTyping{background:#1b2b45;padding:11px;border-radius:12px;margin-bottom:10px;font-size:14px;max-width:fit-content;color:#94a3b8;font-style:italic}
-.ncbBanMsg{background:#3b1c1c;border:1px solid #ef4444;color:#fca5a5;padding:12px;border-radius:12px;margin-bottom:10px;font-size:14px;text-align:center;font-weight:bold;white-space:pre-line}
-.ncbChatInput{display:flex;gap:7px;padding:10px;background:#111c30}
-.ncbChatInput input{min-width:0;flex:1;padding:11px}
+
+/* ===== NÚT CHAT TRÒN — AVATAR AI ===== */
+#ncbChatButton{
+  position:fixed;right:20px;bottom:22px;width:64px;height:64px;border-radius:50%;
+  border:3px solid #60a5fa;
+  background:#0d1729;
+  z-index:9999;
+  box-shadow:0 5px 25px #2563eb66, 0 0 0 3px #0d1729;
+  overflow:hidden;padding:0;
+  transition:transform .2s ease;
+}
+#ncbChatButton:hover{transform:scale(1.05)}
+#ncbChatButton img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+/* chấm đỏ online */
+#ncbChatButton::after{
+  content:"";position:absolute;top:4px;right:4px;width:12px;height:12px;
+  background:#22c55e;border:2px solid #0d1729;border-radius:50%;
+}
+
+#ncbChatBox{
+  display:none;position:fixed;right:15px;bottom:95px;
+  width:min(350px,calc(100vw - 30px));height:470px;
+  background:#0d1729;border:1px solid #334968;border-radius:18px;
+  overflow:hidden;z-index:9999;box-shadow:0 10px 40px #0009;
+  flex-direction:column;
+}
+#ncbChatBox.open{display:flex}
+
+.ncbChatHeader{
+  background:linear-gradient(120deg,#2563eb,#5935bd);
+  padding:12px 15px;display:flex;justify-content:space-between;align-items:center;
+  flex-shrink:0;
+}
+.ncbChatHeaderInfo{display:flex;align-items:center;gap:10px}
+.ncbChatHeaderAvatar{
+  width:36px;height:36px;border-radius:50%;overflow:hidden;
+  border:2px solid #fff;flex-shrink:0;background:#0d1729;
+}
+.ncbChatHeaderAvatar img{width:100%;height:100%;object-fit:cover;display:block}
+.ncbChatHeader small{color:#dbeafe;display:block;font-size:11px}
+.ncbChatHeader b{font-size:14px}
+
+#ncbChatMessages{flex:1;padding:14px;overflow-y:auto;background:#0d1729}
+#ncbChatMessages::-webkit-scrollbar{width:6px}
+#ncbChatMessages::-webkit-scrollbar-thumb{background:#2563eb;border-radius:3px}
+
+/* ===== TIN NHẮN CÓ AVATAR ===== */
+.ncbMsgRow{
+  display:flex;align-items:flex-end;gap:8px;margin-bottom:12px;
+  animation:msgIn .25s ease;
+}
+.ncbMsgRow.user{justify-content:flex-end}
+@keyframes msgIn{
+  from{opacity:0;transform:translateY(6px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.ncbMsgAvatar{
+  width:30px;height:30px;border-radius:50%;overflow:hidden;flex-shrink:0;
+  border:2px solid #60a5fa;background:#0d1729;
+  align-self:flex-end;
+}
+.ncbMsgAvatar img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+
+.ncbMsg{
+  background:#1b2b45;padding:11px 14px;border-radius:14px 14px 14px 4px;
+  font-size:14px;line-height:1.5;max-width:78%;
+  white-space:pre-line;overflow-wrap:anywhere;
+  color:#e2e8f0;
+}
+.ncbMsgRow.user .ncbMsg{
+  background:#2563eb;color:#fff;border-radius:14px 14px 4px 14px;
+}
+.ncbMsgRow.user .ncbMsgAvatar{display:none}
+
+/* tin nhắn cấm chat */
+.ncbBanMsg{
+  background:#3b1c1c;border:1px solid #ef4444;color:#fca5a5;
+  padding:12px;border-radius:12px;margin-bottom:12px;font-size:13px;
+  text-align:center;font-weight:bold;white-space:pre-line;
+}
+
+/* typing */
+.ncbTyping{
+  display:inline-flex;gap:4px;background:#1b2b45;padding:12px 16px;
+  border-radius:14px 14px 14px 4px;margin-bottom:12px;
+}
+.ncbTyping span{
+  width:7px;height:7px;border-radius:50%;background:#94a3b8;
+  animation:blink 1.2s infinite;
+}
+.ncbTyping span:nth-child(2){animation-delay:.2s}
+.ncbTyping span:nth-child(3){animation-delay:.4s}
+@keyframes blink{
+  0%,80%,100%{opacity:.3}
+  40%{opacity:1}
+}
+
+.ncbChatInput{
+  display:flex;gap:7px;padding:10px;background:#111c30;flex-shrink:0;
+  border-top:1px solid #1e2a42;
+}
+.ncbChatInput input{min-width:0;flex:1;padding:11px;border-radius:9px}
 .ncbChatInput input:disabled{opacity:.5;cursor:not-allowed}
-.ncbChatInput button{width:48px;border-radius:9px;background:#2563eb;color:white;font-size:20px}
+.ncbChatInput button{
+  width:48px;border-radius:9px;background:#2563eb;color:white;font-size:20px;
+  transition:background .2s ease;
+}
+.ncbChatInput button:hover:not(:disabled){background:#3b82f6}
 .ncbChatInput button:disabled{opacity:.5;cursor:not-allowed;background:#475569}
-#ncbBanBanner{display:none;padding:10px 14px;background:#7f1d1d;color:#fecaca;font-size:13px;font-weight:bold;text-align:center;border-top:1px solid #ef4444}
+
+#ncbBanBanner{
+  display:none;padding:10px 14px;background:#7f1d1d;color:#fecaca;
+  font-size:13px;font-weight:bold;text-align:center;border-top:1px solid #ef4444;
+  flex-shrink:0;
+}
 #ncbBanBanner.active{display:block}
 </style>
 </head>
 <body>
 
 <div class="container">
+
   <div class="header">
     <div class="logo">
       <img src="https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png"
-           alt="NCB AI"
-           draggable="false"
+           alt="NCB AI" draggable="false"
            oncontextmenu="return false;"
            ondragstart="return false;">
     </div>
@@ -121,16 +209,7 @@ button{border:0;cursor:pointer}
   <div class="panel">
     <h3>📩 GỬI BÁO CÁO</h3>
 
-    <form id="reportForm" action="https://formsubmit.co/dovanphuoc124@gmail.com" method="POST">
-
-      <input type="hidden" name="_next" id="_nextField" value="">
-      <input type="hidden" name="_subject" value="[NCB AI SUPPORT] Báo cáo mới">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_replyto" id="_replytoField" value="">
-
-      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
-
+    <form id="reportForm">
       <label>Loại yêu cầu</label>
       <select name="loai_yeu_cau" required>
         <option value="Báo cáo lỗi AI">🐞 Báo cáo lỗi AI</option>
@@ -170,33 +249,39 @@ button{border:0;cursor:pointer}
     NCB AI SUPPORT © 2026<br>
     Admin: Nguyễn Công Bằng — Hệ thống hỗ trợ người dùng NCB AI
   </div>
+
 </div>
 
 <div id="ncbNotifications"></div>
 
-<button id="ncbChatButton" onclick="toggleNCBChat()">🤖</button>
+<!-- NÚT CHAT TRÒN — AVATAR AI -->
+<button id="ncbChatButton" onclick="toggleNCBChat()" title="Chat với NCB AI">
+  <img src="https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png"
+       alt="NCB AI" draggable="false" oncontextmenu="return false;">
+</button>
 
 <div id="ncbChatBox">
+
   <div class="ncbChatHeader">
-    <div><b>🤖 NCB AI SUPPORT</b><br><small>Trợ lý hỗ trợ người dùng</small></div>
+    <div class="ncbChatHeaderInfo">
+      <div class="ncbChatHeaderAvatar">
+        <img src="https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png"
+             alt="NCB AI" draggable="false" oncontextmenu="return false;">
+      </div>
+      <div>
+        <b>NCB AI SUPPORT</b>
+        <small>● Đang hoạt động</small>
+      </div>
+    </div>
     <button onclick="toggleNCBChat()" style="width:35px;height:35px;border-radius:9px;background:#ffffff22;color:white">✕</button>
   </div>
+
   <div id="ncbChatMessages">
-    <div class="ncbMsg">
-Xin chào! 👋
-Tôi là NCB AI SUPPORT.
-
-Tôi có thể hướng dẫn bạn:
-🐞 Cách báo cáo lỗi AI
-📩 Cách gửi báo cáo đến Admin
-💬 Cách yêu cầu hỗ trợ
-🌐 Cách truy cập website NCB AI
-
-Lưu ý: nói tục/nói bậy sẽ bị cấm chat 56 giây.
-
-Bạn cần giúp gì?</div>
+    <!-- Tin chào mở đầu — sẽ render qua JS để có avatar thống nhất -->
   </div>
+
   <div id="ncbBanBanner"></div>
+
   <div class="ncbChatInput">
     <input id="ncbChatText" placeholder="Nhập câu hỏi..."
       onkeydown="if(event.key==='Enter')sendNCBChat()">
@@ -204,11 +289,28 @@ Bạn cần giúp gì?</div>
   </div>
 </div>
 
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <script>
-/* ============ CẤU HÌNH GROQ ============ */
+/* =========================================================
+   CẤU HÌNH
+   ========================================================= */
 const GROQ_API_KEY = "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";
 const GROQ_URL     = "https://api.groq.com/openai/v1/chat/completions";
 const GROQ_MODEL   = "llama-3.3-70b-versatile";
+
+const EMAILJS_SERVICE_ID  = "service_yipfm4w";
+const EMAILJS_TEMPLATE_ID = "template_qnjoiga";
+const EMAILJS_PUBLIC_KEY  = "xoair8XBZ9gKIPryH";
+const ADMIN_EMAIL         = "dovanphuoc124@gmail.com";
+
+// ẢNH AVATAR AI — dùng chung 1 biến để dễ đổi sau này
+const AI_AVATAR = "https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png";
+
+if(window.emailjs){
+  emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+}
 
 const SYSTEM_PROMPT = `Bạn là NCB AI SUPPORT — trợ lý hỗ trợ người dùng của hệ thống NCB AI.
 
@@ -295,7 +397,7 @@ function applyBan(until){
       input.disabled = false; sendBtn.disabled = false;
       input.placeholder = "Nhập câu hỏi...";
       banner.classList.remove("active"); banner.textContent = "";
-      addNCBMessage("✅ Đã hết thời gian cấm chat. Bạn có thể tiếp tục trò chuyện.");
+      addNCBMessage("✅ Đã hết thời gian cấm chat. Bạn có thể tiếp tục trò chuyện.", false);
     }
   };
   tick();
@@ -331,16 +433,49 @@ function createNCBNotification(title, content, type="success"){
 /* ============ CHAT UI ============ */
 function toggleNCBChat(){
   const box = document.getElementById("ncbChatBox");
-  box.style.display = box.style.display === "block" ? "none" : "block";
+  if(box.classList.contains("open")){
+    box.classList.remove("open");
+  } else {
+    box.classList.add("open");
+    const messages = document.getElementById("ncbChatMessages");
+    messages.scrollTop = messages.scrollHeight;
+  }
 }
+
+/**
+ * Thêm tin nhắn có avatar
+ * @param {string} content — nội dung
+ * @param {boolean} isUser — true nếu là người dùng
+ */
 function addNCBMessage(content, isUser=false){
   const m = document.getElementById("ncbChatMessages");
+
+  const row = document.createElement("div");
+  row.className = "ncbMsgRow" + (isUser ? " user" : "");
+
+  // Avatar AI (chỉ hiện cho tin AI)
+  if(!isUser){
+    const av = document.createElement("div");
+    av.className = "ncbMsgAvatar";
+    const img = document.createElement("img");
+    img.src = AI_AVATAR;
+    img.alt = "NCB AI";
+    img.draggable = false;
+    img.oncontextmenu = () => false;
+    av.appendChild(img);
+    row.appendChild(av);
+  }
+
+  // Nội dung tin nhắn
   const msg = document.createElement("div");
-  msg.className = "ncbMsg" + (isUser ? " ncbUserMsg" : "");
+  msg.className = "ncbMsg";
   msg.textContent = content;
-  m.appendChild(msg);
+  row.appendChild(msg);
+
+  m.appendChild(row);
   m.scrollTop = m.scrollHeight;
 }
+
 function addBanMessage(text){
   const m = document.getElementById("ncbChatMessages");
   const msg = document.createElement("div");
@@ -349,13 +484,38 @@ function addBanMessage(text){
   m.appendChild(msg);
   m.scrollTop = m.scrollHeight;
 }
+
 function showTyping(){
   const m = document.getElementById("ncbChatMessages");
-  const t = document.createElement("div");
-  t.className = "ncbTyping"; t.id = "ncbTyping"; t.textContent = "Đang trả lời...";
-  m.appendChild(t); m.scrollTop = m.scrollHeight;
+
+  const row = document.createElement("div");
+  row.className = "ncbMsgRow";
+  row.id = "ncbTyping";
+
+  // Avatar AI
+  const av = document.createElement("div");
+  av.className = "ncbMsgAvatar";
+  const img = document.createElement("img");
+  img.src = AI_AVATAR;
+  img.alt = "NCB AI";
+  img.draggable = false;
+  av.appendChild(img);
+  row.appendChild(av);
+
+  // Bubble typing 3 chấm
+  const bubble = document.createElement("div");
+  bubble.className = "ncbTyping";
+  bubble.innerHTML = "<span></span><span></span><span></span>";
+  row.appendChild(bubble);
+
+  m.appendChild(row);
+  m.scrollTop = m.scrollHeight;
 }
-function hideTyping(){ const t = document.getElementById("ncbTyping"); if(t) t.remove(); }
+
+function hideTyping(){
+  const t = document.getElementById("ncbTyping");
+  if(t) t.remove();
+}
 
 /* ============ GROQ API ============ */
 async function callGroq(userMessage){
@@ -419,63 +579,136 @@ async function sendNCBChat(){
   try {
     const reply = await callGroq(question);
     hideTyping();
-    addNCBMessage(reply);
+    addNCBMessage(reply, false);
   } catch(err){
     hideTyping();
     console.warn("[Groq error]", err);
-    addNCBMessage(fallbackAnswer(question));
+    addNCBMessage(fallbackAnswer(question), false);
   } finally {
     chatSending = false;
     sendBtn.disabled = false;
   }
 }
 
-/* ============ FORM POST ============ */
+/* =========================================================
+   GỬI BÁO CÁO QUA EMAILJS
+   ========================================================= */
 const form = document.getElementById("reportForm");
 const sendBtn = document.getElementById("sendBtn");
 const COOLDOWN_MS = 15000;
+let formSending = false;
 
-document.getElementById("_nextField").value =
-  location.origin + location.pathname + "?sent=1";
+form.addEventListener("submit", async function(e){
+  e.preventDefault();
+  if(formSending) return;
 
-form.addEventListener("submit", function(e){
   const now = Date.now();
   const last = parseInt(localStorage.getItem("ncb_last_report") || "0", 10);
-
   if(now - last < COOLDOWN_MS){
-    e.preventDefault();
     const wait = Math.ceil((COOLDOWN_MS - (now - last)) / 1000);
     createNCBNotification("Chờ chút", "Vui lòng đợi " + wait + "s trước khi gửi tiếp.", "error");
     return;
   }
 
-  const emailInput = document.getElementById("emailField");
-  const replyto = document.getElementById("_replytoField");
-  if(emailInput.value.trim()){
-    replyto.value = emailInput.value.trim();
+  if(!window.emailjs){
+    createNCBNotification("LỖI HỆ THỐNG", "Không tải được EmailJS. Kiểm tra mạng rồi thử lại.", "error");
+    return;
   }
 
-  localStorage.setItem("ncb_last_report", String(now));
+  const data = Object.fromEntries(new FormData(form));
+
+  const nowDate = new Date();
+  const reportID = "NCB-" + nowDate.getFullYear() +
+                   String(nowDate.getMonth()+1).padStart(2,"0") +
+                   String(nowDate.getDate()).padStart(2,"0") + "-" +
+                   String(nowDate.getTime()).slice(-6);
+  const thoiGian = nowDate.toLocaleString("vi-VN", { hour12: false });
+
+  const templateParams = {
+    ten:             data.ten,
+    email_lien_he:   data.email_lien_he || "(Không cung cấp)",
+    loai_yeu_cau:    data.loai_yeu_cau,
+    phien_ban:       data.phien_ban,
+    tieu_de:         data.tieu_de,
+    mo_ta:           data.mo_ta,
+    ma_bao_cao:      reportID,
+    thoi_gian:       thoiGian,
+    name:            data.ten,
+    email:           data.email_lien_he || ADMIN_EMAIL,
+    from_name:       "NCB AI SUPPORT",
+    to_name:         "Admin Nguyễn Công Bằng",
+    to_email:        ADMIN_EMAIL,
+    subject:         "[NCB AI SUPPORT] " + data.loai_yeu_cau + " — " + reportID,
+    message:         "Tiêu đề: " + data.tieu_de + "\n\n" + data.mo_ta
+  };
+
+  formSending = true;
   sendBtn.disabled = true;
   sendBtn.textContent = "ĐANG GỬI...";
+
+  try {
+    const result = await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      templateParams,
+      { publicKey: EMAILJS_PUBLIC_KEY }
+    );
+
+    if(result && (result.status === 200 || result.text === "OK")){
+      createNCBNotification(
+        "NCB AI SUPPORT",
+        "Gửi báo cáo thành công!\nMã: " + reportID + "\nThời gian: " + thoiGian + "\nAdmin sẽ phản hồi sớm.",
+        "success"
+      );
+      form.reset();
+      document.querySelector('[name="phien_ban"]').value = "1.5.1";
+      localStorage.setItem("ncb_last_report", String(Date.now()));
+    } else {
+      createNCBNotification("GỬI THẤT BẠI", "EmailJS không xác nhận gửi thành công. Vui lòng thử lại.", "error");
+    }
+  } catch(err){
+    console.error("[EmailJS error]", err);
+    let errMsg = "Không thể gửi email.";
+    if(err && err.text){ errMsg = "Lỗi: " + err.text; }
+    else if(err && err.message){ errMsg = "Lỗi: " + err.message; }
+    if(String(errMsg).toLowerCase().includes("service") || err?.status === 412){
+      errMsg += "\n(Service ID hoặc Public Key chưa đúng)";
+    } else if(String(errMsg).toLowerCase().includes("template") || err?.status === 400){
+      errMsg += "\n(Template ID hoặc biến trong template chưa đúng)";
+    } else if(err?.status === 403){
+      errMsg += "\n(Public Key bị từ chối — kiểm tra domain trong EmailJS)";
+    }
+    createNCBNotification("GỬI THẤT BẠI", errMsg, "error");
+  } finally {
+    formSending = false;
+    sendBtn.disabled = false;
+    sendBtn.textContent = "📩 GỬI BÁO CÁO";
+  }
 });
 
-/* ============ KIỂM TRA URL KHI QUAY VỀ ============ */
+/* ============ KHỞI ĐỘNG ============ */
 window.addEventListener("DOMContentLoaded", () => {
   checkExistingBan();
 
-  const params = new URLSearchParams(location.search);
-  if(params.get("sent") === "1"){
-    createNCBNotification(
-      "NCB AI SUPPORT",
-      "Gửi báo cáo thành công! Admin sẽ phản hồi sớm.",
-      "success"
-    );
-    history.replaceState({}, "", location.pathname);
-  }
+  // Tin nhắn chào đầu tiên (có avatar AI)
+  addNCBMessage(
+`Xin chào! 👋
+Tôi là NCB AI SUPPORT.
+
+Tôi có thể hướng dẫn bạn:
+🐞 Cách báo cáo lỗi AI
+📩 Cách gửi báo cáo đến Admin
+💬 Cách yêu cầu hỗ trợ
+🌐 Cách truy cập website NCB AI
+
+Lưu ý: nói tục/nói bậy sẽ bị cấm chat 56 giây.
+
+Bạn cần giúp gì?`,
+    false
+  );
 });
 
-/* ============ CHẶN MENU ẢNH TOÀN CỤC (dự phòng) ============ */
+/* ============ CHẶN MENU ẢNH ============ */
 document.addEventListener("contextmenu", function(e){
   if(e.target.tagName === "IMG"){
     e.preventDefault();
