@@ -55,6 +55,17 @@ button{border:0;cursor:pointer}
 .accessButton:active{transform:translateY(0)}
 .footer{text-align:center;color:#64748b;font-size:12px;margin-top:25px}
 
+/* BADGE ĐẾM LƯỢT CÒN LẠI */
+#reportQuotaBadge{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;margin-bottom:14px;
+  background:#0b1424;border:1px solid #34445d;border-radius:10px;
+  font-size:13px;color:#94a3b8;
+}
+#reportQuotaBadge b{color:#60a5fa;font-size:14px}
+#reportQuotaBadge.limit-reached{border-color:#ef4444;background:#2a1416}
+#reportQuotaBadge.limit-reached b{color:#f87171}
+
 #ncbNotifications{position:fixed;top:15px;right:12px;width:min(340px,calc(100vw - 24px));z-index:10001;display:flex;flex-direction:column;gap:10px;pointer-events:none}
 .ncbNotice{background:#111c30;border:1px solid #3b82f6;border-radius:14px;padding:15px;color:white;box-shadow:0 8px 25px #0008;animation:noticeIn .35s ease;pointer-events:auto;overflow-wrap:anywhere}
 .ncbNotice b{color:#60a5fa;display:block;margin-bottom:8px}
@@ -186,6 +197,12 @@ button{border:0;cursor:pointer}
   <div class="panel">
     <h3>GỬI BÁO CÁO</h3>
 
+    <!-- BADGE HIỂN THỊ SỐ LƯỢT CÒN LẠI -->
+    <div id="reportQuotaBadge">
+      <span>Lượt gửi hôm nay</span>
+      <b id="reportQuotaText">4/4</b>
+    </div>
+
     <form id="reportForm">
       <label>Loại yêu cầu</label>
       <select name="loai_yeu_cau" required>
@@ -274,31 +291,139 @@ const ADMIN_EMAIL         = "dovanphuoc124@gmail.com";
 
 const AI_AVATAR = "https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png";
 
+/* Giới hạn số báo cáo mỗi ngày (theo giờ Việt Nam) */
+const MAX_REPORTS_PER_DAY = 4;
+const QUOTA_KEY = "ncb_report_quota"; // { date: "YYYY-MM-DD", count: number }
+
 if(window.emailjs){
   emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 }
 
-const SYSTEM_PROMPT = `Bạn là NCB AI SUPPORT — trợ lý hỗ trợ người dùng của hệ thống NCB AI.
+/* =========================================================
+   SYSTEM PROMPT
+   ========================================================= */
+const SYSTEM_PROMPT = `Bạn là NCB AI SUPPORT — trợ lý AI thông minh, thân thiện của hệ thống NCB AI.
 
-THÔNG TIN HỆ THỐNG:
+NHIỆM VỤ CHÍNH:
+Bạn là một trợ lý AI đa năng. Hãy trả lời MỌI câu hỏi của người dùng một cách tự nhiên, đúng trọng tâm, có chiều sâu và hữu ích. Bao gồm nhưng không giới hạn:
+- Kiến thức chung, khoa học, lịch sử, địa lý
+- Lập trình, code, thuật toán, debug
+- Toán học, lý, hóa, văn học
+- Đời sống, sức khỏe, tâm lý, mẹo vặt
+- Học tập, giải thích khái niệm, hướng dẫn kỹ năng
+- Viết lách, dịch thuật, tóm tắt, sáng tạo nội dung
+- Tư vấn, gợi ý, so sánh, đánh giá
+- Và bất kỳ chủ đề hợp pháp nào khác
+
+THÔNG TIN NCB AI (chỉ dùng khi người dùng hỏi về NCB AI):
+- Tên hệ thống: NCB AI
 - Admin: Nguyễn Công Bằng
 - Website chính thức: https://ncb-ai.vercel.app/
 - Email admin: dovanphuoc124@gmail.com
-- Phiên bản website: 1.0, AI: 1.5.1
+- Phiên bản website: 1.0
+- Phiên bản AI: 1.5.1
+- 4 loại báo cáo: Báo cáo lỗi AI, Yêu cầu hỗ trợ, Góp ý tính năng, Báo cáo bảo mật
+- Giới hạn báo cáo: mỗi thiết bị được gửi tối đa 4 báo cáo/ngày, reset lúc 00:00 giờ Việt Nam.
 
-KHI HỎI CÁCH TRUY CẬP WEBSITE, trả lời đúng mẫu:
+QUY TẮC ĐẶC BIỆT:
+1. KHI HỎI CÁCH TRUY CẬP WEBSITE NCB AI → trả lời đúng mẫu:
 "Bạn tham gia bằng website tại đây. Ở dưới có chữ TRUY CẬP màu xanh lá, ấn vào là chuyển sang website NCB AI.
 Link trực tiếp: https://ncb-ai.vercel.app/"
 
-Chủ đề khác:
-- Admin: Nguyễn Công Bằng
-- Website: https://ncb-ai.vercel.app/
-- Email: dovanphuoc124@gmail.com
-- Phiên bản: website 1.0, AI 1.5.1
+2. KHI HỎI VỀ ADMIN → "Admin của NCB AI là Nguyễn Công Bằng."
 
-Phong cách: ngắn gọn, thân thiện, tiếng Việt, không dùng emoji. Nếu người dùng nói tục, nhắc nhở bị cấm chat 56s.`;
+3. KHI HỎI CÁCH BÁO CÁO LỖI → hướng dẫn điền biểu mẫu trên trang (chọn loại yêu cầu, nhập tên, phiên bản, tiêu đề, mô tả, bấm GỬI BÁO CÁO). Nhắc thêm: mỗi thiết bị chỉ gửi được tối đa 4 báo cáo/ngày, reset lúc 00:00 giờ Việt Nam.
+
+4. KHI HỎI CÂU HỎI KHÁC (không liên quan NCB AI) → trả lời trực tiếp, đầy đủ, như một trợ lý AI thông minh bình thường. KHÔNG redirect về website NCB AI trừ khi thật sự cần thiết.
+
+PHONG CÁCH:
+- Trả lời bằng tiếng Việt (trừ khi người dùng hỏi bằng ngôn ngữ khác thì trả lời theo ngôn ngữ đó).
+- Ngắn gọn nhưng đủ ý. Với câu hỏi phức tạp thì trả lời chi tiết, có ví dụ.
+- Thân thiện, tự nhiên, không máy móc.
+- Không dùng emoji.
+- Nếu câu hỏi vi phạm pháp luật hoặc gây hại, từ chối lịch sự và gợi ý hướng khác.
+- Nếu người dùng nói tục/nói bậy, nhắc nhở rằng sẽ bị cấm chat 56 giây.`;
 
 let chatHistory = [];
+
+/* =========================================================
+   QUOTA BÁO CÁO THEO NGÀY (GIỜ VIỆT NAM UTC+7)
+   ========================================================= */
+function getVietnamDateString(){
+  // Lấy thời gian hiện tại theo giờ VN bằng cách cộng 7 giờ vào UTC
+  const now = new Date();
+  const vn = new Date(now.getTime() + (7 * 60 * 60 * 1000));
+  const y = vn.getUTCFullYear();
+  const m = String(vn.getUTCMonth() + 1).padStart(2, "0");
+  const d = String(vn.getUTCDate()).padStart(2, "0");
+  return y + "-" + m + "-" + d; // "YYYY-MM-DD"
+}
+
+function getQuotaData(){
+  const today = getVietnamDateString();
+  try {
+    const raw = localStorage.getItem(QUOTA_KEY);
+    if(raw){
+      const obj = JSON.parse(raw);
+      if(obj && obj.date === today && typeof obj.count === "number"){
+        return { date: today, count: obj.count };
+      }
+    }
+  } catch(_){}
+  // Reset khi sang ngày mới hoặc dữ liệu lỗi
+  const fresh = { date: today, count: 0 };
+  localStorage.setItem(QUOTA_KEY, JSON.stringify(fresh));
+  return fresh;
+}
+
+function saveQuotaData(data){
+  localStorage.setItem(QUOTA_KEY, JSON.stringify(data));
+}
+
+function getRemainingReports(){
+  const q = getQuotaData();
+  return Math.max(0, MAX_REPORTS_PER_DAY - q.count);
+}
+
+function incrementReportCount(){
+  const q = getQuotaData();
+  q.count += 1;
+  saveQuotaData(q);
+}
+
+function updateQuotaBadge(){
+  const badge = document.getElementById("reportQuotaBadge");
+  const text  = document.getElementById("reportQuotaText");
+  if(!badge || !text) return;
+
+  const remaining = getRemainingReports();
+
+  if(remaining <= 0){
+    text.textContent = "0/" + MAX_REPORTS_PER_DAY;
+    badge.classList.add("limit-reached");
+    badge.querySelector("span").textContent = "Đã hết lượt hôm nay - reset lúc 00:00 (giờ VN)";
+    // Vô hiệu hoá nút gửi
+    const sendBtn = document.getElementById("sendBtn");
+    if(sendBtn){
+      sendBtn.disabled = true;
+      sendBtn.textContent = "ĐÃ HẾT LƯỢT HÔM NAY";
+    }
+  } else {
+    text.textContent = remaining + "/" + MAX_REPORTS_PER_DAY;
+    badge.classList.remove("limit-reached");
+    badge.querySelector("span").textContent = "Lượt gửi còn lại hôm nay";
+    const sendBtn = document.getElementById("sendBtn");
+    if(sendBtn && !sendBtn.dataset.sending){
+      sendBtn.disabled = false;
+      sendBtn.textContent = "GỬI BÁO CÁO";
+    }
+  }
+}
+
+/* Tự động reset khi sang ngày mới — kiểm tra mỗi phút */
+setInterval(() => {
+  updateQuotaBadge();
+}, 60000);
 
 /* ============ LỌC NÓI TỤC ============ */
 const BANNED_WORDS = [
@@ -475,14 +600,16 @@ function hideTyping(){
 /* ============ GROQ API ============ */
 async function callGroq(userMessage){
   chatHistory.push({ role: "user", content: userMessage });
-  const trimmed = chatHistory.slice(-10);
+  const trimmed = chatHistory.slice(-12);
   const res = await fetch(GROQ_URL, {
     method: "POST",
     headers: { "Authorization": "Bearer " + GROQ_API_KEY, "Content-Type": "application/json" },
     body: JSON.stringify({
       model: GROQ_MODEL,
       messages: [{ role: "system", content: SYSTEM_PROMPT }, ...trimmed],
-      temperature: 0.5, max_tokens: 800
+      temperature: 0.7,
+      max_tokens: 1500,
+      top_p: 0.9
     })
   });
   if(!res.ok){ const e = await res.text().catch(() => ""); throw new Error("HTTP " + res.status + " " + e.slice(0,120)); }
@@ -500,11 +627,11 @@ function fallbackAnswer(q){
   if(q.includes("admin")||q.includes("quản lý")||q.includes("sáng lập"))
     return "Admin của NCB AI là Nguyễn Công Bằng.";
   if(q.includes("báo lỗi")||q.includes("báo cáo")||q.includes("lỗi"))
-    return "HƯỚNG DẪN BÁO CÁO LỖI NCB AI\n\n1. Chọn loại yêu cầu.\n2. Nhập tên.\n3. Nhập phiên bản.\n4. Nhập tiêu đề.\n5. Mô tả chi tiết.\n6. Nhấn GỬI BÁO CÁO.";
+    return "HƯỚNG DẪN BÁO CÁO LỖI NCB AI\n\n1. Chọn loại yêu cầu.\n2. Nhập tên.\n3. Nhập phiên bản.\n4. Nhập tiêu đề.\n5. Mô tả chi tiết.\n6. Nhấn GỬI BÁO CÁO.\n\nLưu ý: mỗi thiết bị chỉ gửi tối đa 4 báo cáo/ngày, reset lúc 00:00 giờ Việt Nam.";
   if(q.includes("gmail")||q.includes("email")) return "GMAIL ADMIN NCB AI:\ndovanphuoc124@gmail.com";
   if(q.includes("chào")||q.includes("hello")) return "Xin chào! NCB AI SUPPORT sẵn sàng hỗ trợ bạn!";
   if(q.includes("phiên bản")) return "Phiên bản website: 1.0 — AI: 1.5.1.";
-  return "Mình chưa hiểu rõ câu hỏi. Bạn mô tả chi tiết hơn nhé.";
+  return "Xin lỗi, hiện tại tôi không kết nối được với máy chủ AI. Bạn vui lòng thử lại sau ít giây, hoặc gửi báo cáo qua biểu mẫu để được hỗ trợ trực tiếp.";
 }
 
 /* ============ GỬI CHAT ============ */
@@ -546,7 +673,7 @@ async function sendNCBChat(){
 }
 
 /* =========================================================
-   GỬI BÁO CÁO QUA EMAILJS
+   GỬI BÁO CÁO QUA EMAILJS (có giới hạn 4 lần/ngày)
    ========================================================= */
 const form = document.getElementById("reportForm");
 const sendBtn = document.getElementById("sendBtn");
@@ -557,6 +684,19 @@ form.addEventListener("submit", async function(e){
   e.preventDefault();
   if(formSending) return;
 
+  // 1) Kiểm tra quota hôm nay
+  const remaining = getRemainingReports();
+  if(remaining <= 0){
+    createNCBNotification(
+      "ĐÃ HẾT LƯỢT",
+      "Thiết bị này đã gửi đủ " + MAX_REPORTS_PER_DAY + " báo cáo hôm nay.\nVui lòng quay lại sau 00:00 (giờ Việt Nam).",
+      "error"
+    );
+    updateQuotaBadge();
+    return;
+  }
+
+  // 2) Cooldown chống spam 15s
   const now = Date.now();
   const last = parseInt(localStorage.getItem("ncb_last_report") || "0", 10);
   if(now - last < COOLDOWN_MS){
@@ -565,6 +705,7 @@ form.addEventListener("submit", async function(e){
     return;
   }
 
+  // 3) Kiểm tra SDK EmailJS
   if(!window.emailjs){
     createNCBNotification("LỖI HỆ THỐNG", "Không tải được EmailJS. Kiểm tra mạng rồi thử lại.", "error");
     return;
@@ -599,6 +740,7 @@ form.addEventListener("submit", async function(e){
 
   formSending = true;
   sendBtn.disabled = true;
+  sendBtn.dataset.sending = "1";
   sendBtn.textContent = "ĐANG GỬI...";
 
   try {
@@ -610,16 +752,29 @@ form.addEventListener("submit", async function(e){
     );
 
     if(result && (result.status === 200 || result.text === "OK")){
+      // Chỉ trừ quota KHI EmailJS xác nhận thành công
+      incrementReportCount();
+      updateQuotaBadge();
+
+      const newRemaining = getRemainingReports();
       createNCBNotification(
         "NCB AI SUPPORT",
-        "Gửi báo cáo thành công!\nMã: " + reportID + "\nThời gian: " + thoiGian + "\nAdmin sẽ phản hồi sớm.",
+        "Gửi báo cáo thành công!\nMã: " + reportID +
+        "\nThời gian: " + thoiGian +
+        "\nCòn lại hôm nay: " + newRemaining + "/" + MAX_REPORTS_PER_DAY +
+        "\nAdmin sẽ phản hồi sớm.",
         "success"
       );
+
       form.reset();
       document.querySelector('[name="phien_ban"]').value = "1.5.1";
       localStorage.setItem("ncb_last_report", String(Date.now()));
     } else {
-      createNCBNotification("GỬI THẤT BẠI", "EmailJS không xác nhận gửi thành công. Vui lòng thử lại.", "error");
+      createNCBNotification(
+        "GỬI THẤT BẠI",
+        "EmailJS không xác nhận gửi thành công. Vui lòng thử lại.",
+        "error"
+      );
     }
   } catch(err){
     console.error("[EmailJS error]", err);
@@ -636,25 +791,38 @@ form.addEventListener("submit", async function(e){
     createNCBNotification("GỬI THẤT BẠI", errMsg, "error");
   } finally {
     formSending = false;
-    sendBtn.disabled = false;
-    sendBtn.textContent = "GỬI BÁO CÁO";
+    delete sendBtn.dataset.sending;
+
+    // Cập nhật lại trạng thái nút theo quota còn lại
+    const stillRemaining = getRemainingReports();
+    if(stillRemaining > 0){
+      sendBtn.disabled = false;
+      sendBtn.textContent = "GỬI BÁO CÁO";
+    } else {
+      sendBtn.disabled = true;
+      sendBtn.textContent = "ĐÃ HẾT LƯỢT HÔM NAY";
+    }
   }
 });
 
 /* ============ KHỞI ĐỘNG ============ */
 window.addEventListener("DOMContentLoaded", () => {
   checkExistingBan();
+  updateQuotaBadge();
+
   addNCBMessage(
 `Xin chào!
 Tôi là NCB AI SUPPORT.
 
-Tôi có thể hướng dẫn bạn:
-- Cách báo cáo lỗi AI
-- Cách gửi báo cáo đến Admin
-- Cách yêu cầu hỗ trợ
-- Cách truy cập website NCB AI
+Tôi có thể:
+- Trả lời mọi câu hỏi của bạn (kiến thức, lập trình, học tập, đời sống...)
+- Hướng dẫn báo cáo lỗi
+- Hướng dẫn truy cập website NCB AI
+- Giải đáp thắc mắc về hệ thống NCB AI
 
-Lưu ý: nói tục/nói bậy sẽ bị cấm chat 56 giây.
+Lưu ý:
+- Nói tục/nói bậy sẽ bị cấm chat 56 giây.
+- Mỗi thiết bị chỉ gửi được tối đa 4 báo cáo/ngày, reset lúc 00:00 giờ Việt Nam.
 
 Bạn cần giúp gì?`,
     false
