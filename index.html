@@ -55,7 +55,6 @@ button{border:0;cursor:pointer}
 .accessButton:active{transform:translateY(0)}
 .footer{text-align:center;color:#64748b;font-size:12px;margin-top:25px}
 
-/* BADGE ĐẾM LƯỢT CÒN LẠI */
 #reportQuotaBadge{
   display:flex;align-items:center;justify-content:space-between;
   padding:10px 14px;margin-bottom:14px;
@@ -197,9 +196,8 @@ button{border:0;cursor:pointer}
   <div class="panel">
     <h3>GỬI BÁO CÁO</h3>
 
-    <!-- BADGE HIỂN THỊ SỐ LƯỢT CÒN LẠI -->
     <div id="reportQuotaBadge">
-      <span>Lượt gửi hôm nay</span>
+      <span>Lượt gửi còn lại hôm nay</span>
       <b id="reportQuotaText">4/4</b>
     </div>
 
@@ -280,7 +278,7 @@ button{border:0;cursor:pointer}
 /* =========================================================
    CẤU HÌNH
    ========================================================= */
-const GROQ_API_KEY = "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";
+const GROQ_API_KEY = "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"; // ← ĐÃ THAY
 const GROQ_URL     = "https://api.groq.com/openai/v1/chat/completions";
 const GROQ_MODEL   = "llama-3.3-70b-versatile";
 
@@ -291,9 +289,8 @@ const ADMIN_EMAIL         = "dovanphuoc124@gmail.com";
 
 const AI_AVATAR = "https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png";
 
-/* Giới hạn số báo cáo mỗi ngày (theo giờ Việt Nam) */
 const MAX_REPORTS_PER_DAY = 4;
-const QUOTA_KEY = "ncb_report_quota"; // { date: "YYYY-MM-DD", count: number }
+const QUOTA_KEY = "ncb_report_quota";
 
 if(window.emailjs){
   emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
@@ -346,17 +343,14 @@ PHONG CÁCH:
 
 let chatHistory = [];
 
-/* =========================================================
-   QUOTA BÁO CÁO THEO NGÀY (GIỜ VIỆT NAM UTC+7)
-   ========================================================= */
+/* ============ QUOTA THEO NGÀY (GIỜ VN) ============ */
 function getVietnamDateString(){
-  // Lấy thời gian hiện tại theo giờ VN bằng cách cộng 7 giờ vào UTC
   const now = new Date();
   const vn = new Date(now.getTime() + (7 * 60 * 60 * 1000));
   const y = vn.getUTCFullYear();
   const m = String(vn.getUTCMonth() + 1).padStart(2, "0");
   const d = String(vn.getUTCDate()).padStart(2, "0");
-  return y + "-" + m + "-" + d; // "YYYY-MM-DD"
+  return y + "-" + m + "-" + d;
 }
 
 function getQuotaData(){
@@ -370,7 +364,6 @@ function getQuotaData(){
       }
     }
   } catch(_){}
-  // Reset khi sang ngày mới hoặc dữ liệu lỗi
   const fresh = { date: today, count: 0 };
   localStorage.setItem(QUOTA_KEY, JSON.stringify(fresh));
   return fresh;
@@ -402,7 +395,6 @@ function updateQuotaBadge(){
     text.textContent = "0/" + MAX_REPORTS_PER_DAY;
     badge.classList.add("limit-reached");
     badge.querySelector("span").textContent = "Đã hết lượt hôm nay - reset lúc 00:00 (giờ VN)";
-    // Vô hiệu hoá nút gửi
     const sendBtn = document.getElementById("sendBtn");
     if(sendBtn){
       sendBtn.disabled = true;
@@ -420,7 +412,6 @@ function updateQuotaBadge(){
   }
 }
 
-/* Tự động reset khi sang ngày mới — kiểm tra mỗi phút */
 setInterval(() => {
   updateQuotaBadge();
 }, 60000);
@@ -673,7 +664,7 @@ async function sendNCBChat(){
 }
 
 /* =========================================================
-   GỬI BÁO CÁO QUA EMAILJS (có giới hạn 4 lần/ngày)
+   GỬI BÁO CÁO QUA EMAILJS
    ========================================================= */
 const form = document.getElementById("reportForm");
 const sendBtn = document.getElementById("sendBtn");
@@ -684,7 +675,6 @@ form.addEventListener("submit", async function(e){
   e.preventDefault();
   if(formSending) return;
 
-  // 1) Kiểm tra quota hôm nay
   const remaining = getRemainingReports();
   if(remaining <= 0){
     createNCBNotification(
@@ -696,7 +686,6 @@ form.addEventListener("submit", async function(e){
     return;
   }
 
-  // 2) Cooldown chống spam 15s
   const now = Date.now();
   const last = parseInt(localStorage.getItem("ncb_last_report") || "0", 10);
   if(now - last < COOLDOWN_MS){
@@ -705,7 +694,6 @@ form.addEventListener("submit", async function(e){
     return;
   }
 
-  // 3) Kiểm tra SDK EmailJS
   if(!window.emailjs){
     createNCBNotification("LỖI HỆ THỐNG", "Không tải được EmailJS. Kiểm tra mạng rồi thử lại.", "error");
     return;
@@ -752,7 +740,6 @@ form.addEventListener("submit", async function(e){
     );
 
     if(result && (result.status === 200 || result.text === "OK")){
-      // Chỉ trừ quota KHI EmailJS xác nhận thành công
       incrementReportCount();
       updateQuotaBadge();
 
@@ -793,7 +780,6 @@ form.addEventListener("submit", async function(e){
     formSending = false;
     delete sendBtn.dataset.sending;
 
-    // Cập nhật lại trạng thái nút theo quota còn lại
     const stillRemaining = getRemainingReports();
     if(stillRemaining > 0){
       sendBtn.disabled = false;
