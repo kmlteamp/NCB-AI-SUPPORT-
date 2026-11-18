@@ -67,19 +67,14 @@ button{border:0;cursor:pointer}
 .ncbNotice.error b{color:#f87171}
 @keyframes noticeIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
 
-/* ===== NÚT CHAT TRÒN — AVATAR AI ===== */
 #ncbChatButton{
   position:fixed;right:20px;bottom:22px;width:64px;height:64px;border-radius:50%;
-  border:3px solid #60a5fa;
-  background:#0d1729;
-  z-index:9999;
+  border:3px solid #60a5fa;background:#0d1729;z-index:9999;
   box-shadow:0 5px 25px #2563eb66, 0 0 0 3px #0d1729;
-  overflow:hidden;padding:0;
-  transition:transform .2s ease;
+  overflow:hidden;padding:0;transition:transform .2s ease;
 }
 #ncbChatButton:hover{transform:scale(1.05)}
 #ncbChatButton img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
-/* chấm đỏ online */
 #ncbChatButton::after{
   content:"";position:absolute;top:4px;right:4px;width:12px;height:12px;
   background:#22c55e;border:2px solid #0d1729;border-radius:50%;
@@ -112,42 +107,29 @@ button{border:0;cursor:pointer}
 #ncbChatMessages::-webkit-scrollbar{width:6px}
 #ncbChatMessages::-webkit-scrollbar-thumb{background:#2563eb;border-radius:3px}
 
-/* ===== TIN NHẮN CÓ AVATAR ===== */
-.ncbMsgRow{
-  display:flex;align-items:flex-end;gap:8px;margin-bottom:12px;
-  animation:msgIn .25s ease;
-}
+.ncbMsgRow{display:flex;align-items:flex-end;gap:8px;margin-bottom:12px;animation:msgIn .25s ease}
 .ncbMsgRow.user{justify-content:flex-end}
-@keyframes msgIn{
-  from{opacity:0;transform:translateY(6px)}
-  to{opacity:1;transform:translateY(0)}
-}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .ncbMsgAvatar{
   width:30px;height:30px;border-radius:50%;overflow:hidden;flex-shrink:0;
-  border:2px solid #60a5fa;background:#0d1729;
-  align-self:flex-end;
+  border:2px solid #60a5fa;background:#0d1729;align-self:flex-end;
 }
 .ncbMsgAvatar img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
 
 .ncbMsg{
   background:#1b2b45;padding:11px 14px;border-radius:14px 14px 14px 4px;
   font-size:14px;line-height:1.5;max-width:78%;
-  white-space:pre-line;overflow-wrap:anywhere;
-  color:#e2e8f0;
+  white-space:pre-line;overflow-wrap:anywhere;color:#e2e8f0;
 }
-.ncbMsgRow.user .ncbMsg{
-  background:#2563eb;color:#fff;border-radius:14px 14px 4px 14px;
-}
+.ncbMsgRow.user .ncbMsg{background:#2563eb;color:#fff;border-radius:14px 14px 4px 14px}
 .ncbMsgRow.user .ncbMsgAvatar{display:none}
 
-/* tin nhắn cấm chat */
 .ncbBanMsg{
   background:#3b1c1c;border:1px solid #ef4444;color:#fca5a5;
   padding:12px;border-radius:12px;margin-bottom:12px;font-size:13px;
   text-align:center;font-weight:bold;white-space:pre-line;
 }
 
-/* typing */
 .ncbTyping{
   display:inline-flex;gap:4px;background:#1b2b45;padding:12px 16px;
   border-radius:14px 14px 14px 4px;margin-bottom:12px;
@@ -158,10 +140,7 @@ button{border:0;cursor:pointer}
 }
 .ncbTyping span:nth-child(2){animation-delay:.2s}
 .ncbTyping span:nth-child(3){animation-delay:.4s}
-@keyframes blink{
-  0%,80%,100%{opacity:.3}
-  40%{opacity:1}
-}
+@keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
 
 .ncbChatInput{
   display:flex;gap:7px;padding:10px;background:#111c30;flex-shrink:0;
@@ -254,14 +233,12 @@ button{border:0;cursor:pointer}
 
 <div id="ncbNotifications"></div>
 
-<!-- NÚT CHAT TRÒN — AVATAR AI -->
 <button id="ncbChatButton" onclick="toggleNCBChat()" title="Chat với NCB AI">
   <img src="https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png"
        alt="NCB AI" draggable="false" oncontextmenu="return false;">
 </button>
 
 <div id="ncbChatBox">
-
   <div class="ncbChatHeader">
     <div class="ncbChatHeaderInfo">
       <div class="ncbChatHeaderAvatar">
@@ -276,10 +253,7 @@ button{border:0;cursor:pointer}
     <button onclick="toggleNCBChat()" style="width:35px;height:35px;border-radius:9px;background:#ffffff22;color:white">✕</button>
   </div>
 
-  <div id="ncbChatMessages">
-    <!-- Tin chào mở đầu — sẽ render qua JS để có avatar thống nhất -->
-  </div>
-
+  <div id="ncbChatMessages"></div>
   <div id="ncbBanBanner"></div>
 
   <div class="ncbChatInput">
@@ -289,7 +263,6 @@ button{border:0;cursor:pointer}
   </div>
 </div>
 
-<!-- EmailJS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 <script>
@@ -301,11 +274,10 @@ const GROQ_URL     = "https://api.groq.com/openai/v1/chat/completions";
 const GROQ_MODEL   = "llama-3.3-70b-versatile";
 
 const EMAILJS_SERVICE_ID  = "service_yipfm4w";
-const EMAILJS_TEMPLATE_ID = "template_qnjoiga";
-const EMAILJS_PUBLIC_KEY  = "xoair8XBZ9gKIPryH";
+const EMAILJS_TEMPLATE_ID = "template_qnjojga";  // ← ĐÃ SỬA (j thay vì i)
+const EMAILJS_PUBLIC_KEY  = "xoair8XbZ9gKlPryH";
 const ADMIN_EMAIL         = "dovanphuoc124@gmail.com";
 
-// ẢNH AVATAR AI — dùng chung 1 biến để dễ đổi sau này
 const AI_AVATAR = "https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png";
 
 if(window.emailjs){
@@ -442,18 +414,11 @@ function toggleNCBChat(){
   }
 }
 
-/**
- * Thêm tin nhắn có avatar
- * @param {string} content — nội dung
- * @param {boolean} isUser — true nếu là người dùng
- */
 function addNCBMessage(content, isUser=false){
   const m = document.getElementById("ncbChatMessages");
-
   const row = document.createElement("div");
   row.className = "ncbMsgRow" + (isUser ? " user" : "");
 
-  // Avatar AI (chỉ hiện cho tin AI)
   if(!isUser){
     const av = document.createElement("div");
     av.className = "ncbMsgAvatar";
@@ -466,7 +431,6 @@ function addNCBMessage(content, isUser=false){
     row.appendChild(av);
   }
 
-  // Nội dung tin nhắn
   const msg = document.createElement("div");
   msg.className = "ncbMsg";
   msg.textContent = content;
@@ -487,12 +451,10 @@ function addBanMessage(text){
 
 function showTyping(){
   const m = document.getElementById("ncbChatMessages");
-
   const row = document.createElement("div");
   row.className = "ncbMsgRow";
   row.id = "ncbTyping";
 
-  // Avatar AI
   const av = document.createElement("div");
   av.className = "ncbMsgAvatar";
   const img = document.createElement("img");
@@ -502,7 +464,6 @@ function showTyping(){
   av.appendChild(img);
   row.appendChild(av);
 
-  // Bubble typing 3 chấm
   const bubble = document.createElement("div");
   bubble.className = "ncbTyping";
   bubble.innerHTML = "<span></span><span></span><span></span>";
@@ -689,8 +650,6 @@ form.addEventListener("submit", async function(e){
 /* ============ KHỞI ĐỘNG ============ */
 window.addEventListener("DOMContentLoaded", () => {
   checkExistingBan();
-
-  // Tin nhắn chào đầu tiên (có avatar AI)
   addNCBMessage(
 `Xin chào! 👋
 Tôi là NCB AI SUPPORT.
