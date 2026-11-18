@@ -278,9 +278,14 @@ button{border:0;cursor:pointer}
 /* =========================================================
    CẤU HÌNH
    ========================================================= */
-const GROQ_API_KEY = "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"; // ← ĐÃ THAY
+const GROQ_API_KEY = "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";
 const GROQ_URL     = "https://api.groq.com/openai/v1/chat/completions";
-const GROQ_MODEL   = "llama-3.3-70b-versatile";
+
+// Danh sách model ưu tiên. Code sẽ tự động thử model tiếp theo nếu model trước đó lỗi.
+const GROQ_MODELS = [
+  "openai/gpt-oss-120b", // Model chính (khuyến nghị thay thế Llama)
+  "openai/gpt-oss-20b"   // Model dự phòng (nhẹ hơn, nhanh hơn)
+];
 
 const EMAILJS_SERVICE_ID  = "service_yipfm4w";
 const EMAILJS_TEMPLATE_ID = "template_qnjojga";
@@ -588,27 +593,50 @@ function hideTyping(){
   if(t) t.remove();
 }
 
-/* ============ GROQ API ============ */
+/* ============ GROQ API (CẬP NHẬT ĐA MODEL) ============ */
 async function callGroq(userMessage){
   chatHistory.push({ role: "user", content: userMessage });
   const trimmed = chatHistory.slice(-12);
-  const res = await fetch(GROQ_URL, {
-    method: "POST",
-    headers: { "Authorization": "Bearer " + GROQ_API_KEY, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: GROQ_MODEL,
-      messages: [{ role: "system", content: SYSTEM_PROMPT }, ...trimmed],
-      temperature: 0.7,
-      max_tokens: 1500,
-      top_p: 0.9
-    })
-  });
-  if(!res.ok){ const e = await res.text().catch(() => ""); throw new Error("HTTP " + res.status + " " + e.slice(0,120)); }
-  const data = await res.json();
-  const reply = data?.choices?.[0]?.message?.content?.trim();
-  if(!reply) throw new Error("Empty response");
-  chatHistory.push({ role: "assistant", content: reply });
-  return reply;
+
+  let lastError = null;
+
+  // Thử lần lượt từng model trong danh sách
+  for (const modelId of GROQ_MODELS) {
+    try {
+      const res = await fetch(GROQ_URL, {
+        method: "POST",
+        headers: { "Authorization": "Bearer " + GROQ_API_KEY, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: modelId,
+          messages: [{ role: "system", content: SYSTEM_PROMPT }, ...trimmed],
+          temperature: 0.7,
+          max_tokens: 1500,
+          top_p: 0.9
+        })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        const reply = data?.choices?.[0]?.message?.content?.trim();
+        if (reply) {
+          chatHistory.push({ role: "assistant", content: reply });
+          return reply; // Thành công, thoát hàm
+        }
+      }
+      
+      // Nếu response không OK hoặc reply rỗng, ghi lại lỗi và thử model tiếp theo
+      const errorText = await res.text().catch(() => "Unknown error");
+      lastError = new Error(`Model ${modelId} failed: HTTP ${res.status} - ${errorText.slice(0,120)}`);
+      console.warn(`[Groq] Model ${modelId} thất bại, thử model tiếp theo...`);
+
+    } catch (err) {
+      lastError = err;
+      console.warn(`[Groq] Lỗi mạng với model ${modelId}, thử model tiếp theo...`);
+    }
+  }
+
+  // Nếu tất cả các model đều thất bại, ném lỗi cuối cùng
+  throw lastError || new Error("Tất cả các model đều thất bại.");
 }
 
 function fallbackAnswer(q){
@@ -655,7 +683,7 @@ async function sendNCBChat(){
     addNCBMessage(reply, false);
   } catch(err){
     hideTyping();
-    console.warn("[Groq error]", err);
+    console.warn("[Groq final error]", err);
     addNCBMessage(fallbackAnswer(question), false);
   } finally {
     chatSending = false;
