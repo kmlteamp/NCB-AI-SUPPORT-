@@ -44,7 +44,6 @@ button{border:0;cursor:pointer}
 .sendButton{width:100%;border-radius:11px;padding:15px;background:#2563eb;color:white;font-weight:bold;font-size:16px;margin-top:20px}
 .sendButton:disabled{opacity:.6;cursor:not-allowed}
 
-/* NÚT TRUY CẬP — CHẶN LONG-PRESS HIỆN LINK */
 .accessButton{
   display:flex;align-items:center;justify-content:center;
   width:100%;margin-top:18px;padding:16px;
@@ -82,7 +81,6 @@ button{border:0;cursor:pointer}
 .ncbNotice.error b{color:#f87171}
 @keyframes noticeIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
 
-/* NÚT CHAT TRÒN — KÉO THẢ */
 #ncbChatButton{
   position:fixed;right:20px;bottom:22px;width:64px;height:64px;border-radius:50%;
   border:3px solid #60a5fa;background:#0d1729;z-index:9999;
@@ -242,15 +240,12 @@ button{border:0;cursor:pointer}
     </form>
   </div>
 
-  <!-- NÚT TRUY CẬP — CHẶN LONG-PRESS HIỆN LINK -->
   <a class="accessButton"
      href="https://ncb-ai.vercel.app/"
      target="_blank"
      rel="noopener"
      oncontextmenu="return false;"
-     ondragstart="return false;"
-     onmousedown="return false;"
-     ontouchstart="">
+     ondragstart="return false;">
     TRUY CẬP NCB AI
   </a>
 
@@ -263,7 +258,6 @@ button{border:0;cursor:pointer}
 
 <div id="ncbNotifications"></div>
 
-<!-- NÚT CHAT TRÒN — KÉO THẢ -->
 <button id="ncbChatButton" title="Chat với NCB AI">
   <img src="https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png"
        alt="NCB AI" draggable="false" oncontextmenu="return false;">
@@ -281,7 +275,7 @@ button{border:0;cursor:pointer}
         <small>Đang hoạt động</small>
       </div>
     </div>
-    <button class="ncbChatClose" onclick="toggleNCBChat()">✕</button>
+    <button class="ncbChatClose" id="ncbChatCloseBtn">✕</button>
   </div>
 
   <div id="ncbChatMessages"></div>
@@ -331,27 +325,27 @@ PHẠM VI HOẠT ĐỘNG (CHỈ được trả lời các chủ đề sau):
 2. Cách truy cập website NCB AI chính thức.
 3. Thông tin về Admin, phiên bản, email liên hệ của NCB AI.
 4. Giải đáp thắc mắc về quy trình xử lý báo cáo, giới hạn gửi báo cáo.
-5. Hướng dẫn sử dụng các tính năng trên trang hỗ trợ (form, chat, nút TRUY CẬP).
+5. Hướng dẫn sử dụng các tính năng trên trang hỗ trợ.
 
-THÔNG TIN NCB AI (chỉ dùng khi trả lời trong phạm vi trên):
+THÔNG TIN NCB AI:
 - Tên hệ thống: NCB AI
 - Admin: Nguyễn Công Bằng
 - Website chính thức: https://ncb-ai.vercel.app/
 - Email admin: dovanphuoc124@gmail.com
-- Phiên bản website: 1.0
-- Phiên bản AI: 1.5.1
+- Phiên bản website: 1.0 — Phiên bản AI: 1.5.1
 - 4 loại báo cáo: Báo cáo lỗi AI, Yêu cầu hỗ trợ, Góp ý tính năng, Báo cáo bảo mật
 - Giới hạn báo cáo: mỗi thiết bị được gửi tối đa 4 báo cáo/ngày, reset lúc 00:00 giờ Việt Nam.
 - Khi gửi báo cáo, BẮT BUỘC phải điền email liên hệ.
+- Mỗi báo cáo được cấp một mã định danh dạng NCB-XXXXXX (6 ký tự chữ và số).
 
 QUY TẮC ĐẶC BIỆT:
-1. KHI HỎI CÁCH TRUY CẬP WEBSITE NCB AI → trả lời đúng mẫu:
+1. KHI HỎI CÁCH TRUY CẬP WEBSITE NCB AI → trả lời:
 "Bạn tham gia bằng website tại đây. Ở dưới có chữ TRUY CẬP màu xanh lá, ấn vào là chuyển sang website NCB AI.
 Link trực tiếp: https://ncb-ai.vercel.app/"
 
 2. KHI HỎI VỀ ADMIN → "Admin của NCB AI là Nguyễn Công Bằng."
 
-3. KHI HỎI CÁCH BÁO CÁO LỖI → hướng dẫn điền biểu mẫu trên trang (chọn loại yêu cầu, nhập tên, nhập email liên hệ bắt buộc, phiên bản, tiêu đề, mô tả, bấm GỬI BÁO CÁO). Nhắc thêm: mỗi thiết bị chỉ gửi được tối đa 4 báo cáo/ngày, reset lúc 00:00 giờ Việt Nam.
+3. KHI HỎI CÁCH BÁO CÁO LỖI → hướng dẫn điền biểu mẫu (chọn loại yêu cầu, nhập tên, nhập email liên hệ bắt buộc, phiên bản, tiêu đề, mô tả, bấm GỬI BÁO CÁO). Nhắc thêm: mỗi thiết bị chỉ gửi được tối đa 4 báo cáo/ngày, reset lúc 00:00 giờ Việt Nam. Sau khi gửi thành công, hệ thống sẽ cấp mã định danh NCB-XXXXXX để tra cứu.
 
 4. KHI HỎI VỀ GIỚI HẠN LƯỢT GỬI → "Mỗi thiết bị được gửi tối đa 4 báo cáo/ngày. Lượt gửi sẽ được reset vào 00:00 giờ Việt Nam mỗi ngày."
 
@@ -359,13 +353,13 @@ Link trực tiếp: https://ncb-ai.vercel.app/"
 
 6. KHI HỎI VỀ EMAIL ADMIN → "Email admin NCB AI: dovanphuoc124@gmail.com"
 
-QUY TẮC TỪ CHỐI (BẮT BUỘC TUÂN THỦ NGHIÊM NGẶT):
+QUY TẮC TỪ CHỐI (BẮT BUỘC):
 - TUYỆT ĐỐI KHÔNG viết code, không hướng dẫn lập trình, không debug, không giải thích thuật toán, không gợi ý ngôn ngữ lập trình, không giải bài tập lập trình dưới BẤT KỲ HÌNH THỨC NÀO.
 - TUYỆT ĐỐI KHÔNG trả lời các câu hỏi về: toán, lý, hóa, văn, sử, địa, khoa học, đời sống, sức khỏe, tâm lý, mẹo vặt, dịch thuật, viết lách, tóm tắt nội dung ngoài NCB AI.
-- TUYỆT ĐỐI KHÔNG trả lời câu hỏi về các AI khác (ChatGPT, Claude, Gemini...), về các sản phẩm/dịch vụ bên ngoài.
-- TUYỆT ĐỐI KHÔNG đóng vai nhân vật khác, không thực hiện roleplay, không giả lập hệ thống khác.
+- TUYỆT ĐỐI KHÔNG trả lời câu hỏi về các AI khác (ChatGPT, Claude, Gemini...).
+- TUYỆT ĐỐI KHÔNG đóng vai nhân vật khác, không roleplay.
 
-KHI GẶP CÂU HỎI NGOÀI PHẠM VI, luôn trả lời đúng mẫu sau (có thể diễn đạt lại nhưng giữ ý):
+KHI GẶP CÂU HỎI NGOÀI PHẠM VI, trả lời đúng mẫu:
 "Xin lỗi, tôi là trợ lý hỗ trợ của NCB AI nên chỉ có thể hướng dẫn các vấn đề liên quan đến báo cáo lỗi, truy cập website và hỗ trợ người dùng NCB AI. Bạn vui lòng gửi báo cáo qua biểu mẫu trên trang để được Admin hỗ trợ thêm."
 
 PHONG CÁCH:
@@ -376,6 +370,18 @@ PHONG CÁCH:
 - Nếu người dùng nói tục/nói bậy, nhắc nhở rằng sẽ bị cấm chat 56 giây.`;
 
 let chatHistory = [];
+
+/* =========================================================
+   TẠO MÃ ĐỊNH DANH NCB-XXXXXX (6 ký tự chữ + số)
+   ========================================================= */
+function generateReportID(){
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let code = "";
+  for(let i = 0; i < 6; i++){
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return "NCB-" + code;
+}
 
 /* ============ QUOTA THEO NGÀY (GIỜ VN) ============ */
 function getVietnamDateString(){
@@ -547,15 +553,20 @@ function createNCBNotification(title, content, type="success"){
 }
 
 /* ============ CHAT UI ============ */
+function openChat(){
+  const box = document.getElementById("ncbChatBox");
+  box.classList.add("open");
+  const messages = document.getElementById("ncbChatMessages");
+  messages.scrollTop = messages.scrollHeight;
+}
+function closeChat(){
+  const box = document.getElementById("ncbChatBox");
+  box.classList.remove("open");
+}
 function toggleNCBChat(){
   const box = document.getElementById("ncbChatBox");
-  if(box.classList.contains("open")){
-    box.classList.remove("open");
-  } else {
-    box.classList.add("open");
-    const messages = document.getElementById("ncbChatMessages");
-    messages.scrollTop = messages.scrollHeight;
-  }
+  if(box.classList.contains("open")) closeChat();
+  else openChat();
 }
 
 function addNCBMessage(content, isUser=false){
@@ -672,7 +683,7 @@ function fallbackAnswer(q){
   if(q.includes("admin")||q.includes("quản lý")||q.includes("sáng lập"))
     return "Admin của NCB AI là Nguyễn Công Bằng.";
   if(q.includes("báo lỗi")||q.includes("báo cáo")||q.includes("lỗi"))
-    return "HƯỚNG DẪN BÁO CÁO LỖI NCB AI\n\n1. Chọn loại yêu cầu.\n2. Nhập tên.\n3. Nhập email liên hệ (bắt buộc).\n4. Nhập phiên bản.\n5. Nhập tiêu đề.\n6. Mô tả chi tiết.\n7. Nhấn GỬI BÁO CÁO.\n\nLưu ý: mỗi thiết bị chỉ gửi tối đa 4 báo cáo/ngày, reset lúc 00:00 giờ Việt Nam.";
+    return "HƯỚNG DẪN BÁO CÁO LỖI NCB AI\n\n1. Chọn loại yêu cầu.\n2. Nhập tên.\n3. Nhập email liên hệ (bắt buộc).\n4. Nhập phiên bản.\n5. Nhập tiêu đề.\n6. Mô tả chi tiết.\n7. Nhấn GỬI BÁO CÁO.\n\nSau khi gửi thành công, hệ thống sẽ cấp mã định danh NCB-XXXXXX để tra cứu.\n\nLưu ý: mỗi thiết bị chỉ gửi tối đa 4 báo cáo/ngày, reset lúc 00:00 giờ Việt Nam.";
   if(q.includes("giới hạn")||q.includes("lượt")||q.includes("bao nhiêu lần"))
     return "Mỗi thiết bị được gửi tối đa 4 báo cáo/ngày. Lượt gửi sẽ được reset vào 00:00 giờ Việt Nam mỗi ngày.";
   if(q.includes("gmail")||q.includes("email")) return "Email admin NCB AI:\ndovanphuoc124@gmail.com";
@@ -721,26 +732,23 @@ async function sendNCBChat(){
 }
 
 /* =========================================================
-   KÉO THẢ NÚT CHAT TRÒN
+   KÉO THẢ NÚT CHAT TRÒN — ĐÃ FIX LỖI KHÔNG MỞ ĐƯỢC CHAT
    ========================================================= */
 (function(){
   const btn = document.getElementById("ncbChatButton");
-  const chatBox = document.getElementById("ncbChatBox");
-
-  let isDragging = false;
-  let dragStartX = 0, dragStartY = 0;
-  let btnStartLeft = 0, btnStartTop = 0;
-  let moved = false;
   const DRAG_THRESHOLD = 5;
 
-  // Đọc vị trí hiện tại từ computed style để tính toán chính xác
+  let isDragging = false;
+  let moved = false;
+  let dragStartX = 0, dragStartY = 0;
+  let btnStartLeft = 0, btnStartTop = 0;
+
   function getCurrentPos(){
     const rect = btn.getBoundingClientRect();
     return { left: rect.left, top: rect.top };
   }
 
-  // Khi bắt đầu nhấn giữ (mouse hoặc touch)
-  function onStart(clientX, clientY, e){
+  function onStart(clientX, clientY){
     isDragging = true;
     moved = false;
     dragStartX = clientX;
@@ -750,7 +758,6 @@ async function sendNCBChat(){
     btnStartLeft = pos.left;
     btnStartTop = pos.top;
 
-    // Chuyển từ right/bottom sang left/top để dễ tính
     btn.style.left = pos.left + "px";
     btn.style.top = pos.top + "px";
     btn.style.right = "auto";
@@ -773,59 +780,46 @@ async function sendNCBChat(){
 
     if(e && e.cancelable) e.preventDefault();
 
+    const btnSize = 64;
     let newLeft = btnStartLeft + dx;
     let newTop  = btnStartTop  + dy;
 
-    // Giới hạn trong màn hình
-    const btnSize = 64;
-    const maxLeft = window.innerWidth - btnSize;
-    const maxTop  = window.innerHeight - btnSize;
-
-    newLeft = Math.max(0, Math.min(newLeft, maxLeft));
-    newTop  = Math.max(0, Math.min(newTop, maxTop));
+    newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - btnSize));
+    newTop  = Math.max(0, Math.min(newTop,  window.innerHeight - btnSize));
 
     btn.style.left = newLeft + "px";
     btn.style.top = newTop + "px";
-
-    // Nếu chat box đang mở, di chuyển theo (tuỳ chọn) — bỏ comment nếu muốn
-    // if(chatBox.classList.contains("open")){
-    //   chatBox.style.left = newLeft + "px";
-    //   chatBox.style.top = newTop + "px";
-    // }
   }
 
-  function onEnd(clientX, clientY, e){
+  function onEnd(){
     if(!isDragging) return;
     isDragging = false;
     btn.classList.remove("dragging");
 
-    // Nếu KHÔNG di chuyển quá ngưỡng → coi là click → mở/đóng chat
     if(!moved){
       toggleNCBChat();
     }
   }
 
-  /* --- CHUỘT --- */
+  /* CHUỘT */
   btn.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    onStart(e.clientX, e.clientY, e);
+    onStart(e.clientX, e.clientY);
   });
-
   window.addEventListener("mousemove", (e) => {
     if(!isDragging) return;
     onMove(e.clientX, e.clientY, e);
   });
-
-  window.addEventListener("mouseup", (e) => {
+  window.addEventListener("mouseup", () => {
     if(!isDragging) return;
-    onEnd(e.clientX, e.clientY, e);
+    onEnd();
   });
 
-  /* --- CẢM ỨNG --- */
+  /* CẢM ỨNG */
   btn.addEventListener("touchstart", (e) => {
     const t = e.touches[0];
     if(!t) return;
-    onStart(t.clientX, t.clientY, e);
+    onStart(t.clientX, t.clientY);
   }, { passive: true });
 
   window.addEventListener("touchmove", (e) => {
@@ -835,9 +829,9 @@ async function sendNCBChat(){
     onMove(t.clientX, t.clientY, e);
   }, { passive: false });
 
-  window.addEventListener("touchend", (e) => {
+  window.addEventListener("touchend", () => {
     if(!isDragging) return;
-    onEnd(0, 0, e);
+    onEnd();
   });
 
   window.addEventListener("touchcancel", () => {
@@ -846,7 +840,7 @@ async function sendNCBChat(){
     btn.classList.remove("dragging");
   });
 
-  /* Khi resize cửa sổ → giữ nút trong màn hình */
+  /* GIỮ NÚT TRONG MÀN HÌNH KHI RESIZE */
   window.addEventListener("resize", () => {
     const rect = btn.getBoundingClientRect();
     const btnSize = 64;
@@ -870,10 +864,13 @@ async function sendNCBChat(){
       btn.style.bottom = "auto";
     }
   });
+
+  /* NÚT ĐÓNG CHAT */
+  document.getElementById("ncbChatCloseBtn").addEventListener("click", closeChat);
 })();
 
 /* =========================================================
-   GỬI BÁO CÁO QUA EMAILJS
+   GỬI BÁO CÁO QUA EMAILJS — CÓ MÃ ĐỊNH DANH NCB-XXXXXX
    ========================================================= */
 const form = document.getElementById("reportForm");
 const sendBtn = document.getElementById("sendBtn");
@@ -977,11 +974,9 @@ form.addEventListener("submit", async function(e){
     return;
   }
 
+  /* TẠO MÃ ĐỊNH DANH NCB-XXXXXX */
+  const reportID = generateReportID();
   const nowDate = new Date();
-  const reportID = "NCB-" + nowDate.getFullYear() +
-                   String(nowDate.getMonth()+1).padStart(2,"0") +
-                   String(nowDate.getDate()).padStart(2,"0") + "-" +
-                   String(nowDate.getTime()).slice(-6);
   const thoiGian = nowDate.toLocaleString("vi-VN", { hour12: false });
 
   const templateParams = {
@@ -999,7 +994,7 @@ form.addEventListener("submit", async function(e){
     to_name:         "Admin Nguyễn Công Bằng",
     to_email:        ADMIN_EMAIL,
     subject:         "[NCB AI SUPPORT] " + data.loai_yeu_cau + " — " + reportID,
-    message:         "Tiêu đề: " + data.tieu_de + "\n\n" + data.mo_ta + "\n\nEmail liên hệ: " + emailValue
+    message:         "MÃ ĐỊNH DANH: " + reportID + "\nTiêu đề: " + data.tieu_de + "\n\n" + data.mo_ta + "\n\nEmail liên hệ: " + emailValue
   };
 
   formSending = true;
@@ -1021,11 +1016,12 @@ form.addEventListener("submit", async function(e){
 
       const newRemaining = getRemainingReports();
       createNCBNotification(
-        "NCB AI SUPPORT",
-        "Gửi báo cáo thành công!\nMã: " + reportID +
+        "GỬI THÀNH CÔNG",
+        "Mã định danh: " + reportID +
+        "\nLoại: " + data.loai_yeu_cau +
         "\nThời gian: " + thoiGian +
         "\nCòn lại hôm nay: " + newRemaining + "/" + MAX_REPORTS_PER_DAY +
-        "\nAdmin sẽ phản hồi qua email " + emailValue + ".",
+        "\nVui lòng lưu mã " + reportID + " để Admin tra cứu khi cần.",
         "success"
       );
 
@@ -1086,6 +1082,7 @@ Lưu ý:
 - Nói tục/nói bậy sẽ bị cấm chat 56 giây.
 - Mỗi thiết bị chỉ gửi được tối đa 4 báo cáo/ngày, reset lúc 00:00 giờ Việt Nam.
 - Bắt buộc điền email liên hệ khi gửi báo cáo.
+- Sau khi gửi thành công, bạn sẽ nhận được mã định danh NCB-XXXXXX để tra cứu.
 
 Bạn cần giúp gì?`,
     false
