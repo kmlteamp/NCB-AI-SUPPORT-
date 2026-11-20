@@ -18,7 +18,7 @@ img{
 /* ===== GATE ===== */
 #ncbGate{
   position:fixed;inset:0;z-index:20000;
-  background:#000; /* màn hình đen khi gate */
+  background:#000;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:24px;gap:18px;text-align:center;
 }
@@ -35,7 +35,7 @@ img{
 #ncbGateStatus.error{color:#f87171}
 .gate-site-id{
   font-family:monospace;font-size:11px;color:#475569;
-  margin-top:6px;letter-spacing:.3px;
+  margin-top:6px;letter-spacing:.3px;word-break:break-all;
 }
 
 /* ===== NỘI DUNG CHÍNH ===== */
@@ -84,7 +84,7 @@ button{border:0;cursor:pointer}
 .accessButton:active{transform:translateY(0)}
 
 .footer{text-align:center;color:#64748b;font-size:12px;margin-top:25px}
-.footer .site-id{color:#475569;font-size:11px;margin-top:6px;font-family:monospace}
+.footer .site-id{color:#475569;font-size:11px;margin-top:6px;font-family:monospace;word-break:break-all}
 
 #reportQuotaBadge{
   display:flex;align-items:center;justify-content:space-between;
@@ -202,6 +202,8 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   border-top:1px solid rgba(96,165,250,0.15);
   text-align:center;
 }
+#turnstile-container{margin-bottom:4px}
+.turnstile-note{font-size:12px;color:#f59e0b;margin-top:6px}
 </style>
 </head>
 <body>
@@ -456,21 +458,16 @@ function lastActivityAge(){
   }catch(_){ return Infinity; }
 }
 function shouldForceGate(){
-  /* Nếu chưa từng hoạt động → gate (lần đầu) */
   if(lastActivityAge() === Infinity) return true;
-  /* Nếu treo quá 5 phút → gate */
   return lastActivityAge() > IDLE_RESET_MS;
 }
 
-/* Ghi nhận hoạt động khi người dùng tương tác */
 ["click","touchstart","keydown","scroll","mousemove"].forEach(evt => {
   window.addEventListener(evt, markActivity, { passive: true });
 });
 
-/* Khi quay lại tab sau thời gian dài → reload để gate hiện lại (màn hình đen) */
 document.addEventListener("visibilitychange", () => {
   if(document.visibilityState === "visible" && shouldForceGate()){
-    /* reload để gate hiện + random lại ID */
     location.reload();
   }
 });
@@ -600,7 +597,6 @@ function unlockPage(){
   main.classList.add("unlocked");
   if(settingsBtn) settingsBtn.style.display = "flex";
 
-  /* Đánh dấu hoạt động mới (reset đồng hồ 5 phút) */
   markActivity();
 
   attachSiteIdToUrl();
@@ -882,15 +878,16 @@ form.addEventListener("submit", async function(e){
    KHỞI ĐỘNG
    ========================================================= */
 window.addEventListener("DOMContentLoaded", () => {
-  /* Hiển thị ID ngẫu nhiên ngay từ gate */
   renderDisplaySiteId();
 
-  /* Nếu treo quá 5 phút → buộc gate lại (màn hình đen) */
+  /* Nếu treo quá 5 phút → xóa ID hiển thị + activity để random lại */
   if(shouldForceGate()){
-    /* gate đang mặc định hiển thị — không cần làm gì thêm,
-       chỉ cần KHÔNG auto-unlock. Nhưng nếu URL còn site_id cũ,
-       vẫn phải xác minh lại. */
-    try{ localStorage.removeItem(LAST_ACTIVITY_KEY); }catch(_){}
+    try{
+      localStorage.removeItem(LAST_ACTIVITY_KEY);
+      sessionStorage.removeItem(DISPLAY_ID_KEY);
+    }catch(_){}
+    currentDisplaySiteId = pickDisplaySiteId();
+    renderDisplaySiteId();
   }
 
   updateQuotaBadge();
