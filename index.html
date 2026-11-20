@@ -4,10 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Google Search Console verification -->
 <meta name="google-site-verification" content="googleb1c169c68b84792a" />
 
-<!-- TÊN WEBSITE -->
 <title>NCB AI SUPPORT</title>
 <meta property="og:site_name" content="NCB AI SUPPORT">
 <meta property="og:title" content="NCB AI SUPPORT">
@@ -21,12 +19,10 @@
 <meta name="twitter:description" content="Trung tâm hỗ trợ NCB AI — Gửi báo cáo lỗi và yêu cầu hỗ trợ.">
 <meta name="twitter:image" content="https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png">
 
-<!-- AVATAR WEBSITE GOOGLE -->
 <link rel="icon" type="image/png" href="https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png">
 <link rel="shortcut icon" href="https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png">
 <link rel="apple-touch-icon" href="https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png">
 
-<!-- THÔNG TIN WEBSITE -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -79,8 +75,14 @@ img{
   font-family:monospace;font-size:11px;color:#475569;
   margin-top:6px;letter-spacing:.3px;word-break:break-all;
 }
+#ncbGateIdError{
+  display:none;
+  color:#f87171;background:#3b1c1c;border:1px solid #ef4444;
+  padding:12px 16px;border-radius:10px;font-size:13px;max-width:340px;
+  line-height:1.5;text-align:center;
+}
+#ncbGateIdError.show{display:block}
 
-/* ===== NỘI DUNG CHÍNH ===== */
 #ncbMain{display:none}
 #ncbMain.unlocked{display:block}
 
@@ -148,7 +150,6 @@ button{border:0;cursor:pointer}
 .ncbNotice.error b{color:#f87171}
 @keyframes noticeIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
 
-/* ===== NÚT CÀI ĐẶT ===== */
 #ncbSettingsBtn{
   position:fixed;right:20px;bottom:22px;
   width:52px;height:52px;border-radius:50%;
@@ -165,7 +166,6 @@ button{border:0;cursor:pointer}
 #ncbSettingsBtn:active{transform:scale(.94)}
 #ncbSettingsBtn svg{width:24px;height:24px;display:block}
 
-/* ===== PANEL CÀI ĐẶT ===== */
 #ncbSettingsPanel{
   position:fixed;top:0;right:0;bottom:0;
   width:min(320px,88vw);
@@ -206,14 +206,19 @@ button{border:0;cursor:pointer}
 
 .ncbSwitch{position:relative;display:inline-block;width:52px;height:28px;flex-shrink:0}
 .ncbSwitch input{opacity:0;width:0;height:0}
-.ncbSwitch .slider{position:absolute;inset:0;cursor:pointer;background:#334155;border-radius:28px;transition:background .2s ease}
+.ncbSwitch .slider{
+  position:absolute;inset:0;cursor:pointer;
+  background:#475569;border-radius:28px;
+  transition:background .25s ease;
+}
 .ncbSwitch .slider::before{
   content:"";position:absolute;width:22px;height:22px;border-radius:50%;
   left:3px;top:3px;background:#e2e8f0;
-  transition:transform .2s ease, background .2s ease;
+  transition:transform .25s ease, background .25s ease;
 }
 .ncbSwitch input:checked + .slider{background:#22c55e}
 .ncbSwitch input:checked + .slider::before{transform:translateX(24px);background:#fff}
+.ncbSwitch:hover .slider{filter:brightness(1.1)}
 
 .volumeWrap{display:flex;flex-direction:column;gap:8px}
 .volumeHead{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#94a3b8}
@@ -250,7 +255,6 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
 </head>
 <body>
 
-<!-- ===== GATE CHẶN TRANG (nền đen) ===== -->
 <div id="ncbGate">
   <div class="gate-logo">
     <img src="https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png"
@@ -258,12 +262,14 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   </div>
   <h2>Xác minh truy cập</h2>
   <p>Vui lòng hoàn thành xác minh bảo mật để vào trang NCB AI SUPPORT.</p>
+
+  <div id="ncbGateIdError"></div>
+
   <div id="ncbGateTurnstile"></div>
   <div id="ncbGateStatus">Đang tải…</div>
   <div class="gate-site-id">Site ID: <span id="gateSiteIdText">…</span></div>
 </div>
 
-<!-- ===== NỘI DUNG CHÍNH ===== -->
 <div id="ncbMain">
 <div class="container">
 
@@ -342,11 +348,10 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   </div>
 
 </div>
-</div><!-- /#ncbMain -->
+</div>
 
 <div id="ncbNotifications"></div>
 
-<!-- ===== NÚT CÀI ĐẶT ===== -->
 <button id="ncbSettingsBtn" title="Cài đặt">
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/>
@@ -354,7 +359,6 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   </svg>
 </button>
 
-<!-- ===== PANEL CÀI ĐẶT ===== -->
 <div id="ncbSettingsPanel">
   <div class="settingsHeader">
     <b>CÀI ĐẶT</b>
@@ -386,8 +390,8 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   </div>
 </div>
 
-<!-- Nhạc nền -->
-<audio id="ncbBgMusic" src="https://files.catbox.moe/jv9cvp.mp3" loop preload="auto"></audio>
+<!-- Nhạc nền — BỎ loop, xử lý ended bằng JS -->
+<audio id="ncbBgMusic" src="https://files.catbox.moe/jv9cvp.mp3" preload="auto"></audio>
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
@@ -396,21 +400,15 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
 /* =========================================================
    CẤU HÌNH
    ========================================================= */
-
-/* ID dùng để XÁC MINH (cố định) */
 const VERIFY_SITE_ID = "01a1f8e7-51f7-75f2-98a2-962124bf5dc5";
 
-/* 2 ID dùng để HIỂN THỊ NGẪU NHIÊN */
 const DISPLAY_SITE_IDS = [
   "01a1f8e7-51f7-75f2-98a2-962124bf5dc5",
   "01a1f8e7-46e6-77ef-9d93-379ac75014ca"
 ];
 
-/* 5 phút = 300000 ms — treo quá thời gian này sẽ buộc xác minh lại */
 const IDLE_RESET_MS = 5 * 60 * 1000;
 const LAST_ACTIVITY_KEY = "ncb_last_activity";
-
-/* ID hiển thị random — lưu session để ổn định trong phiên */
 const DISPLAY_ID_KEY = "ncb_display_site_id";
 
 const EMAILJS_SERVICE_ID  = "service_yipfm4w";
@@ -422,7 +420,6 @@ const MAX_REPORTS_PER_DAY = 4;
 const QUOTA_KEY = "ncb_report_quota";
 const COOLDOWN_MS = 15000;
 
-/* TURNSTILE */
 const TURNSTILE_SITEKEY = "0x4AAAAAAGKIbsCOoqg2qN0G";
 const TURNSTILE_ACTION  = "report";
 const GATE_ACTION       = "page-gate";
@@ -431,7 +428,6 @@ let reportWidgetId = null;
 let turnstileToken  = null;
 let gateWidgetId    = null;
 
-/* MUSIC */
 const MUSIC_VOLUME_KEY = "ncb_music_volume";
 const MUSIC_ENABLED_KEY = "ncb_music_enabled";
 const DEFAULT_VOLUME = 0.8;
@@ -464,8 +460,51 @@ function renderDisplaySiteId(){
 }
 
 /* =========================================================
-   GẮN SITE_ID (DÙNG ID XÁC MINH) VÀO URL + LINK
+   SITE_ID CHECK
    ========================================================= */
+function getSiteIdFromUrl(){
+  try{
+    const url = new URL(window.location.href);
+    return url.searchParams.get("site_id") || "";
+  }catch(_){ return ""; }
+}
+
+function validateSiteIdOrBlock(){
+  const gotId = getSiteIdFromUrl();
+  const gateError = document.getElementById("ncbGateIdError");
+  const gateStatus = document.getElementById("ncbGateStatus");
+
+  if(!gotId){
+    if(gateError){
+      gateError.textContent = "Thiếu mã truy cập (site_id) trên URL.\nVui lòng mở website bằng đúng link được cấp.";
+      gateError.classList.add("show");
+    }
+    if(gateStatus){
+      gateStatus.textContent = "Không thể xác minh.";
+      gateStatus.classList.add("error");
+    }
+    return false;
+  }
+
+  if(gotId !== VERIFY_SITE_ID){
+    if(gateError){
+      gateError.textContent = "Mã truy cập (site_id) không đúng.\nVui lòng kiểm tra lại link bạn đã nhận được.";
+      gateError.classList.add("show");
+    }
+    if(gateStatus){
+      gateStatus.textContent = "Không thể xác minh.";
+      gateStatus.classList.add("error");
+    }
+    return false;
+  }
+
+  if(gateError){
+    gateError.classList.remove("show");
+    gateError.textContent = "";
+  }
+  return true;
+}
+
 function attachSiteIdToUrl(){
   try{
     const url = new URL(window.location.href);
@@ -486,7 +525,7 @@ function attachSiteIdToAccessLink(){
 }
 
 /* =========================================================
-   5 PHÚT TREO → MÀN HÌNH ĐEN + XÁC MINH LẠI
+   IDLE 5 PHÚT
    ========================================================= */
 function markActivity(){
   try{ localStorage.setItem(LAST_ACTIVITY_KEY, String(Date.now())); }catch(_){}
@@ -649,6 +688,11 @@ function unlockPage(){
 }
 function renderGateTurnstile(){
   if(!window.turnstile){ return; }
+
+  if(!validateSiteIdOrBlock()){
+    return;
+  }
+
   const c = document.getElementById("ncbGateTurnstile");
   if(!c) return;
   const status = document.getElementById("ncbGateStatus");
@@ -659,6 +703,9 @@ function renderGateTurnstile(){
     sitekey: TURNSTILE_SITEKEY,
     action: GATE_ACTION,
     callback: function(token){
+      if(!validateSiteIdOrBlock()){
+        return;
+      }
       status.textContent = "Xác minh thành công! Đang mở trang…";
       setTimeout(unlockPage, 350);
     },
@@ -730,6 +777,20 @@ function tryPlayMusic(){
   }
 }
 
+/* =========================================================
+   XỬ LÝ LOOP THỦ CÔNG (KHÔNG DÙNG ATTRIBUTE loop)
+   ========================================================= */
+if(music){
+  music.addEventListener("ended", function(){
+    if(!musicToggle || !musicToggle.checked) return;
+    try { music.currentTime = 0; } catch(_) {}
+    const p = music.play();
+    if(p && typeof p.catch === "function"){
+      p.catch(err => { console.warn("[Music] replay blocked:", err && err.message); });
+    }
+  });
+}
+
 let musicInitDone = false;
 function tryInitMusicAfterUnlock(){
   if(musicInitDone) return;
@@ -764,8 +825,14 @@ if(settingsClose){ settingsClose.addEventListener("click", closeSettings); }
 
 if(musicToggle){
   musicToggle.addEventListener("change", () => {
-    if(musicToggle.checked){ tryPlayMusic(); }
-    else if(music){ music.pause(); }
+    if(musicToggle.checked){
+      if(music && music.currentTime >= music.duration - 0.5){
+        try { music.currentTime = 0; } catch(_) {}
+      }
+      tryPlayMusic();
+    } else if(music){
+      music.pause();
+    }
     persistMusicPrefs();
   });
 }
@@ -944,7 +1011,6 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-/* ============ CHẶN MENU ẢNH & LINK ============ */
 document.addEventListener("contextmenu", function(e){
   if(e.target.tagName === "IMG" || e.target.closest("a.accessButton")){
     e.preventDefault();
