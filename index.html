@@ -18,7 +18,7 @@ img{
 /* ===== GATE ===== */
 #ncbGate{
   position:fixed;inset:0;z-index:20000;
-  background:#080d18;
+  background:#000; /* màn hình đen khi gate */
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:24px;gap:18px;text-align:center;
 }
@@ -33,6 +33,10 @@ img{
 #ncbGate p{margin:0;color:#94a3b8;font-size:14px;max-width:360px;line-height:1.5}
 #ncbGateStatus{color:#60a5fa;font-size:13px;min-height:18px}
 #ncbGateStatus.error{color:#f87171}
+.gate-site-id{
+  font-family:monospace;font-size:11px;color:#475569;
+  margin-top:6px;letter-spacing:.3px;
+}
 
 /* ===== NỘI DUNG CHÍNH ===== */
 #ncbMain{display:none}
@@ -102,7 +106,7 @@ button{border:0;cursor:pointer}
 .ncbNotice.error b{color:#f87171}
 @keyframes noticeIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
 
-/* ===== NÚT CÀI ĐẶT TRÒN NHỎ ===== */
+/* ===== NÚT CÀI ĐẶT ===== */
 #ncbSettingsBtn{
   position:fixed;right:20px;bottom:22px;
   width:52px;height:52px;border-radius:50%;
@@ -154,34 +158,21 @@ button{border:0;cursor:pointer}
 
 .settingsBody{padding:20px 18px;display:flex;flex-direction:column;gap:22px;overflow-y:auto}
 
-.settingRow{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:14px;
-}
+.settingRow{display:flex;align-items:center;justify-content:space-between;gap:14px}
 .settingRow .settingLabel{font-size:14px;color:#cbd5e1}
 .settingRow .settingLabel small{display:block;color:#64748b;font-size:11px;margin-top:3px}
 
-/* Toggle switch */
-.ncbSwitch{
-  position:relative;display:inline-block;
-  width:52px;height:28px;flex-shrink:0;
-}
+.ncbSwitch{position:relative;display:inline-block;width:52px;height:28px;flex-shrink:0}
 .ncbSwitch input{opacity:0;width:0;height:0}
-.ncbSwitch .slider{
-  position:absolute;inset:0;cursor:pointer;
-  background:#334155;border-radius:28px;
-  transition:background .2s ease;
-}
+.ncbSwitch .slider{position:absolute;inset:0;cursor:pointer;background:#334155;border-radius:28px;transition:background .2s ease}
 .ncbSwitch .slider::before{
-  content:"";position:absolute;
-  width:22px;height:22px;border-radius:50%;
+  content:"";position:absolute;width:22px;height:22px;border-radius:50%;
   left:3px;top:3px;background:#e2e8f0;
   transition:transform .2s ease, background .2s ease;
 }
 .ncbSwitch input:checked + .slider{background:#22c55e}
 .ncbSwitch input:checked + .slider::before{transform:translateX(24px);background:#fff}
 
-/* Volume */
 .volumeWrap{display:flex;flex-direction:column;gap:8px}
 .volumeHead{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#94a3b8}
 .volumeHead b{color:#60a5fa;font-family:monospace;font-size:13px}
@@ -190,29 +181,23 @@ input[type="range"].ncbRange{
   -webkit-appearance:none;appearance:none;
   width:100%;height:6px;border-radius:6px;
   background:linear-gradient(90deg,#2563eb var(--vol,80%),#1e293b var(--vol,80%));
-  outline:none;padding:0;border:0;
-  cursor:pointer;
+  outline:none;padding:0;border:0;cursor:pointer;
 }
 input[type="range"].ncbRange::-webkit-slider-thumb{
   -webkit-appearance:none;appearance:none;
   width:18px;height:18px;border-radius:50%;
   background:#60a5fa;border:2px solid #0d1729;
-  box-shadow:0 0 0 2px #2563eb66;
-  cursor:pointer;
+  box-shadow:0 0 0 2px #2563eb66;cursor:pointer;
 }
 input[type="range"].ncbRange::-moz-range-thumb{
   width:16px;height:16px;border-radius:50%;
   background:#60a5fa;border:2px solid #0d1729;
-  box-shadow:0 0 0 2px #2563eb66;
-  cursor:pointer;
+  box-shadow:0 0 0 2px #2563eb66;cursor:pointer;
 }
-input[type="range"].ncbRange::-moz-range-track{
-  height:6px;border-radius:6px;background:#1e293b;
-}
+input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;background:#1e293b}
 
 #ncbSettingsHint{
-  margin-top:auto;
-  padding:12px 14px;
+  margin-top:auto;padding:12px 14px;
   font-size:11px;color:#64748b;line-height:1.5;
   border-top:1px solid rgba(96,165,250,0.15);
   text-align:center;
@@ -221,7 +206,7 @@ input[type="range"].ncbRange::-moz-range-track{
 </head>
 <body>
 
-<!-- ===== GATE CHẶN TRANG ===== -->
+<!-- ===== GATE CHẶN TRANG (nền đen) ===== -->
 <div id="ncbGate">
   <div class="gate-logo">
     <img src="https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png"
@@ -231,6 +216,7 @@ input[type="range"].ncbRange::-moz-range-track{
   <p>Vui lòng hoàn thành xác minh bảo mật để vào trang NCB AI SUPPORT.</p>
   <div id="ncbGateTurnstile"></div>
   <div id="ncbGateStatus">Đang tải…</div>
+  <div class="gate-site-id">Site ID: <span id="gateSiteIdText">…</span></div>
 </div>
 
 <!-- ===== NỘI DUNG CHÍNH ===== -->
@@ -308,7 +294,7 @@ input[type="range"].ncbRange::-moz-range-track{
   <div class="footer">
     NCB AI SUPPORT © 2026<br>
     Admin: Nguyễn Công Bằng — Hệ thống hỗ trợ người dùng NCB AI
-    <div class="site-id">Site ID: QP6b7fwfjeYAJridTfNzy</div>
+    <div class="site-id">Site ID: <span id="mainSiteIdText">…</span></div>
   </div>
 
 </div>
@@ -366,7 +352,22 @@ input[type="range"].ncbRange::-moz-range-track{
 /* =========================================================
    CẤU HÌNH
    ========================================================= */
-const WEBSITE_ID = "QP6b7fwfjeYAJridTfNzy";
+
+/* ID dùng để XÁC MINH (cố định) */
+const VERIFY_SITE_ID = "01a1f8e7-51f7-75f2-98a2-962124bf5dc5";
+
+/* 2 ID dùng để HIỂN THỊ NGẪU NHIÊN */
+const DISPLAY_SITE_IDS = [
+  "01a1f8e7-51f7-75f2-98a2-962124bf5dc5",
+  "01a1f8e7-46e6-77ef-9d93-379ac75014ca"
+];
+
+/* 5 phút = 300000 ms — treo quá thời gian này sẽ buộc xác minh lại */
+const IDLE_RESET_MS = 5 * 60 * 1000;
+const LAST_ACTIVITY_KEY = "ncb_last_activity";
+
+/* ID hiển thị random — lưu session để ổn định trong phiên */
+const DISPLAY_ID_KEY = "ncb_display_site_id";
 
 const EMAILJS_SERVICE_ID  = "service_yipfm4w";
 const EMAILJS_TEMPLATE_ID = "template_qnjojga";
@@ -396,13 +397,36 @@ if(window.emailjs){
 }
 
 /* =========================================================
-   GẮN SITE_ID VÀO URL
+   ID HIỂN THỊ NGẪU NHIÊN
+   ========================================================= */
+function pickDisplaySiteId(){
+  try{
+    const saved = sessionStorage.getItem(DISPLAY_ID_KEY);
+    if(saved && DISPLAY_SITE_IDS.includes(saved)) return saved;
+  }catch(_){}
+  const idx = Math.floor(Math.random() * DISPLAY_SITE_IDS.length);
+  const picked = DISPLAY_SITE_IDS[idx];
+  try{ sessionStorage.setItem(DISPLAY_ID_KEY, picked); }catch(_){}
+  return picked;
+}
+
+let currentDisplaySiteId = pickDisplaySiteId();
+
+function renderDisplaySiteId(){
+  const a = document.getElementById("gateSiteIdText");
+  const b = document.getElementById("mainSiteIdText");
+  if(a) a.textContent = currentDisplaySiteId;
+  if(b) b.textContent = currentDisplaySiteId;
+}
+
+/* =========================================================
+   GẮN SITE_ID (DÙNG ID XÁC MINH) VÀO URL + LINK
    ========================================================= */
 function attachSiteIdToUrl(){
   try{
     const url = new URL(window.location.href);
-    if(url.searchParams.get("site_id") !== WEBSITE_ID){
-      url.searchParams.set("site_id", WEBSITE_ID);
+    if(url.searchParams.get("site_id") !== VERIFY_SITE_ID){
+      url.searchParams.set("site_id", VERIFY_SITE_ID);
       history.replaceState({}, "", url.toString());
     }
   }catch(_){}
@@ -412,10 +436,44 @@ function attachSiteIdToAccessLink(){
   if(!a) return;
   try{
     const url = new URL(a.href);
-    url.searchParams.set("site_id", WEBSITE_ID);
+    url.searchParams.set("site_id", VERIFY_SITE_ID);
     a.href = url.toString();
   }catch(_){}
 }
+
+/* =========================================================
+   5 PHÚT TREO → MÀN HÌNH ĐEN + XÁC MINH LẠI
+   ========================================================= */
+function markActivity(){
+  try{ localStorage.setItem(LAST_ACTIVITY_KEY, String(Date.now())); }catch(_){}
+}
+function lastActivityAge(){
+  try{
+    const raw = localStorage.getItem(LAST_ACTIVITY_KEY);
+    const t = parseInt(raw, 10);
+    if(!t || isNaN(t)) return Infinity;
+    return Date.now() - t;
+  }catch(_){ return Infinity; }
+}
+function shouldForceGate(){
+  /* Nếu chưa từng hoạt động → gate (lần đầu) */
+  if(lastActivityAge() === Infinity) return true;
+  /* Nếu treo quá 5 phút → gate */
+  return lastActivityAge() > IDLE_RESET_MS;
+}
+
+/* Ghi nhận hoạt động khi người dùng tương tác */
+["click","touchstart","keydown","scroll","mousemove"].forEach(evt => {
+  window.addEventListener(evt, markActivity, { passive: true });
+});
+
+/* Khi quay lại tab sau thời gian dài → reload để gate hiện lại (màn hình đen) */
+document.addEventListener("visibilitychange", () => {
+  if(document.visibilityState === "visible" && shouldForceGate()){
+    /* reload để gate hiện + random lại ID */
+    location.reload();
+  }
+});
 
 /* =========================================================
    MÃ ĐỊNH DANH
@@ -486,7 +544,7 @@ function createNCBNotification(title, content, type="success"){
 }
 
 /* =========================================================
-   NÚT GỬI: CHỈ BẬT KHI ĐÃ XÁC MINH + CÒN LƯỢT
+   NÚT GỬI
    ========================================================= */
 const sendBtn = document.getElementById("sendBtn");
 function syncSendBtnState(){
@@ -541,6 +599,10 @@ function unlockPage(){
   gate.classList.add("hidden");
   main.classList.add("unlocked");
   if(settingsBtn) settingsBtn.style.display = "flex";
+
+  /* Đánh dấu hoạt động mới (reset đồng hồ 5 phút) */
+  markActivity();
+
   attachSiteIdToUrl();
   attachSiteIdToAccessLink();
   updateQuotaBadge();
@@ -627,7 +689,6 @@ function tryPlayMusic(){
   const p = music.play();
   if(p && typeof p.catch === "function"){
     p.catch(err => {
-      /* Autoplay bị chặn — chờ tương tác người dùng */
       console.warn("[Music] autoplay blocked:", err && err.message);
     });
   }
@@ -643,13 +704,10 @@ function tryInitMusicAfterUnlock(){
   applyMusicVolume(prefs.vol);
   tryPlayMusic();
 
-  /* Nếu autoplay bị chặn, thử lại ở lần chạm/click đầu tiên */
   const resumeOnFirstGesture = () => {
     if(musicToggle && musicToggle.checked && music && music.paused){
       const p = music.play();
-      if(p && typeof p.catch === "function"){
-        p.catch(()=>{});
-      }
+      if(p && typeof p.catch === "function") p.catch(()=>{});
     }
     document.removeEventListener("click", resumeOnFirstGesture);
     document.removeEventListener("touchstart", resumeOnFirstGesture);
@@ -658,36 +716,24 @@ function tryInitMusicAfterUnlock(){
   document.addEventListener("touchstart", resumeOnFirstGesture, { passive: true });
 }
 
-/* Mở / đóng panel */
-function openSettings(){
-  settingsPanel.classList.add("open");
-}
-function closeSettings(){
-  settingsPanel.classList.remove("open");
-}
+function openSettings(){ settingsPanel.classList.add("open"); }
+function closeSettings(){ settingsPanel.classList.remove("open"); }
 if(settingsBtn){
   settingsBtn.addEventListener("click", () => {
     if(settingsPanel.classList.contains("open")) closeSettings();
     else openSettings();
   });
 }
-if(settingsClose){
-  settingsClose.addEventListener("click", closeSettings);
-}
+if(settingsClose){ settingsClose.addEventListener("click", closeSettings); }
 
-/* Toggle nhạc */
 if(musicToggle){
   musicToggle.addEventListener("change", () => {
-    if(musicToggle.checked){
-      tryPlayMusic();
-    } else if(music){
-      music.pause();
-    }
+    if(musicToggle.checked){ tryPlayMusic(); }
+    else if(music){ music.pause(); }
     persistMusicPrefs();
   });
 }
 
-/* Thanh âm lượng */
 if(volumeSlider){
   volumeSlider.addEventListener("input", () => {
     const pct = parseInt(volumeSlider.value, 10) || 0;
@@ -763,7 +809,8 @@ form.addEventListener("submit", async function(e){
   const thoiGian = new Date().toLocaleString("vi-VN", { hour12: false });
 
   const templateParams = {
-    website_id: WEBSITE_ID,
+    website_id: VERIFY_SITE_ID,
+    display_site_id: currentDisplaySiteId,
     ten: data.ten.trim(),
     email_lien_he: emailValue,
     loai_yeu_cau: data.loai_yeu_cau,
@@ -778,9 +825,10 @@ form.addEventListener("submit", async function(e){
     to_name: "Admin Nguyễn Công Bằng",
     to_email: ADMIN_EMAIL,
     turnstile_token: turnstileToken,
-    subject: "[NCB AI SUPPORT][" + WEBSITE_ID + "] " + data.loai_yeu_cau + " — " + reportID,
+    subject: "[NCB AI SUPPORT][" + VERIFY_SITE_ID + "] " + data.loai_yeu_cau + " — " + reportID,
     message:
-      "ID WEBSITE: " + WEBSITE_ID +
+      "ID XÁC MINH: " + VERIFY_SITE_ID +
+      "\nID HIỂN THỊ: " + currentDisplaySiteId +
       "\nMÃ ĐỊNH DANH: " + reportID +
       "\nTiêu đề: " + data.tieu_de +
       "\n\n" + data.mo_ta +
@@ -798,7 +846,8 @@ form.addEventListener("submit", async function(e){
       incrementReportCount(); updateQuotaBadge();
       const newRemaining = getRemainingReports();
       createNCBNotification("GỬI THÀNH CÔNG",
-        "ID website: " + WEBSITE_ID +
+        "ID xác minh: " + VERIFY_SITE_ID +
+        "\nID hiển thị: " + currentDisplaySiteId +
         "\nMã định danh: " + reportID +
         "\nLoại: " + data.loai_yeu_cau +
         "\nThời gian: " + thoiGian +
@@ -833,11 +882,21 @@ form.addEventListener("submit", async function(e){
    KHỞI ĐỘNG
    ========================================================= */
 window.addEventListener("DOMContentLoaded", () => {
+  /* Hiển thị ID ngẫu nhiên ngay từ gate */
+  renderDisplaySiteId();
+
+  /* Nếu treo quá 5 phút → buộc gate lại (màn hình đen) */
+  if(shouldForceGate()){
+    /* gate đang mặc định hiển thị — không cần làm gì thêm,
+       chỉ cần KHÔNG auto-unlock. Nhưng nếu URL còn site_id cũ,
+       vẫn phải xác minh lại. */
+    try{ localStorage.removeItem(LAST_ACTIVITY_KEY); }catch(_){}
+  }
+
   updateQuotaBadge();
   syncSendBtnState();
   attachSiteIdToAccessLink();
 
-  /* Khôi phục prefs nhạc sớm (dù panel chưa mở) */
   const prefs = loadMusicPrefs();
   if(musicToggle) musicToggle.checked = prefs.enabled;
   applyMusicVolume(prefs.vol);
