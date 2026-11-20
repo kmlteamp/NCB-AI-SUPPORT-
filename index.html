@@ -161,11 +161,11 @@ button{border:0;cursor:pointer;font-family:inherit}
 @keyframes noticeIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
 
 /* =========================================================
-   NÚT CÀI ĐẶT – HÌNH VUÔNG, GÓC TRÊN BÊN PHẢI (KHÔNG ICON)
+   NÚT CÀI ĐẶT – HÌNH VUÔNG, GÓC TRÊN BÊN PHẢI (CÓ ICON BÁNH RĂNG)
    ========================================================= */
 #ncbSettingsBtn{
   position:fixed;top:16px;right:16px;
-  width:56px;height:56px;border-radius:14px;
+  width:52px;height:52px;border-radius:14px;
   border:2px solid #60a5fa;background:#0d1729;
   color:#60a5fa;
   display:none;
@@ -174,17 +174,13 @@ button{border:0;cursor:pointer;font-family:inherit}
   box-shadow:0 5px 20px #2563eb55, 0 0 0 3px #0d1729;
   transition:transform .15s ease, box-shadow .2s ease, background .2s ease;
   -webkit-tap-highlight-color:transparent;
-  font-family:Arial,sans-serif;
-  font-weight:bold;
-  font-size:13px;
-  letter-spacing:.3px;
-  text-transform:uppercase;
 }
 #ncbSettingsBtn:hover{background:#13213a;box-shadow:0 8px 26px #2563eb88, 0 0 0 3px #0d1729}
 #ncbSettingsBtn:active{transform:scale(.94)}
+#ncbSettingsBtn svg{width:26px;height:26px;display:block}
 
 /* =========================================================
-   KHUNG THÔNG BÁO VUÔNG LỚN BÊN PHẢI (KHÔNG ICON)
+   KHUNG THÔNG BÁO VUÔNG LỚN BÊN PHẢI
    ========================================================= */
 #ncbOfficialBanner{
   position:fixed;
@@ -213,9 +209,9 @@ button{border:0;cursor:pointer;font-family:inherit}
   text-transform:uppercase;
 }
 #ncbBannerClose{
-  width:34px;height:30px;border-radius:8px;
+  width:52px;height:30px;border-radius:8px;
   background:#ffffff14;color:#e2e8f0;
-  font-weight:bold;font-size:12px;line-height:1;
+  font-weight:bold;font-size:11px;line-height:1;
   display:flex;align-items:center;justify-content:center;
   flex-shrink:0;
   transition:background .15s ease;
@@ -595,7 +591,7 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
 
 <div id="ncbNotifications"></div>
 
-<!-- ============ KHUNG THÔNG BÁO VUÔNG LỚN BÊN PHẢI (KHÔNG ICON) ============ -->
+<!-- ============ KHUNG THÔNG BÁO VUÔNG LỚN BÊN PHẢI ============ -->
 <div id="ncbOfficialBanner">
   <div class="banner-head">
     <div class="banner-title">Thông báo chính thức</div>
@@ -631,8 +627,13 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   </div>
 </div>
 
-<!-- ============ NÚT CÀI ĐẶT – HÌNH VUÔNG, GÓC TRÊN BÊN PHẢI (KHÔNG ICON) ============ -->
-<button id="ncbSettingsBtn" title="Cài đặt">Cài đặt</button>
+<!-- ============ NÚT CÀI ĐẶT – HÌNH VUÔNG, GÓC TRÊN BÊN PHẢI, CÓ ICON BÁNH RĂNG ============ -->
+<button id="ncbSettingsBtn" title="Cài đặt" aria-label="Cài đặt">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/>
+    <circle cx="12" cy="12" r="3"/>
+  </svg>
+</button>
 
 <div id="ncbSettingsPanel">
   <div class="settingsHeader">
