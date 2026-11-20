@@ -3,7 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Search Console verification -->
+<meta name="google-site-verification" content="googleb1c169c68b84792a" />
+
+<!-- TÊN WEBSITE -->
 <title>NCB AI SUPPORT</title>
+<meta property="og:site_name" content="NCB AI SUPPORT">
+<meta property="og:title" content="NCB AI SUPPORT">
+<meta property="og:description" content="Trung tâm hỗ trợ NCB AI — Gửi báo cáo lỗi và yêu cầu hỗ trợ.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ncb-ai-supportt.vercel.app/">
+<meta property="og:image" content="https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NCB AI SUPPORT">
+<meta name="twitter:description" content="Trung tâm hỗ trợ NCB AI — Gửi báo cáo lỗi và yêu cầu hỗ trợ.">
+<meta name="twitter:image" content="https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png">
+
+<!-- AVATAR WEBSITE GOOGLE -->
+<link rel="icon" type="image/png" href="https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png">
+<link rel="shortcut icon" href="https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png">
+<link rel="apple-touch-icon" href="https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png">
+
+<!-- THÔNG TIN WEBSITE -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "NCB AI SUPPORT",
+  "url": "https://ncb-ai-supportt.vercel.app/",
+  "image": "https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png",
+  "description": "Trung tâm hỗ trợ NCB AI — Gửi báo cáo lỗi và yêu cầu hỗ trợ.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "NCB AI SUPPORT",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png"
+    }
+  }
+}
+</script>
+
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#080d18;color:white;font-family:Arial,sans-serif;padding:18px 14px}
@@ -212,7 +254,7 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
 <div id="ncbGate">
   <div class="gate-logo">
     <img src="https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png"
-         alt="NCB AI" draggable="false" oncontextmenu="return false;">
+         alt="NCB AI SUPPORT" draggable="false" oncontextmenu="return false;">
   </div>
   <h2>Xác minh truy cập</h2>
   <p>Vui lòng hoàn thành xác minh bảo mật để vào trang NCB AI SUPPORT.</p>
@@ -228,15 +270,15 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   <div class="header">
     <div class="logo">
       <img src="https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png"
-           alt="NCB AI" draggable="false"
+           alt="NCB AI SUPPORT" draggable="false"
            oncontextmenu="return false;"
            ondragstart="return false;">
     </div>
-    <div><b>NCB AI</b><br><small>TRUNG TÂM HỖ TRỢ</small></div>
+    <div><b>NCB AI SUPPORT</b><br><small>TRUNG TÂM HỖ TRỢ</small></div>
   </div>
 
   <h1>Xin chào!</h1>
-  <p class="desc">Chào mừng đến với trung tâm hỗ trợ NCB AI. Hãy gửi yêu cầu hoặc báo cáo lỗi để chúng tôi tiếp nhận.</p>
+  <p class="desc">Chào mừng đến với trung tâm hỗ trợ NCB AI SUPPORT. Hãy gửi yêu cầu hoặc báo cáo lỗi để chúng tôi tiếp nhận.</p>
 
   <div class="cards">
     <div class="card"><b>Hỗ trợ AI</b><small>Gửi yêu cầu trợ giúp</small></div>
@@ -684,9 +726,7 @@ function tryPlayMusic(){
   if(!musicToggle.checked) return;
   const p = music.play();
   if(p && typeof p.catch === "function"){
-    p.catch(err => {
-      console.warn("[Music] autoplay blocked:", err && err.message);
-    });
+    p.catch(err => { console.warn("[Music] autoplay blocked:", err && err.message); });
   }
 }
 
@@ -880,7 +920,6 @@ form.addEventListener("submit", async function(e){
 window.addEventListener("DOMContentLoaded", () => {
   renderDisplaySiteId();
 
-  /* Nếu treo quá 5 phút → xóa ID hiển thị + activity để random lại */
   if(shouldForceGate()){
     try{
       localStorage.removeItem(LAST_ACTIVITY_KEY);
