@@ -80,6 +80,7 @@ button{border:0;cursor:pointer}
 .accessButton:active{transform:translateY(0)}
 
 .footer{text-align:center;color:#64748b;font-size:12px;margin-top:25px}
+.footer .site-id{color:#475569;font-size:11px;margin-top:6px;font-family:monospace}
 
 #reportQuotaBadge{
   display:flex;align-items:center;justify-content:space-between;
@@ -261,6 +262,7 @@ button{border:0;cursor:pointer}
   <div class="footer">
     NCB AI SUPPORT © 2026<br>
     Admin: Nguyễn Công Bằng — Hệ thống hỗ trợ người dùng NCB AI
+    <div class="site-id">Site ID: QP6b7fwfjeYAJridTfNzy</div>
   </div>
 
 </div>
@@ -305,6 +307,8 @@ button{border:0;cursor:pointer}
 /* =========================================================
    CẤU HÌNH
    ========================================================= */
+const WEBSITE_ID = "QP6b7fwfjeYAJridTfNzy";
+
 const GROQ_API_KEY = "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";
 const GROQ_URL     = "https://api.groq.com/openai/v1/chat/completions";
 const GROQ_MODELS = ["openai/gpt-oss-120b","openai/gpt-oss-20b"];
@@ -353,6 +357,7 @@ THÔNG TIN NCB AI:
 - Website chính thức: https://ncb-ai.vercel.app/
 - Email admin: dovanphuoc124@gmail.com
 - Phiên bản website: 1.0 — Phiên bản AI: 1.5.1
+- ID website: QP6b7fwfjeYAJridTfNzy
 - 4 loại báo cáo: Báo cáo lỗi AI, Yêu cầu hỗ trợ, Góp ý tính năng, Báo cáo bảo mật
 - Giới hạn báo cáo: mỗi thiết bị được gửi tối đa 4 báo cáo/ngày, reset lúc 00:00 giờ Việt Nam.
 - Khi gửi báo cáo, BẮT BUỘC phải điền email liên hệ.
@@ -372,6 +377,8 @@ Link trực tiếp: https://ncb-ai.vercel.app/"
 5. KHI HỎI VỀ PHIÊN BẢN → "Phiên bản website hỗ trợ: 1.0 — Phiên bản AI: 1.5.1."
 
 6. KHI HỎI VỀ EMAIL ADMIN → "Email admin NCB AI: dovanphuoc124@gmail.com"
+
+7. KHI HỎI VỀ ID WEBSITE → "ID website NCB AI SUPPORT: QP6b7fwfjeYAJridTfNzy."
 
 QUY TẮC TỪ CHỐI (BẮT BUỘC):
 - TUYỆT ĐỐI KHÔNG viết code, không hướng dẫn lập trình, không debug, không giải thích thuật toán, không gợi ý ngôn ngữ lập trình, không giải bài tập lập trình dưới BẤT KỲ HÌNH THỨC NÀO.
@@ -614,6 +621,8 @@ async function callGroq(userMessage){
 
 function fallbackAnswer(q){
   q = q.toLowerCase();
+  if(q.includes("id website")||q.includes("website id")||q.includes("site id")||q.includes("mã website"))
+    return "ID website NCB AI SUPPORT: QP6b7fwfjeYAJridTfNzy";
   if(q.includes("truy cập")||q.includes("vào web")||q.includes("mở web")||q.includes("website")||q.includes("ncb ai")||q.includes("link"))
     return "Bạn tham gia bằng website tại đây. Ở dưới có chữ TRUY CẬP màu xanh lá, ấn vào là chuyển sang website NCB AI.\nLink trực tiếp: https://ncb-ai.vercel.app/";
   if(q.includes("admin")||q.includes("quản lý")||q.includes("sáng lập"))
@@ -718,7 +727,7 @@ async function sendNCBChat(){
 const sendBtn = document.getElementById("sendBtn");
 function syncSendBtnState(){
   if(!sendBtn) return;
-  if(sendBtn.dataset.sending){ return; } // đang gửi thì để nguyên
+  if(sendBtn.dataset.sending){ return; }
   const remaining = getRemainingReports();
   if(remaining <= 0){
     sendBtn.disabled = true;
@@ -794,8 +803,6 @@ function renderGateTurnstile(){
     action: GATE_ACTION,
     callback: function(token){
       status.textContent = "Xác minh thành công! Đang mở trang…";
-      /* Lưu ý: đây là gate client-side. Muốn bảo mật thật,
-         phải gửi token lên backend gọi siteverify. */
       setTimeout(unlockPage, 350);
     },
     "error-callback": function(code){
@@ -879,6 +886,7 @@ form.addEventListener("submit", async function(e){
   const thoiGian = new Date().toLocaleString("vi-VN", { hour12: false });
 
   const templateParams = {
+    website_id: WEBSITE_ID,
     ten: data.ten.trim(),
     email_lien_he: emailValue,
     loai_yeu_cau: data.loai_yeu_cau,
@@ -893,8 +901,13 @@ form.addEventListener("submit", async function(e){
     to_name: "Admin Nguyễn Công Bằng",
     to_email: ADMIN_EMAIL,
     turnstile_token: turnstileToken,
-    subject: "[NCB AI SUPPORT] " + data.loai_yeu_cau + " — " + reportID,
-    message: "MÃ ĐỊNH DANH: " + reportID + "\nTiêu đề: " + data.tieu_de + "\n\n" + data.mo_ta + "\n\nEmail liên hệ: " + emailValue
+    subject: "[NCB AI SUPPORT][" + WEBSITE_ID + "] " + data.loai_yeu_cau + " — " + reportID,
+    message:
+      "ID WEBSITE: " + WEBSITE_ID +
+      "\nMÃ ĐỊNH DANH: " + reportID +
+      "\nTiêu đề: " + data.tieu_de +
+      "\n\n" + data.mo_ta +
+      "\n\nEmail liên hệ: " + emailValue
   };
 
   formSending = true;
@@ -908,7 +921,8 @@ form.addEventListener("submit", async function(e){
       incrementReportCount(); updateQuotaBadge();
       const newRemaining = getRemainingReports();
       createNCBNotification("GỬI THÀNH CÔNG",
-        "Mã định danh: " + reportID +
+        "ID website: " + WEBSITE_ID +
+        "\nMã định danh: " + reportID +
         "\nLoại: " + data.loai_yeu_cau +
         "\nThời gian: " + thoiGian +
         "\nCòn lại hôm nay: " + newRemaining + "/" + MAX_REPORTS_PER_DAY +
@@ -932,7 +946,6 @@ form.addEventListener("submit", async function(e){
   } finally {
     formSending = false;
     delete sendBtn.dataset.sending;
-    /* Token dùng 1 lần → reset, khóa nút cho đến khi xác minh lại */
     resetReportTurnstile();
     updateQuotaBadge();
     syncSendBtnState();
@@ -953,16 +966,18 @@ window.addEventListener("DOMContentLoaded", () => {
     window.onloadTurnstileCallback = renderGateTurnstile;
   }
 
-  /* Tin nhắn chào chỉ hiển thị sau khi mở khóa (nhưng thêm luôn cũng được) */
   addNCBMessage(
 `Xin chào!
 Tôi là NCB AI SUPPORT.
+
+ID website: QP6b7fwfjeYAJridTfNzy
 
 Tôi hỗ trợ các vấn đề:
 - Cách báo cáo lỗi AI
 - Cách truy cập website NCB AI
 - Thông tin Admin, phiên bản, email liên hệ
 - Giới hạn lượt gửi báo cáo
+- ID website
 
 Lưu ý:
 - Nói tục/nói bậy sẽ bị cấm chat 56 giây.
