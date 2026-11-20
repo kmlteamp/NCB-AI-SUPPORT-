@@ -102,76 +102,121 @@ button{border:0;cursor:pointer}
 .ncbNotice.error b{color:#f87171}
 @keyframes noticeIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
 
-#ncbChatButton{
-  position:fixed;right:20px;bottom:22px;width:64px;height:64px;border-radius:50%;
-  border:3px solid #60a5fa;background:#0d1729;z-index:9999;
-  box-shadow:0 5px 25px #2563eb66, 0 0 0 3px #0d1729;
-  overflow:hidden;padding:0;cursor:grab;touch-action:none;
+/* ===== NÚT CÀI ĐẶT TRÒN NHỎ ===== */
+#ncbSettingsBtn{
+  position:fixed;right:20px;bottom:22px;
+  width:52px;height:52px;border-radius:50%;
+  border:2px solid #60a5fa;background:#0d1729;
+  color:#60a5fa;
+  display:none;
+  align-items:center;justify-content:center;
+  z-index:9999;cursor:pointer;
+  box-shadow:0 5px 20px #2563eb55, 0 0 0 3px #0d1729;
+  transition:transform .15s ease, box-shadow .2s ease, background .2s ease;
   -webkit-tap-highlight-color:transparent;
-  -webkit-user-select:none;user-select:none;
-  transition:box-shadow .2s ease;
 }
-#ncbChatButton.dragging{cursor:grabbing;box-shadow:0 8px 32px #2563eb88, 0 0 0 3px #0d1729}
-#ncbChatButton img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+#ncbSettingsBtn:hover{background:#13213a;box-shadow:0 8px 26px #2563eb88, 0 0 0 3px #0d1729}
+#ncbSettingsBtn:active{transform:scale(.94)}
+#ncbSettingsBtn svg{width:24px;height:24px;display:block}
 
-#ncbChatBox{
-  display:none;position:fixed;right:15px;bottom:95px;
-  width:min(350px,calc(100vw - 30px));height:470px;
-  background:#0d1729;border:1px solid #334968;border-radius:18px;
-  overflow:hidden;z-index:9999;box-shadow:0 10px 40px #0009;
-  flex-direction:column;
+/* ===== PANEL CÀI ĐẶT ===== */
+#ncbSettingsPanel{
+  position:fixed;top:0;right:0;bottom:0;
+  width:min(320px,88vw);
+  background:rgba(5,10,20,0.78);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-left:1px solid rgba(96,165,250,0.25);
+  box-shadow:-8px 0 30px rgba(0,0,0,0.6);
+  z-index:10000;
+  display:flex;flex-direction:column;
+  transform:translateX(100%);
+  transition:transform .28s ease;
+  color:#e2e8f0;
 }
-#ncbChatBox.open{display:flex}
+#ncbSettingsPanel.open{transform:translateX(0)}
 
-.ncbChatHeader{
-  background:linear-gradient(120deg,#2563eb,#5935bd);
-  padding:12px 15px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;
+.settingsHeader{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 18px;
+  border-bottom:1px solid rgba(96,165,250,0.2);
+  flex-shrink:0;
 }
-.ncbChatHeaderInfo{display:flex;align-items:center;gap:10px}
-.ncbChatHeaderAvatar{width:36px;height:36px;border-radius:50%;overflow:hidden;border:2px solid #fff;flex-shrink:0;background:#0d1729}
-.ncbChatHeaderAvatar img{width:100%;height:100%;object-fit:cover;display:block}
-.ncbChatHeader small{color:#dbeafe;display:block;font-size:11px}
-.ncbChatHeader b{font-size:14px}
-.ncbChatClose{width:35px;height:35px;border-radius:9px;background:#ffffff22;color:white;font-weight:bold;font-size:18px;line-height:1}
-
-#ncbChatMessages{flex:1;padding:14px;overflow-y:auto;background:#0d1729}
-#ncbChatMessages::-webkit-scrollbar{width:6px}
-#ncbChatMessages::-webkit-scrollbar-thumb{background:#2563eb;border-radius:3px}
-
-.ncbMsgRow{display:flex;align-items:flex-end;gap:8px;margin-bottom:12px;animation:msgIn .25s ease}
-.ncbMsgRow.user{justify-content:flex-end}
-@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.ncbMsgAvatar{width:30px;height:30px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid #60a5fa;background:#0d1729;align-self:flex-end}
-.ncbMsgAvatar img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
-
-.ncbMsg{
-  background:#1b2b45;padding:11px 14px;border-radius:14px 14px 14px 4px;
-  font-size:14px;line-height:1.5;max-width:78%;
-  white-space:pre-line;overflow-wrap:anywhere;color:#e2e8f0;
+.settingsHeader b{font-size:16px;color:#93c5fd;letter-spacing:.3px}
+#ncbSettingsClose{
+  width:34px;height:34px;border-radius:9px;
+  background:rgba(255,255,255,0.08);
+  color:#e2e8f0;font-weight:bold;font-size:16px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .15s ease;
 }
-.ncbMsgRow.user .ncbMsg{background:#2563eb;color:#fff;border-radius:14px 14px 4px 14px}
-.ncbMsgRow.user .ncbMsgAvatar{display:none}
+#ncbSettingsClose:hover{background:rgba(239,68,68,0.35)}
 
-.ncbBanMsg{background:#3b1c1c;border:1px solid #ef4444;color:#fca5a5;padding:12px;border-radius:12px;margin-bottom:12px;font-size:13px;text-align:center;font-weight:bold;white-space:pre-line}
+.settingsBody{padding:20px 18px;display:flex;flex-direction:column;gap:22px;overflow-y:auto}
 
-.ncbTyping{display:inline-flex;gap:4px;background:#1b2b45;padding:12px 16px;border-radius:14px 14px 14px 4px;margin-bottom:12px}
-.ncbTyping span{width:7px;height:7px;border-radius:50%;background:#94a3b8;animation:blink 1.2s infinite}
-.ncbTyping span:nth-child(2){animation-delay:.2s}
-.ncbTyping span:nth-child(3){animation-delay:.4s}
-@keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
+.settingRow{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:14px;
+}
+.settingRow .settingLabel{font-size:14px;color:#cbd5e1}
+.settingRow .settingLabel small{display:block;color:#64748b;font-size:11px;margin-top:3px}
 
-.ncbChatInput{display:flex;gap:7px;padding:10px;background:#111c30;flex-shrink:0;border-top:1px solid #1e2a42}
-.ncbChatInput input{min-width:0;flex:1;padding:11px;border-radius:9px}
-.ncbChatInput input:disabled{opacity:.5;cursor:not-allowed}
-.ncbChatInput button{width:48px;border-radius:9px;background:#2563eb;color:white;font-size:20px;line-height:1;transition:background .2s ease}
-.ncbChatInput button:hover:not(:disabled){background:#3b82f6}
-.ncbChatInput button:disabled{opacity:.5;cursor:not-allowed;background:#475569}
+/* Toggle switch */
+.ncbSwitch{
+  position:relative;display:inline-block;
+  width:52px;height:28px;flex-shrink:0;
+}
+.ncbSwitch input{opacity:0;width:0;height:0}
+.ncbSwitch .slider{
+  position:absolute;inset:0;cursor:pointer;
+  background:#334155;border-radius:28px;
+  transition:background .2s ease;
+}
+.ncbSwitch .slider::before{
+  content:"";position:absolute;
+  width:22px;height:22px;border-radius:50%;
+  left:3px;top:3px;background:#e2e8f0;
+  transition:transform .2s ease, background .2s ease;
+}
+.ncbSwitch input:checked + .slider{background:#22c55e}
+.ncbSwitch input:checked + .slider::before{transform:translateX(24px);background:#fff}
 
-#ncbBanBanner{display:none;padding:10px 14px;background:#7f1d1d;color:#fecaca;font-size:13px;font-weight:bold;text-align:center;border-top:1px solid #ef4444;flex-shrink:0}
-#ncbBanBanner.active{display:block}
+/* Volume */
+.volumeWrap{display:flex;flex-direction:column;gap:8px}
+.volumeHead{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#94a3b8}
+.volumeHead b{color:#60a5fa;font-family:monospace;font-size:13px}
 
-#turnstile-container{margin-bottom:4px}
-.turnstile-note{font-size:12px;color:#f59e0b;margin-top:6px}
+input[type="range"].ncbRange{
+  -webkit-appearance:none;appearance:none;
+  width:100%;height:6px;border-radius:6px;
+  background:linear-gradient(90deg,#2563eb var(--vol,80%),#1e293b var(--vol,80%));
+  outline:none;padding:0;border:0;
+  cursor:pointer;
+}
+input[type="range"].ncbRange::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;
+  width:18px;height:18px;border-radius:50%;
+  background:#60a5fa;border:2px solid #0d1729;
+  box-shadow:0 0 0 2px #2563eb66;
+  cursor:pointer;
+}
+input[type="range"].ncbRange::-moz-range-thumb{
+  width:16px;height:16px;border-radius:50%;
+  background:#60a5fa;border:2px solid #0d1729;
+  box-shadow:0 0 0 2px #2563eb66;
+  cursor:pointer;
+}
+input[type="range"].ncbRange::-moz-range-track{
+  height:6px;border-radius:6px;background:#1e293b;
+}
+
+#ncbSettingsHint{
+  margin-top:auto;
+  padding:12px 14px;
+  font-size:11px;color:#64748b;line-height:1.5;
+  border-top:1px solid rgba(96,165,250,0.15);
+  text-align:center;
+}
 </style>
 </head>
 <body>
@@ -271,35 +316,48 @@ button{border:0;cursor:pointer}
 
 <div id="ncbNotifications"></div>
 
-<button id="ncbChatButton" title="Chat với NCB AI" style="display:none">
-  <img src="https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png"
-       alt="NCB AI" draggable="false" oncontextmenu="return false;">
+<!-- ===== NÚT CÀI ĐẶT ===== -->
+<button id="ncbSettingsBtn" title="Cài đặt">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/>
+    <circle cx="12" cy="12" r="3"/>
+  </svg>
 </button>
 
-<div id="ncbChatBox">
-  <div class="ncbChatHeader">
-    <div class="ncbChatHeaderInfo">
-      <div class="ncbChatHeaderAvatar">
-        <img src="https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png"
-             alt="NCB AI" draggable="false" oncontextmenu="return false;">
-      </div>
-      <div>
-        <b>NCB AI SUPPORT</b>
-        <small>Đang hoạt động</small>
-      </div>
-    </div>
-    <button class="ncbChatClose" id="ncbChatCloseBtn">✕</button>
+<!-- ===== PANEL CÀI ĐẶT ===== -->
+<div id="ncbSettingsPanel">
+  <div class="settingsHeader">
+    <b>CÀI ĐẶT</b>
+    <button id="ncbSettingsClose" title="Đóng">✕</button>
   </div>
+  <div class="settingsBody">
+    <div class="settingRow">
+      <div class="settingLabel">
+        Nhạc nền
+        <small>Bật/tắt nhạc phát nền</small>
+      </div>
+      <label class="ncbSwitch">
+        <input type="checkbox" id="ncbMusicToggle" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
 
-  <div id="ncbChatMessages"></div>
-  <div id="ncbBanBanner"></div>
-
-  <div class="ncbChatInput">
-    <input id="ncbChatText" placeholder="Nhập câu hỏi..."
-      onkeydown="if(event.key==='Enter')sendNCBChat()">
-    <button id="ncbSendBtn" onclick="sendNCBChat()">➤</button>
+    <div class="volumeWrap">
+      <div class="volumeHead">
+        <span>Âm lượng</span>
+        <b id="ncbVolumeValue">80%</b>
+      </div>
+      <input type="range" class="ncbRange" id="ncbVolumeSlider" min="0" max="100" value="80">
+    </div>
+  </div>
+  <div id="ncbSettingsHint">
+    Nhạc nền được phát từ nguồn bên ngoài.<br>
+    Một số trình duyệt cần người dùng tương tác trước khi phát.
   </div>
 </div>
+
+<!-- Nhạc nền -->
+<audio id="ncbBgMusic" src="https://files.catbox.moe/bhcgr8.mp3" loop preload="auto"></audio>
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
@@ -310,21 +368,13 @@ button{border:0;cursor:pointer}
    ========================================================= */
 const WEBSITE_ID = "QP6b7fwfjeYAJridTfNzy";
 
-const GROQ_API_KEY = "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";
-const GROQ_URL     = "https://api.groq.com/openai/v1/chat/completions";
-const GROQ_MODELS = ["openai/gpt-oss-120b","openai/gpt-oss-20b"];
-
 const EMAILJS_SERVICE_ID  = "service_yipfm4w";
 const EMAILJS_TEMPLATE_ID = "template_qnjojga";
 const EMAILJS_PUBLIC_KEY  = "xoair8XbZ9gKlPryH";
 const ADMIN_EMAIL         = "dovanphuoc124@gmail.com";
 
-const AI_AVATAR = "https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png";
-
 const MAX_REPORTS_PER_DAY = 4;
 const QUOTA_KEY = "ncb_report_quota";
-const BAN_KEY = "ncb_chat_ban_until";
-const BAN_DURATION_MS = 56000;
 const COOLDOWN_MS = 15000;
 
 /* TURNSTILE */
@@ -335,6 +385,11 @@ const GATE_ACTION       = "page-gate";
 let reportWidgetId = null;
 let turnstileToken  = null;
 let gateWidgetId    = null;
+
+/* MUSIC */
+const MUSIC_VOLUME_KEY = "ncb_music_volume";
+const MUSIC_ENABLED_KEY = "ncb_music_enabled";
+const DEFAULT_VOLUME = 0.8;
 
 if(window.emailjs){
   emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
@@ -350,10 +405,8 @@ function attachSiteIdToUrl(){
       url.searchParams.set("site_id", WEBSITE_ID);
       history.replaceState({}, "", url.toString());
     }
-  }catch(_){ /* ignore */ }
+  }catch(_){}
 }
-
-/* Gắn site_id vào link TRUY CẬP NCB AI */
 function attachSiteIdToAccessLink(){
   const a = document.getElementById("accessLink");
   if(!a) return;
@@ -365,66 +418,7 @@ function attachSiteIdToAccessLink(){
 }
 
 /* =========================================================
-   SYSTEM PROMPT
-   ========================================================= */
-const SYSTEM_PROMPT = `Bạn là NCB AI SUPPORT — trợ lý hỗ trợ CHUYÊN BIỆT của hệ thống NCB AI.
-
-PHẠM VI HOẠT ĐỘNG (CHỈ được trả lời các chủ đề sau):
-1. Hướng dẫn báo cáo lỗi / gửi yêu cầu hỗ trợ trên website NCB AI.
-2. Cách truy cập website NCB AI chính thức.
-3. Thông tin về Admin, phiên bản, email liên hệ của NCB AI.
-4. Giải đáp thắc mắc về quy trình xử lý báo cáo, giới hạn gửi báo cáo.
-5. Hướng dẫn sử dụng các tính năng trên trang hỗ trợ.
-
-THÔNG TIN NCB AI:
-- Tên hệ thống: NCB AI
-- Admin: Nguyễn Công Bằng
-- Website chính thức: https://ncb-ai.vercel.app/
-- Email admin: dovanphuoc124@gmail.com
-- Phiên bản website: 1.0 — Phiên bản AI: 1.5.1
-- ID website: QP6b7fwfjeYAJridTfNzy
-- 4 loại báo cáo: Báo cáo lỗi AI, Yêu cầu hỗ trợ, Góp ý tính năng, Báo cáo bảo mật
-- Giới hạn báo cáo: mỗi thiết bị được gửi tối đa 4 báo cáo/ngày, reset lúc 00:00 giờ Việt Nam.
-- Khi gửi báo cáo, BẮT BUỘC phải điền email liên hệ.
-- Mỗi báo cáo được cấp một mã định danh dạng NCB-XXXXXX (6 ký tự chữ và số).
-
-QUY TẮC ĐẶC BIỆT:
-1. KHI HỎI CÁCH TRUY CẬP WEBSITE NCB AI → trả lời:
-"Bạn tham gia bằng website tại đây. Ở dưới có chữ TRUY CẬP màu xanh lá, ấn vào là chuyển sang website NCB AI.
-Link trực tiếp: https://ncb-ai.vercel.app/?site_id=QP6b7fwfjeYAJridTfNzy"
-
-2. KHI HỎI VỀ ADMIN → "Admin của NCB AI là Nguyễn Công Bằng."
-
-3. KHI HỎI CÁCH BÁO CÁO LỖI → hướng dẫn điền biểu mẫu (chọn loại yêu cầu, nhập tên, nhập email liên hệ bắt buộc, phiên bản, tiêu đề, mô tả, bấm GỬI BÁO CÁO). Nhắc thêm: mỗi thiết bị chỉ gửi được tối đa 4 báo cáo/ngày, reset lúc 00:00 giờ Việt Nam. Sau khi gửi thành công, hệ thống sẽ cấp mã định danh NCB-XXXXXX để tra cứu.
-
-4. KHI HỎI VỀ GIỚI HẠN LƯỢT GỬI → "Mỗi thiết bị được gửi tối đa 4 báo cáo/ngày. Lượt gửi sẽ được reset vào 00:00 giờ Việt Nam mỗi ngày."
-
-5. KHI HỎI VỀ PHIÊN BẢN → "Phiên bản website hỗ trợ: 1.0 — Phiên bản AI: 1.5.1."
-
-6. KHI HỎI VỀ EMAIL ADMIN → "Email admin NCB AI: dovanphuoc124@gmail.com"
-
-7. KHI HỎI VỀ ID WEBSITE → "ID website NCB AI SUPPORT: QP6b7fwfjeYAJridTfNzy."
-
-QUY TẮC TỪ CHỐI (BẮT BUỘC):
-- TUYỆT ĐỐI KHÔNG viết code, không hướng dẫn lập trình, không debug, không giải thích thuật toán, không gợi ý ngôn ngữ lập trình, không giải bài tập lập trình dưới BẤT KỲ HÌNH THỨC NÀO.
-- TUYỆT ĐỐI KHÔNG trả lời các câu hỏi về: toán, lý, hóa, văn, sử, địa, khoa học, đời sống, sức khỏe, tâm lý, mẹo vặt, dịch thuật, viết lách, tóm tắt nội dung ngoài NCB AI.
-- TUYỆT ĐỐI KHÔNG trả lời câu hỏi về các AI khác (ChatGPT, Claude, Gemini...).
-- TUYỆT ĐỐI KHÔNG đóng vai nhân vật khác, không roleplay.
-
-KHI GẶP CÂU HỎI NGOÀI PHẠM VI, trả lời đúng mẫu:
-"Xin lỗi, tôi là trợ lý hỗ trợ của NCB AI nên chỉ có thể hướng dẫn các vấn đề liên quan đến báo cáo lỗi, truy cập website và hỗ trợ người dùng NCB AI. Bạn vui lòng gửi báo cáo qua biểu mẫu trên trang để được Admin hỗ trợ thêm."
-
-PHONG CÁCH:
-- Trả lời bằng tiếng Việt.
-- Ngắn gọn, thân thiện, đúng phạm vi.
-- Không dùng emoji.
-- Không bịa thông tin ngoài danh sách NCB AI ở trên.
-- Nếu người dùng nói tục/nói bậy, nhắc nhở rằng sẽ bị cấm chat 56 giây.`;
-
-let chatHistory = [];
-
-/* =========================================================
-   TẠO MÃ ĐỊNH DANH
+   MÃ ĐỊNH DANH
    ========================================================= */
 function generateReportID(){
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -474,76 +468,6 @@ function updateQuotaBadge(){
 }
 setInterval(updateQuotaBadge, 60000);
 
-/* ============ LỌC NÓI TỤC ============ */
-const BANNED_WORDS = [
-  "địt","đit","đjt","dit","đụ","du","đéo","deo","lồn","lon","l0n",
-  "cặc","cac","cak","c4c","buồi","buoi","dái","dai","đĩ","điếm","diem",
-  "đm","dm","đmm","dmm","đmmm","dmmm","vcl","vl","vkl","vcc","vc",
-  "vãi","vai","clgt","clm","cmm","cmnl","cml","cmn","cút","cut",
-  "súc vật","suc vat","súc sinh","suc sinh","óc chó","oc cho",
-  "thằng chó","thang cho","con chó","con cho","mẹ mày","me may",
-  "mất dạy","mat day","khốn nạn","khon nan","ngu","ngốc","ngoc","đần","dan",
-  "tổ sư","to su","thần kinh","than kinh"
-];
-const WHITELIST = new Set(["ngủ","nguoi","người","nguồn","nguon"]);
-function normalizeText(s){
-  return String(s).toLowerCase().replace(/[.,!?;:()\[\]{}"'`~@#$%^&*+=|\\/<>\-]/g," ").replace(/\s+/g," ").trim();
-}
-function containsProfanity(text){
-  const norm = normalizeText(text);
-  if(!norm) return false;
-  const tokens = norm.split(" ");
-  for(let i=0;i<tokens.length;i++){
-    if(WHITELIST.has(tokens[i])) continue;
-    for(let n=1;n<=3;n++){
-      if(i+n>tokens.length) break;
-      const phrase = tokens.slice(i,i+n).join(" ");
-      if(WHITELIST.has(phrase)) continue;
-      if(BANNED_WORDS.includes(phrase)) return true;
-    }
-  }
-  return false;
-}
-
-/* ============ CẤM CHAT ============ */
-let banTimerId = null;
-function startBan(){
-  const until = Date.now() + BAN_DURATION_MS;
-  localStorage.setItem(BAN_KEY, String(until));
-  applyBan(until);
-}
-function applyBan(until){
-  const input = document.getElementById("ncbChatText");
-  const sendBtn = document.getElementById("ncbSendBtn");
-  const banner = document.getElementById("ncbBanBanner");
-  input.disabled = true; sendBtn.disabled = true;
-  input.placeholder = "Bạn đang bị cấm chat...";
-  banner.classList.add("active");
-  if(banTimerId) clearInterval(banTimerId);
-  const tick = () => {
-    const remain = Math.ceil((until - Date.now())/1000);
-    if(remain > 0){
-      banner.textContent = "Bạn bị cấm chat: " + remain + " giây nữa";
-    } else {
-      clearInterval(banTimerId); banTimerId = null;
-      localStorage.removeItem(BAN_KEY);
-      input.disabled = false; sendBtn.disabled = false;
-      input.placeholder = "Nhập câu hỏi...";
-      banner.classList.remove("active"); banner.textContent = "";
-      addNCBMessage("Đã hết thời gian cấm chat. Bạn có thể tiếp tục trò chuyện.", false);
-    }
-  };
-  tick(); banTimerId = setInterval(tick, 1000);
-}
-function checkExistingBan(){
-  const raw = localStorage.getItem(BAN_KEY);
-  if(!raw) return false;
-  const until = parseInt(raw,10);
-  if(!until || isNaN(until)){ localStorage.removeItem(BAN_KEY); return false; }
-  if(Date.now() < until){ applyBan(until); return true; }
-  localStorage.removeItem(BAN_KEY); return false;
-}
-
 /* ============ THÔNG BÁO ============ */
 function createNCBNotification(title, content, type="success"){
   const area = document.getElementById("ncbNotifications");
@@ -560,191 +484,6 @@ function createNCBNotification(title, content, type="success"){
     setTimeout(() => notice.remove(), 350);
   }, 7000);
 }
-
-/* ============ CHAT UI ============ */
-function openChat(){
-  document.getElementById("ncbChatBox").classList.add("open");
-  const m = document.getElementById("ncbChatMessages");
-  m.scrollTop = m.scrollHeight;
-}
-function closeChat(){ document.getElementById("ncbChatBox").classList.remove("open"); }
-function toggleNCBChat(){
-  const box = document.getElementById("ncbChatBox");
-  if(box.classList.contains("open")) closeChat(); else openChat();
-}
-function addNCBMessage(content, isUser=false){
-  const m = document.getElementById("ncbChatMessages");
-  const row = document.createElement("div");
-  row.className = "ncbMsgRow" + (isUser ? " user" : "");
-  if(!isUser){
-    const av = document.createElement("div");
-    av.className = "ncbMsgAvatar";
-    const img = document.createElement("img");
-    img.src = AI_AVATAR; img.alt = "NCB AI"; img.draggable = false;
-    img.oncontextmenu = () => false;
-    av.appendChild(img); row.appendChild(av);
-  }
-  const msg = document.createElement("div");
-  msg.className = "ncbMsg"; msg.textContent = content;
-  row.appendChild(msg);
-  m.appendChild(row); m.scrollTop = m.scrollHeight;
-}
-function addBanMessage(text){
-  const m = document.getElementById("ncbChatMessages");
-  const msg = document.createElement("div");
-  msg.className = "ncbBanMsg"; msg.textContent = text;
-  m.appendChild(msg); m.scrollTop = m.scrollHeight;
-}
-function showTyping(){
-  const m = document.getElementById("ncbChatMessages");
-  const row = document.createElement("div");
-  row.className = "ncbMsgRow"; row.id = "ncbTyping";
-  const av = document.createElement("div");
-  av.className = "ncbMsgAvatar";
-  const img = document.createElement("img");
-  img.src = AI_AVATAR; img.alt = "NCB AI"; img.draggable = false;
-  av.appendChild(img); row.appendChild(av);
-  const bubble = document.createElement("div");
-  bubble.className = "ncbTyping";
-  bubble.innerHTML = "<span></span><span></span><span></span>";
-  row.appendChild(bubble);
-  m.appendChild(row); m.scrollTop = m.scrollHeight;
-}
-function hideTyping(){ const t = document.getElementById("ncbTyping"); if(t) t.remove(); }
-
-/* ============ GROQ ============ */
-async function callGroq(userMessage){
-  chatHistory.push({ role: "user", content: userMessage });
-  const trimmed = chatHistory.slice(-12);
-  let lastError = null;
-  for (const modelId of GROQ_MODELS) {
-    try {
-      const res = await fetch(GROQ_URL, {
-        method: "POST",
-        headers: { "Authorization": "Bearer " + GROQ_API_KEY, "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: modelId,
-          messages: [{ role: "system", content: SYSTEM_PROMPT }, ...trimmed],
-          temperature: 0.4, max_tokens: 600, top_p: 0.9
-        })
-      });
-      if (res.ok) {
-        const data = await res.json();
-        const reply = data?.choices?.[0]?.message?.content?.trim();
-        if (reply) { chatHistory.push({ role: "assistant", content: reply }); return reply; }
-      }
-      const errorText = await res.text().catch(() => "Unknown error");
-      lastError = new Error(`Model ${modelId} failed: HTTP ${res.status} - ${errorText.slice(0,120)}`);
-      console.warn(`[Groq] Model ${modelId} thất bại, thử model tiếp theo...`);
-    } catch (err) {
-      lastError = err;
-      console.warn(`[Groq] Lỗi mạng với model ${modelId}, thử model tiếp theo...`);
-    }
-  }
-  throw lastError || new Error("Tất cả các model đều thất bại.");
-}
-
-function fallbackAnswer(q){
-  q = q.toLowerCase();
-  if(q.includes("id website")||q.includes("website id")||q.includes("site id")||q.includes("mã website"))
-    return "ID website NCB AI SUPPORT: QP6b7fwfjeYAJridTfNzy";
-  if(q.includes("truy cập")||q.includes("vào web")||q.includes("mở web")||q.includes("website")||q.includes("ncb ai")||q.includes("link"))
-    return "Bạn tham gia bằng website tại đây. Ở dưới có chữ TRUY CẬP màu xanh lá, ấn vào là chuyển sang website NCB AI.\nLink trực tiếp: https://ncb-ai.vercel.app/?site_id=QP6b7fwfjeYAJridTfNzy";
-  if(q.includes("admin")||q.includes("quản lý")||q.includes("sáng lập"))
-    return "Admin của NCB AI là Nguyễn Công Bằng.";
-  if(q.includes("báo lỗi")||q.includes("báo cáo")||q.includes("lỗi"))
-    return "HƯỚNG DẪN BÁO CÁO LỖI NCB AI\n\n1. Chọn loại yêu cầu.\n2. Nhập tên.\n3. Nhập email liên hệ (bắt buộc).\n4. Nhập phiên bản.\n5. Nhập tiêu đề.\n6. Mô tả chi tiết.\n7. Nhấn GỬI BÁO CÁO.\n\nSau khi gửi thành công, hệ thống sẽ cấp mã định danh NCB-XXXXXX để tra cứu.\n\nLưu ý: mỗi thiết bị chỉ gửi tối đa 4 báo cáo/ngày, reset lúc 00:00 giờ Việt Nam.";
-  if(q.includes("giới hạn")||q.includes("lượt")||q.includes("bao nhiêu lần"))
-    return "Mỗi thiết bị được gửi tối đa 4 báo cáo/ngày. Lượt gửi sẽ được reset vào 00:00 giờ Việt Nam mỗi ngày.";
-  if(q.includes("gmail")||q.includes("email")) return "Email admin NCB AI:\ndovanphuoc124@gmail.com";
-  if(q.includes("chào")||q.includes("hello")) return "Xin chào! NCB AI SUPPORT sẵn sàng hỗ trợ bạn!";
-  if(q.includes("phiên bản")) return "Phiên bản website: 1.0 — AI: 1.5.1.";
-  return "Xin lỗi, tôi là trợ lý hỗ trợ của NCB AI nên chỉ có thể hướng dẫn các vấn đề liên quan đến báo cáo lỗi, truy cập website và hỗ trợ người dùng NCB AI. Bạn vui lòng gửi báo cáo qua biểu mẫu trên trang để được Admin hỗ trợ thêm.";
-}
-
-/* ============ GỬI CHAT ============ */
-let chatSending = false;
-async function sendNCBChat(){
-  if(chatSending) return;
-  const input = document.getElementById("ncbChatText");
-  const sendBtn = document.getElementById("ncbSendBtn");
-  if(input.disabled) return;
-  const question = input.value.trim();
-  if(!question) return;
-
-  if(containsProfanity(question)){
-    input.value = "";
-    addBanMessage("Phát hiện ngôn từ không phù hợp!\nBạn bị cấm chat 56 giây.");
-    createNCBNotification("CẢNH CÁO", "Nói tục/nói bậy — cấm chat 56 giây.", "error");
-    startBan(); return;
-  }
-
-  addNCBMessage(question, true);
-  input.value = "";
-  chatSending = true; sendBtn.disabled = true;
-  showTyping();
-  try {
-    const reply = await callGroq(question);
-    hideTyping(); addNCBMessage(reply, false);
-  } catch(err){
-    hideTyping(); console.warn("[Groq final error]", err);
-    addNCBMessage(fallbackAnswer(question), false);
-  } finally {
-    chatSending = false; sendBtn.disabled = false;
-  }
-}
-
-/* =========================================================
-   KÉO THẢ NÚT CHAT
-   ========================================================= */
-(function(){
-  const btn = document.getElementById("ncbChatButton");
-  const DRAG_THRESHOLD = 5;
-  let isDragging = false, moved = false;
-  let dragStartX = 0, dragStartY = 0, btnStartLeft = 0, btnStartTop = 0;
-
-  function getCurrentPos(){ const r = btn.getBoundingClientRect(); return { left:r.left, top:r.top }; }
-  function onStart(cx, cy){
-    isDragging = true; moved = false;
-    dragStartX = cx; dragStartY = cy;
-    const pos = getCurrentPos();
-    btnStartLeft = pos.left; btnStartTop = pos.top;
-    btn.style.left = pos.left + "px"; btn.style.top = pos.top + "px";
-    btn.style.right = "auto"; btn.style.bottom = "auto";
-    btn.classList.add("dragging");
-  }
-  function onMove(cx, cy, e){
-    if(!isDragging) return;
-    const dx = cx - dragStartX, dy = cy - dragStartY;
-    if(!moved && Math.sqrt(dx*dx + dy*dy) > DRAG_THRESHOLD) moved = true;
-    if(!moved) return;
-    if(e && e.cancelable) e.preventDefault();
-    const s = 64;
-    let nl = Math.max(0, Math.min(btnStartLeft + dx, window.innerWidth - s));
-    let nt = Math.max(0, Math.min(btnStartTop  + dy, window.innerHeight - s));
-    btn.style.left = nl + "px"; btn.style.top = nt + "px";
-  }
-  function onEnd(){
-    if(!isDragging) return;
-    isDragging = false; btn.classList.remove("dragging");
-    if(!moved) toggleNCBChat();
-  }
-  btn.addEventListener("mousedown", (e) => { e.preventDefault(); onStart(e.clientX, e.clientY); });
-  window.addEventListener("mousemove", (e) => { if(!isDragging) return; onMove(e.clientX, e.clientY, e); });
-  window.addEventListener("mouseup", () => { if(!isDragging) return; onEnd(); });
-  btn.addEventListener("touchstart", (e) => { const t = e.touches[0]; if(!t) return; onStart(t.clientX, t.clientY); }, { passive: true });
-  window.addEventListener("touchmove", (e) => { if(!isDragging) return; const t = e.touches[0]; if(!t) return; onMove(t.clientX, t.clientY, e); }, { passive: false });
-  window.addEventListener("touchend", () => { if(!isDragging) return; onEnd(); });
-  window.addEventListener("touchcancel", () => { isDragging = false; moved = false; btn.classList.remove("dragging"); });
-  window.addEventListener("resize", () => {
-    const r = btn.getBoundingClientRect(); const s = 64;
-    let nl = r.left, nt = r.top, changed = false;
-    if(nl + s > window.innerWidth){ nl = window.innerWidth - s; changed = true; }
-    if(nt + s > window.innerHeight){ nt = window.innerHeight - s; changed = true; }
-    if(changed){ btn.style.left = nl + "px"; btn.style.top = nt + "px"; btn.style.right = "auto"; btn.style.bottom = "auto"; }
-  });
-  document.getElementById("ncbChatCloseBtn").addEventListener("click", closeChat);
-})();
 
 /* =========================================================
    NÚT GỬI: CHỈ BẬT KHI ĐÃ XÁC MINH + CÒN LƯỢT
@@ -779,19 +518,9 @@ function renderReportTurnstile(){
   reportWidgetId = turnstile.render(c, {
     sitekey: TURNSTILE_SITEKEY,
     action: TURNSTILE_ACTION,
-    callback: function(token){
-      turnstileToken = token;
-      syncSendBtnState();
-    },
-    "error-callback": function(code){
-      console.warn("[Turnstile form] error:", code);
-      turnstileToken = null;
-      syncSendBtnState();
-    },
-    "expired-callback": function(){
-      turnstileToken = null;
-      syncSendBtnState();
-    }
+    callback: function(token){ turnstileToken = token; syncSendBtnState(); },
+    "error-callback": function(code){ console.warn("[Turnstile form] error:", code); turnstileToken = null; syncSendBtnState(); },
+    "expired-callback": function(){ turnstileToken = null; syncSendBtnState(); }
   });
 }
 function resetReportTurnstile(){
@@ -803,23 +532,20 @@ function resetReportTurnstile(){
 }
 
 /* =========================================================
-   TURNSTILE — GATE TRANG
+   TURNSTILE — GATE
    ========================================================= */
 function unlockPage(){
   const gate = document.getElementById("ncbGate");
   const main = document.getElementById("ncbMain");
-  const chatBtn = document.getElementById("ncbChatButton");
+  const settingsBtn = document.getElementById("ncbSettingsBtn");
   gate.classList.add("hidden");
   main.classList.add("unlocked");
-  if(chatBtn) chatBtn.style.display = "block";
-
-  /* GẮN SITE_ID VÀO URL KHI MỞ TRANG */
+  if(settingsBtn) settingsBtn.style.display = "flex";
   attachSiteIdToUrl();
-  /* GẮN SITE_ID VÀO LINK TRUY CẬP NCB AI */
   attachSiteIdToAccessLink();
-
   updateQuotaBadge();
   renderReportTurnstile();
+  tryInitMusicAfterUnlock();
 }
 function renderGateTurnstile(){
   if(!window.turnstile){ return; }
@@ -849,6 +575,127 @@ function renderGateTurnstile(){
       status.classList.add("error");
     }
   });
+}
+
+/* =========================================================
+   NHẠC NỀN + PANEL CÀI ĐẶT
+   ========================================================= */
+const music = document.getElementById("ncbBgMusic");
+const musicToggle = document.getElementById("ncbMusicToggle");
+const volumeSlider = document.getElementById("ncbVolumeSlider");
+const volumeValue  = document.getElementById("ncbVolumeValue");
+const settingsBtn  = document.getElementById("ncbSettingsBtn");
+const settingsPanel = document.getElementById("ncbSettingsPanel");
+const settingsClose = document.getElementById("ncbSettingsClose");
+
+function loadMusicPrefs(){
+  let vol = DEFAULT_VOLUME;
+  let enabled = true;
+  try{
+    const rawVol = localStorage.getItem(MUSIC_VOLUME_KEY);
+    if(rawVol !== null){
+      const n = parseFloat(rawVol);
+      if(!isNaN(n) && n >= 0 && n <= 1) vol = n;
+    }
+    const rawEn = localStorage.getItem(MUSIC_ENABLED_KEY);
+    if(rawEn !== null) enabled = rawEn === "1";
+  }catch(_){}
+  return { vol, enabled };
+}
+
+function applyMusicVolume(vol){
+  if(!music) return;
+  music.volume = Math.max(0, Math.min(1, vol));
+  const pct = Math.round(music.volume * 100);
+  if(volumeValue) volumeValue.textContent = pct + "%";
+  if(volumeSlider){
+    volumeSlider.value = pct;
+    volumeSlider.style.setProperty("--vol", pct + "%");
+  }
+}
+
+function persistMusicPrefs(){
+  try{
+    localStorage.setItem(MUSIC_VOLUME_KEY, String(music.volume));
+    localStorage.setItem(MUSIC_ENABLED_KEY, musicToggle && musicToggle.checked ? "1" : "0");
+  }catch(_){}
+}
+
+function tryPlayMusic(){
+  if(!music || !musicToggle) return;
+  if(!musicToggle.checked) return;
+  const p = music.play();
+  if(p && typeof p.catch === "function"){
+    p.catch(err => {
+      /* Autoplay bị chặn — chờ tương tác người dùng */
+      console.warn("[Music] autoplay blocked:", err && err.message);
+    });
+  }
+}
+
+let musicInitDone = false;
+function tryInitMusicAfterUnlock(){
+  if(musicInitDone) return;
+  musicInitDone = true;
+
+  const prefs = loadMusicPrefs();
+  if(musicToggle) musicToggle.checked = prefs.enabled;
+  applyMusicVolume(prefs.vol);
+  tryPlayMusic();
+
+  /* Nếu autoplay bị chặn, thử lại ở lần chạm/click đầu tiên */
+  const resumeOnFirstGesture = () => {
+    if(musicToggle && musicToggle.checked && music && music.paused){
+      const p = music.play();
+      if(p && typeof p.catch === "function"){
+        p.catch(()=>{});
+      }
+    }
+    document.removeEventListener("click", resumeOnFirstGesture);
+    document.removeEventListener("touchstart", resumeOnFirstGesture);
+  };
+  document.addEventListener("click", resumeOnFirstGesture, { passive: true });
+  document.addEventListener("touchstart", resumeOnFirstGesture, { passive: true });
+}
+
+/* Mở / đóng panel */
+function openSettings(){
+  settingsPanel.classList.add("open");
+}
+function closeSettings(){
+  settingsPanel.classList.remove("open");
+}
+if(settingsBtn){
+  settingsBtn.addEventListener("click", () => {
+    if(settingsPanel.classList.contains("open")) closeSettings();
+    else openSettings();
+  });
+}
+if(settingsClose){
+  settingsClose.addEventListener("click", closeSettings);
+}
+
+/* Toggle nhạc */
+if(musicToggle){
+  musicToggle.addEventListener("change", () => {
+    if(musicToggle.checked){
+      tryPlayMusic();
+    } else if(music){
+      music.pause();
+    }
+    persistMusicPrefs();
+  });
+}
+
+/* Thanh âm lượng */
+if(volumeSlider){
+  volumeSlider.addEventListener("input", () => {
+    const pct = parseInt(volumeSlider.value, 10) || 0;
+    applyMusicVolume(pct / 100);
+    volumeSlider.style.setProperty("--vol", pct + "%");
+    if(volumeValue) volumeValue.textContent = pct + "%";
+  });
+  volumeSlider.addEventListener("change", persistMusicPrefs);
 }
 
 /* =========================================================
@@ -986,43 +833,20 @@ form.addEventListener("submit", async function(e){
    KHỞI ĐỘNG
    ========================================================= */
 window.addEventListener("DOMContentLoaded", () => {
-  checkExistingBan();
   updateQuotaBadge();
   syncSendBtnState();
-
-  /* Nếu URL đã có site_id đúng (ví dụ F5 sau khi mở khóa) — vẫn phải xác minh lại
-     vì gate là client-side. Không auto-unlock từ URL. */
   attachSiteIdToAccessLink();
+
+  /* Khôi phục prefs nhạc sớm (dù panel chưa mở) */
+  const prefs = loadMusicPrefs();
+  if(musicToggle) musicToggle.checked = prefs.enabled;
+  applyMusicVolume(prefs.vol);
 
   if(window.turnstile){
     renderGateTurnstile();
   } else {
     window.onloadTurnstileCallback = renderGateTurnstile;
   }
-
-  addNCBMessage(
-`Xin chào!
-Tôi là NCB AI SUPPORT.
-
-ID website: QP6b7fwfjeYAJridTfNzy
-
-Tôi hỗ trợ các vấn đề:
-- Cách báo cáo lỗi AI
-- Cách truy cập website NCB AI
-- Thông tin Admin, phiên bản, email liên hệ
-- Giới hạn lượt gửi báo cáo
-- ID website
-
-Lưu ý:
-- Nói tục/nói bậy sẽ bị cấm chat 56 giây.
-- Mỗi thiết bị chỉ gửi được tối đa 4 báo cáo/ngày, reset lúc 00:00 giờ Việt Nam.
-- Bắt buộc điền email liên hệ khi gửi báo cáo.
-- Phải xác minh bảo mật xong mới gửi được báo cáo.
-- Sau khi gửi thành công, bạn sẽ nhận được mã định danh NCB-XXXXXX để tra cứu.
-
-Bạn cần giúp gì?`,
-    false
-  );
 });
 
 /* ============ CHẶN MENU ẢNH & LINK ============ */
