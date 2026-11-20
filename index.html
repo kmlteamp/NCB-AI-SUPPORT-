@@ -97,18 +97,28 @@ img{
 
 h1{font-size:27px;margin-bottom:8px}
 .desc{color:#94a3b8;line-height:1.6}
+
+/* ===== CARDS (đổi thành button có chức năng) ===== */
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:25px 0}
-.card{background:#111c30;border:1px solid #26344e;padding:17px;border-radius:15px}
-.card b{display:block;margin-bottom:6px}
-.card small{color:#94a3b8}
-.panel{background:#111827;border:1px solid #26344e;padding:20px;border-radius:18px}
+.card{
+  background:#111c30;border:1px solid #26344e;padding:17px;border-radius:15px;
+  color:white;text-align:left;cursor:pointer;
+  transition:transform .15s ease, border-color .2s ease, background .2s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.card:hover{border-color:#3b82f6;background:#16263f;transform:translateY(-2px)}
+.card:active{transform:translateY(0)}
+.card b{display:block;margin-bottom:6px;font-size:15px}
+.card small{color:#94a3b8;font-size:12px}
+
+.panel{background:#111827;border:1px solid #26344e;padding:20px;border-radius:18px;scroll-margin-top:20px}
 label{display:block;margin:16px 0 8px;font-size:14px}
 label .required-star{color:#ef4444;margin-left:3px}
 input,select,textarea{width:100%;padding:14px;border-radius:10px;border:1px solid #34445d;background:#0b1424;color:white;outline:none;font-size:15px}
 textarea{height:120px;resize:vertical}
 input:focus,textarea:focus,select:focus{border-color:#3b82f6}
 input.invalid,textarea.invalid,select.invalid{border-color:#ef4444 !important;background:#1a0f14}
-button{border:0;cursor:pointer}
+button{border:0;cursor:pointer;font-family:inherit}
 .sendButton{width:100%;border-radius:11px;padding:15px;background:#2563eb;color:white;font-weight:bold;font-size:16px;margin-top:20px}
 .sendButton:disabled{opacity:.5;cursor:not-allowed;background:#334155}
 
@@ -251,6 +261,168 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
 }
 #turnstile-container{margin-bottom:4px}
 .turnstile-note{font-size:12px;color:#f59e0b;margin-top:6px}
+
+/* =========================================================
+   MODAL LỊCH SỬ BÁO CÁO
+   ========================================================= */
+#ncbHistoryModal{
+  position:fixed;inset:0;z-index:15000;
+  background:rgba(0,0,0,0.72);
+  display:none;align-items:center;justify-content:center;
+  padding:16px;
+  animation:fadeIn .2s ease;
+}
+#ncbHistoryModal.open{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.ncbHistoryBox{
+  background:#0d1729;border:1px solid #334968;border-radius:16px;
+  width:min(520px,100%);max-height:85vh;
+  display:flex;flex-direction:column;
+  box-shadow:0 20px 60px #000b;
+  animation:modalIn .25s ease;
+  overflow:hidden;
+}
+@keyframes modalIn{from{opacity:0;transform:translateY(20px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+.ncbHistoryHeader{
+  padding:14px 18px;
+  background:linear-gradient(120deg,#2563eb,#5935bd);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.ncbHistoryHeader b{font-size:15px;color:#fff}
+#ncbHistoryClose{
+  width:34px;height:34px;border-radius:9px;background:#ffffff22;color:#fff;
+  font-weight:bold;font-size:16px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+}
+#ncbHistoryClose:hover{background:#ef444466}
+
+#ncbHistoryList{
+  flex:1;overflow-y:auto;padding:14px;
+  display:flex;flex-direction:column;gap:10px;
+}
+#ncbHistoryList::-webkit-scrollbar{width:6px}
+#ncbHistoryList::-webkit-scrollbar-thumb{background:#2563eb;border-radius:3px}
+
+.ncbHistoryEmpty{
+  text-align:center;padding:50px 20px;color:#64748b;font-size:14px;line-height:1.7;
+}
+.ncbHistoryEmpty b{display:block;color:#94a3b8;font-size:15px;margin-bottom:6px}
+
+.ncbHistoryItem{
+  background:#111c30;border:1px solid #1e2a42;border-radius:12px;
+  padding:12px 14px;
+  cursor:pointer;
+  transition:all .15s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.ncbHistoryItem:hover{background:#16263f;border-color:#3b82f6;transform:translateX(2px)}
+.ncbHistoryItem:active{transform:translateX(0)}
+
+.ncbHistoryItem .hi-top{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px;
+}
+.ncbHistoryItem .hi-id{
+  font-family:monospace;font-size:12px;font-weight:bold;color:#60a5fa;
+  letter-spacing:.5px;
+}
+.ncbHistoryItem .hi-status{
+  font-size:10px;font-weight:bold;padding:2px 8px;border-radius:10px;
+  background:#22c55e22;color:#4ade80;border:1px solid #22c55e55;
+  text-transform:uppercase;letter-spacing:.4px;
+}
+.ncbHistoryItem .hi-title{
+  font-size:14px;color:#e2e8f0;margin-bottom:4px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.ncbHistoryItem .hi-meta{
+  font-size:11px;color:#64748b;
+  display:flex;gap:10px;flex-wrap:wrap;
+}
+.ncbHistoryItem .hi-type{
+  color:#a78bfa;
+}
+.ncbHistoryItem .hi-arrow{
+  color:#475569;font-size:16px;flex-shrink:0;
+}
+
+/* =========================================================
+   MODAL CHI TIẾT BÁO CÁO
+   ========================================================= */
+#ncbDetailModal{
+  position:fixed;inset:0;z-index:16000;
+  background:rgba(0,0,0,0.78);
+  display:none;align-items:center;justify-content:center;
+  padding:16px;
+  animation:fadeIn .2s ease;
+}
+#ncbDetailModal.open{display:flex}
+
+.ncbDetailBox{
+  background:#0d1729;border:1px solid #334968;border-radius:16px;
+  width:min(480px,100%);max-height:85vh;
+  display:flex;flex-direction:column;
+  box-shadow:0 20px 60px #000b;
+  animation:modalIn .25s ease;
+  overflow:hidden;
+}
+.ncbDetailHeader{
+  padding:14px 18px;
+  background:linear-gradient(120deg,#16a34a,#22c55e);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.ncbDetailHeader b{font-size:14px;color:#fff;letter-spacing:.3px}
+#ncbDetailClose{
+  width:34px;height:34px;border-radius:9px;background:#ffffff22;color:#fff;
+  font-weight:bold;font-size:16px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+}
+#ncbDetailClose:hover{background:#ef444466}
+
+#ncbDetailBody{
+  flex:1;overflow-y:auto;padding:18px;
+  display:flex;flex-direction:column;gap:14px;
+}
+#ncbDetailBody::-webkit-scrollbar{width:6px}
+#ncbDetailBody::-webkit-scrollbar-thumb{background:#22c55e;border-radius:3px}
+
+.ncbDetailField{
+  display:flex;flex-direction:column;gap:4px;
+  padding-bottom:12px;
+  border-bottom:1px solid #1e2a42;
+}
+.ncbDetailField:last-child{border-bottom:0;padding-bottom:0}
+.ncbDetailField label{
+  margin:0;
+  font-size:11px;
+  color:#64748b;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  font-weight:bold;
+}
+.ncbDetailField .value{
+  font-size:14px;
+  color:#e2e8f0;
+  line-height:1.5;
+  overflow-wrap:anywhere;
+  white-space:pre-wrap;
+}
+.ncbDetailField .value.mono{
+  font-family:monospace;
+  font-size:13px;
+  color:#60a5fa;
+}
+.ncbDetailField .value.desc{
+  background:#0b1424;
+  border:1px solid #1e2a42;
+  border-radius:8px;
+  padding:10px 12px;
+  max-height:200px;
+  overflow-y:auto;
+}
 </style>
 </head>
 <body>
@@ -286,12 +458,19 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   <h1>Xin chào!</h1>
   <p class="desc">Chào mừng đến với trung tâm hỗ trợ NCB AI SUPPORT. Hãy gửi yêu cầu hoặc báo cáo lỗi để chúng tôi tiếp nhận.</p>
 
+  <!-- 2 CARD ĐỔI THÀNH 2 NÚT CÓ CHỨC NĂNG -->
   <div class="cards">
-    <div class="card"><b>Hỗ trợ AI</b><small>Gửi yêu cầu trợ giúp</small></div>
-    <div class="card"><b>Báo cáo lỗi</b><small>Báo lỗi hệ thống AI</small></div>
+    <button class="card" type="button" id="cardNewReport">
+      <b>Báo cáo lỗi</b>
+      <small>Gửi yêu cầu trợ giúp</small>
+    </button>
+    <button class="card" type="button" id="cardHistory">
+      <b>Lịch sử báo cáo lỗi</b>
+      <small>Xem báo cáo đã gửi</small>
+    </button>
   </div>
 
-  <div class="panel">
+  <div class="panel" id="reportPanel">
     <h3>GỬI BÁO CÁO</h3>
 
     <div id="reportQuotaBadge">
@@ -352,6 +531,28 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
 
 <div id="ncbNotifications"></div>
 
+<!-- ============ MODAL LỊCH SỬ BÁO CÁO ============ -->
+<div id="ncbHistoryModal">
+  <div class="ncbHistoryBox">
+    <div class="ncbHistoryHeader">
+      <b>LỊCH SỬ BÁO CÁO LỖI</b>
+      <button id="ncbHistoryClose" title="Đóng">✕</button>
+    </div>
+    <div id="ncbHistoryList"></div>
+  </div>
+</div>
+
+<!-- ============ MODAL CHI TIẾT BÁO CÁO ============ -->
+<div id="ncbDetailModal">
+  <div class="ncbDetailBox">
+    <div class="ncbDetailHeader">
+      <b>CHI TIẾT BÁO CÁO</b>
+      <button id="ncbDetailClose" title="Đóng">✕</button>
+    </div>
+    <div id="ncbDetailBody"></div>
+  </div>
+</div>
+
 <button id="ncbSettingsBtn" title="Cài đặt">
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/>
@@ -390,7 +591,6 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   </div>
 </div>
 
-<!-- Nhạc nền — BỎ loop, xử lý ended bằng JS -->
 <audio id="ncbBgMusic" src="https://files.catbox.moe/jv9cvp.mp3" preload="auto"></audio>
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -432,12 +632,16 @@ const MUSIC_VOLUME_KEY = "ncb_music_volume";
 const MUSIC_ENABLED_KEY = "ncb_music_enabled";
 const DEFAULT_VOLUME = 0.8;
 
+/* LỊCH SỬ BÁO CÁO */
+const HISTORY_KEY = "ncb_report_history";
+const HISTORY_MAX = 50;
+
 if(window.emailjs){
   emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 }
 
 /* =========================================================
-   ID HIỂN THỊ NGẪU NHIÊN
+   ID HIỂN THỊ
    ========================================================= */
 function pickDisplaySiteId(){
   try{
@@ -525,7 +729,7 @@ function attachSiteIdToAccessLink(){
 }
 
 /* =========================================================
-   IDLE 5 PHÚT
+   IDLE
    ========================================================= */
 function markActivity(){
   try{ localStorage.setItem(LAST_ACTIVITY_KEY, String(Date.now())); }catch(_){}
@@ -644,7 +848,7 @@ function syncSendBtnState(){
 }
 
 /* =========================================================
-   TURNSTILE — FORM
+   TURNSTILE
    ========================================================= */
 function renderReportTurnstile(){
   if(!window.turnstile) return;
@@ -667,9 +871,6 @@ function resetReportTurnstile(){
   syncSendBtnState();
 }
 
-/* =========================================================
-   TURNSTILE — GATE
-   ========================================================= */
 function unlockPage(){
   const gate = document.getElementById("ncbGate");
   const main = document.getElementById("ncbMain");
@@ -725,7 +926,7 @@ function renderGateTurnstile(){
 }
 
 /* =========================================================
-   NHẠC NỀN + PANEL CÀI ĐẶT
+   NHẠC NỀN
    ========================================================= */
 const music = document.getElementById("ncbBgMusic");
 const musicToggle = document.getElementById("ncbMusicToggle");
@@ -777,9 +978,6 @@ function tryPlayMusic(){
   }
 }
 
-/* =========================================================
-   XỬ LÝ LOOP THỦ CÔNG (KHÔNG DÙNG ATTRIBUTE loop)
-   ========================================================= */
 if(music){
   music.addEventListener("ended", function(){
     if(!musicToggle || !musicToggle.checked) return;
@@ -848,6 +1046,167 @@ if(volumeSlider){
 }
 
 /* =========================================================
+   LỊCH SỬ BÁO CÁO (localStorage)
+   ========================================================= */
+function loadHistory(){
+  try{
+    const raw = localStorage.getItem(HISTORY_KEY);
+    if(!raw) return [];
+    const arr = JSON.parse(raw);
+    if(!Array.isArray(arr)) return [];
+    return arr;
+  }catch(_){ return []; }
+}
+function saveHistory(list){
+  try{
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+  }catch(_){}
+}
+function pushHistory(item){
+  const list = loadHistory();
+  list.unshift(item);
+  while(list.length > HISTORY_MAX) list.pop();
+  saveHistory(list);
+}
+
+function escapeHtml(s){
+  return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+/* Mở modal lịch sử */
+const historyModal = document.getElementById("ncbHistoryModal");
+const historyList = document.getElementById("ncbHistoryList");
+const historyClose = document.getElementById("ncbHistoryClose");
+
+function renderHistoryList(){
+  const list = loadHistory();
+  if(!list.length){
+    historyList.innerHTML =
+      '<div class="ncbHistoryEmpty">' +
+      '<b>Chưa có báo cáo nào</b>' +
+      'Bạn chưa gửi báo cáo nào trên thiết bị này.' +
+      '</div>';
+    return;
+  }
+  historyList.innerHTML = list.map((it, idx) => {
+    const title = it.tieu_de || "(Không có tiêu đề)";
+    const type = it.loai_yeu_cau || "";
+    const time = it.thoi_gian || "";
+    const id = it.ma_bao_cao || "";
+    return (
+      '<div class="ncbHistoryItem" data-idx="' + idx + '">' +
+        '<div class="hi-top">' +
+          '<span class="hi-id">' + escapeHtml(id) + '</span>' +
+          '<span class="hi-status">Đã gửi</span>' +
+        '</div>' +
+        '<div class="hi-title">' + escapeHtml(title) + '</div>' +
+        '<div class="hi-meta">' +
+          '<span class="hi-type">' + escapeHtml(type) + '</span>' +
+          '<span>' + escapeHtml(time) + '</span>' +
+        '</div>' +
+      '</div>'
+    );
+  }).join("");
+}
+
+function openHistoryModal(){
+  renderHistoryList();
+  historyModal.classList.add("open");
+}
+function closeHistoryModal(){
+  historyModal.classList.remove("open");
+}
+
+if(historyClose){ historyClose.addEventListener("click", closeHistoryModal); }
+if(historyModal){
+  historyModal.addEventListener("click", (e) => {
+    if(e.target === historyModal) closeHistoryModal();
+  });
+}
+if(historyList){
+  historyList.addEventListener("click", (e) => {
+    const item = e.target.closest(".ncbHistoryItem");
+    if(!item) return;
+    const idx = parseInt(item.getAttribute("data-idx"), 10);
+    const list = loadHistory();
+    const data = list[idx];
+    if(data) openDetailModal(data);
+  });
+}
+
+/* =========================================================
+   MODAL CHI TIẾT
+   ========================================================= */
+const detailModal = document.getElementById("ncbDetailModal");
+const detailBody = document.getElementById("ncbDetailBody");
+const detailClose = document.getElementById("ncbDetailClose");
+
+function buildDetailRow(label, value, opts){
+  const isMono = opts && opts.mono;
+  const isDesc = opts && opts.desc;
+  const safe = escapeHtml(value || "");
+  const cls = "value" + (isMono ? " mono" : "") + (isDesc ? " desc" : "");
+  return (
+    '<div class="ncbDetailField">' +
+      '<label>' + escapeHtml(label) + '</label>' +
+      '<div class="' + cls + '">' + safe + '</div>' +
+    '</div>'
+  );
+}
+
+function openDetailModal(data){
+  detailBody.innerHTML =
+    buildDetailRow("Mã định danh", data.ma_bao_cao || "—", { mono:true }) +
+    buildDetailRow("Loại yêu cầu", data.loai_yeu_cau || "—") +
+    buildDetailRow("Tên người gửi", data.ten || "—") +
+    buildDetailRow("Email liên hệ", data.email_lien_he || "—") +
+    buildDetailRow("Phiên bản", data.phien_ban || "—") +
+    buildDetailRow("Tiêu đề", data.tieu_de || "—") +
+    buildDetailRow("Mô tả chi tiết", data.mo_ta || "—", { desc:true }) +
+    buildDetailRow("Thời gian gửi", data.thoi_gian || "—") +
+    buildDetailRow("Trạng thái", "Đã gửi thành công");
+  detailModal.classList.add("open");
+}
+function closeDetailModal(){
+  detailModal.classList.remove("open");
+}
+
+if(detailClose){ detailClose.addEventListener("click", closeDetailModal); }
+if(detailModal){
+  detailModal.addEventListener("click", (e) => {
+    if(e.target === detailModal) closeDetailModal();
+  });
+}
+
+/* ESC để đóng modal */
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Escape"){
+    closeHistoryModal();
+    closeDetailModal();
+  }
+});
+
+/* =========================================================
+   CLICK 2 CARD
+   ========================================================= */
+document.getElementById("cardNewReport").addEventListener("click", () => {
+  const panel = document.getElementById("reportPanel");
+  if(panel){
+    panel.scrollIntoView({ behavior: "smooth", block: "start" });
+    setTimeout(() => {
+      const firstInput = document.querySelector('#reportForm input[name="ten"]');
+      if(firstInput) firstInput.focus({ preventScroll: true });
+    }, 500);
+  }
+});
+
+document.getElementById("cardHistory").addEventListener("click", () => {
+  openHistoryModal();
+});
+
+/* =========================================================
    FORM GỬI BÁO CÁO
    ========================================================= */
 const form = document.getElementById("reportForm");
@@ -911,31 +1270,44 @@ form.addEventListener("submit", async function(e){
   const reportID = generateReportID();
   const thoiGian = new Date().toLocaleString("vi-VN", { hour12: false });
 
-  const templateParams = {
-    website_id: VERIFY_SITE_ID,
-    display_site_id: currentDisplaySiteId,
+  const historyItem = {
+    ma_bao_cao: reportID,
+    loai_yeu_cau: data.loai_yeu_cau,
     ten: data.ten.trim(),
     email_lien_he: emailValue,
-    loai_yeu_cau: data.loai_yeu_cau,
     phien_ban: data.phien_ban.trim(),
     tieu_de: data.tieu_de.trim(),
     mo_ta: data.mo_ta.trim(),
+    thoi_gian: thoiGian,
+    site_id: VERIFY_SITE_ID,
+    created_at: now
+  };
+
+  const templateParams = {
+    website_id: VERIFY_SITE_ID,
+    display_site_id: currentDisplaySiteId,
+    ten: historyItem.ten,
+    email_lien_he: historyItem.email_lien_he,
+    loai_yeu_cau: historyItem.loai_yeu_cau,
+    phien_ban: historyItem.phien_ban,
+    tieu_de: historyItem.tieu_de,
+    mo_ta: historyItem.mo_ta,
     ma_bao_cao: reportID,
     thoi_gian: thoiGian,
-    name: data.ten.trim(),
-    email: emailValue,
+    name: historyItem.ten,
+    email: historyItem.email_lien_he,
     from_name: "NCB AI SUPPORT",
     to_name: "Admin Nguyễn Công Bằng",
     to_email: ADMIN_EMAIL,
     turnstile_token: turnstileToken,
-    subject: "[NCB AI SUPPORT][" + VERIFY_SITE_ID + "] " + data.loai_yeu_cau + " — " + reportID,
+    subject: "[NCB AI SUPPORT][" + VERIFY_SITE_ID + "] " + historyItem.loai_yeu_cau + " — " + reportID,
     message:
       "ID XÁC MINH: " + VERIFY_SITE_ID +
       "\nID HIỂN THỊ: " + currentDisplaySiteId +
       "\nMÃ ĐỊNH DANH: " + reportID +
-      "\nTiêu đề: " + data.tieu_de +
-      "\n\n" + data.mo_ta +
-      "\n\nEmail liên hệ: " + emailValue
+      "\nTiêu đề: " + historyItem.tieu_de +
+      "\n\n" + historyItem.mo_ta +
+      "\n\nEmail liên hệ: " + historyItem.email_lien_he
   };
 
   formSending = true;
@@ -946,17 +1318,21 @@ form.addEventListener("submit", async function(e){
   try {
     const result = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams, { publicKey: EMAILJS_PUBLIC_KEY });
     if(result && (result.status === 200 || result.text === "OK")){
-      incrementReportCount(); updateQuotaBadge();
+      incrementReportCount();
+      updateQuotaBadge();
+
+      /* Lưu lịch sử */
+      pushHistory(historyItem);
+
       const newRemaining = getRemainingReports();
       createNCBNotification("GỬI THÀNH CÔNG",
-        "ID xác minh: " + VERIFY_SITE_ID +
-        "\nID hiển thị: " + currentDisplaySiteId +
-        "\nMã định danh: " + reportID +
-        "\nLoại: " + data.loai_yeu_cau +
+        "Mã định danh: " + reportID +
+        "\nLoại: " + historyItem.loai_yeu_cau +
         "\nThời gian: " + thoiGian +
         "\nCòn lại hôm nay: " + newRemaining + "/" + MAX_REPORTS_PER_DAY +
-        "\nVui lòng lưu mã " + reportID + " để Admin tra cứu khi cần.",
+        "\nBạn có thể xem lại trong mục Lịch sử báo cáo lỗi.",
         "success");
+
       form.reset();
       document.querySelector('[name="phien_ban"]').value = "1.5.1";
       localStorage.setItem("ncb_last_report", String(Date.now()));
