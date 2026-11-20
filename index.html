@@ -180,6 +180,9 @@ button{border:0;cursor:pointer}
   flex-shrink:0;
 }
 #ncbBanBanner.active{display:block}
+
+#turnstile-container{margin-bottom:4px}
+.turnstile-note{font-size:12px;color:#f59e0b;margin-top:6px}
 </style>
 </head>
 <body>
@@ -236,6 +239,10 @@ button{border:0;cursor:pointer}
       <label>Mô tả chi tiết <span class="required-star">*</span></label>
       <textarea name="mo_ta" placeholder="Mô tả vấn đề bạn gặp phải..." required></textarea>
 
+      <label>Xác minh bảo mật <span class="required-star">*</span></label>
+      <div id="turnstile-container"></div>
+      <div class="turnstile-note">Lưu ý: Hệ thống chưa có backend xác thực token server-side.</div>
+
       <button class="sendButton" id="sendBtn" type="submit">GỬI BÁO CÁO</button>
     </form>
   </div>
@@ -289,6 +296,7 @@ button{border:0;cursor:pointer}
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
 
 <script>
 /* =========================================================
@@ -310,6 +318,15 @@ const AI_AVATAR = "https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe81435
 
 const MAX_REPORTS_PER_DAY = 4;
 const QUOTA_KEY = "ncb_report_quota";
+const BAN_KEY = "ncb_chat_ban_until";
+const BAN_DURATION_MS = 56000;
+const COOLDOWN_MS = 15000;
+
+/* TURNSTILE */
+const TURNSTILE_SITEKEY = "0x4AAAAAAFS-K_zlKjEtuhNf";
+const TURNSTILE_ACTION  = "report";
+let reportWidgetId = null;
+let turnstileToken  = null;
 
 if(window.emailjs){
   emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
@@ -372,7 +389,7 @@ PHONG CÁCH:
 let chatHistory = [];
 
 /* =========================================================
-   TẠO MÃ ĐỊNH DANH NCB-XXXXXX (6 ký tự chữ + số)
+   TẠO MÃ ĐỊNH DANH NCB-XXXXXX
    ========================================================= */
 function generateReportID(){
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -452,9 +469,7 @@ function updateQuotaBadge(){
   }
 }
 
-setInterval(() => {
-  updateQuotaBadge();
-}, 60000);
+setInterval(updateQuotaBadge, 60000);
 
 /* ============ LỌC NÓI TỤC ============ */
 const BANNED_WORDS = [
@@ -491,8 +506,6 @@ function containsProfanity(text){
 }
 
 /* ============ CẤM CHAT 56s ============ */
-const BAN_DURATION_MS = 56000;
-const BAN_KEY = "ncb_chat_ban_until";
 let banTimerId = null;
 
 function startBan(){
@@ -732,7 +745,7 @@ async function sendNCBChat(){
 }
 
 /* =========================================================
-   KÉO THẢ NÚT CHAT TRÒN — ĐÃ FIX LỖI KHÔNG MỞ ĐƯỢC CHAT
+   KÉO THẢ NÚT CHAT TRÒN
    ========================================================= */
 (function(){
   const btn = document.getElementById("ncbChatButton");
@@ -801,7 +814,6 @@ async function sendNCBChat(){
     }
   }
 
-  /* CHUỘT */
   btn.addEventListener("mousedown", (e) => {
     e.preventDefault();
     onStart(e.clientX, e.clientY);
@@ -815,7 +827,6 @@ async function sendNCBChat(){
     onEnd();
   });
 
-  /* CẢM ỨNG */
   btn.addEventListener("touchstart", (e) => {
     const t = e.touches[0];
     if(!t) return;
@@ -840,7 +851,6 @@ async function sendNCBChat(){
     btn.classList.remove("dragging");
   });
 
-  /* GIỮ NÚT TRONG MÀN HÌNH KHI RESIZE */
   window.addEventListener("resize", () => {
     const rect = btn.getBoundingClientRect();
     const btnSize = 64;
@@ -865,17 +875,47 @@ async function sendNCBChat(){
     }
   });
 
-  /* NÚT ĐÓNG CHAT */
   document.getElementById("ncbChatCloseBtn").addEventListener("click", closeChat);
 })();
 
 /* =========================================================
-   GỬI BÁO CÁO QUA EMAILJS — CÓ MÃ ĐỊNH DANH NCB-XXXXXX
+   TURNSTILE — RENDER WIDGET
+   ========================================================= */
+function renderTurnstile(){
+  if(!window.turnstile) return;
+  if(reportWidgetId !== null) return;
+  const container = document.getElementById("turnstile-container");
+  if(!container) return;
+
+  reportWidgetId = turnstile.render(container, {
+    sitekey: TURNSTILE_SITEKEY,
+    action: TURNSTILE_ACTION,
+    callback: function(token){
+      turnstileToken = token;
+    },
+    "error-callback": function(code){
+      console.warn("[Turnstile] error:", code);
+      turnstileToken = null;
+    },
+    "expired-callback": function(){
+      turnstileToken = null;
+    }
+  });
+}
+
+function resetTurnstile(){
+  turnstileToken = null;
+  if(window.turnstile && reportWidgetId !== null){
+    try { turnstile.reset(reportWidgetId); } catch(_){}
+  }
+}
+
+/* =========================================================
+   GỬI BÁO CÁO QUA EMAILJS — CÓ TURNSTILE
    ========================================================= */
 const form = document.getElementById("reportForm");
 const sendBtn = document.getElementById("sendBtn");
 const emailField = document.getElementById("emailField");
-const COOLDOWN_MS = 15000;
 let formSending = false;
 
 function isValidEmail(v){
@@ -892,6 +932,7 @@ emailField.addEventListener("input", function(){
 form.addEventListener("reset", function(){
   setTimeout(() => {
     emailField.classList.remove("invalid");
+    resetTurnstile();
   }, 10);
 });
 
@@ -950,6 +991,12 @@ form.addEventListener("submit", async function(e){
     return;
   }
 
+  /* TURNSTILE CHECK (client-side) */
+  if(!turnstileToken){
+    createNCBNotification("XÁC MINH BẢO MẬT", "Vui lòng hoàn thành xác minh bảo mật trước khi gửi.", "error");
+    return;
+  }
+
   const remaining = getRemainingReports();
   if(remaining <= 0){
     createNCBNotification(
@@ -974,7 +1021,6 @@ form.addEventListener("submit", async function(e){
     return;
   }
 
-  /* TẠO MÃ ĐỊNH DANH NCB-XXXXXX */
   const reportID = generateReportID();
   const nowDate = new Date();
   const thoiGian = nowDate.toLocaleString("vi-VN", { hour12: false });
@@ -993,6 +1039,7 @@ form.addEventListener("submit", async function(e){
     from_name:       "NCB AI SUPPORT",
     to_name:         "Admin Nguyễn Công Bằng",
     to_email:        ADMIN_EMAIL,
+    turnstile_token: turnstileToken,
     subject:         "[NCB AI SUPPORT] " + data.loai_yeu_cau + " — " + reportID,
     message:         "MÃ ĐỊNH DANH: " + reportID + "\nTiêu đề: " + data.tieu_de + "\n\n" + data.mo_ta + "\n\nEmail liên hệ: " + emailValue
   };
@@ -1052,6 +1099,9 @@ form.addEventListener("submit", async function(e){
     formSending = false;
     delete sendBtn.dataset.sending;
 
+    /* Token dùng 1 lần → reset widget sau mỗi lần gửi */
+    resetTurnstile();
+
     const stillRemaining = getRemainingReports();
     if(stillRemaining > 0){
       sendBtn.disabled = false;
@@ -1067,6 +1117,14 @@ form.addEventListener("submit", async function(e){
 window.addEventListener("DOMContentLoaded", () => {
   checkExistingBan();
   updateQuotaBadge();
+
+  /* Render Turnstile — nếu script đã load */
+  if(window.turnstile){
+    renderTurnstile();
+  } else {
+    /* api.js dùng ?render=explicit nên gọi onloadTurnstileCallback */
+    window.onloadTurnstileCallback = renderTurnstile;
+  }
 
   addNCBMessage(
 `Xin chào!
