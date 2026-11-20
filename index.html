@@ -251,6 +251,7 @@ button{border:0;cursor:pointer}
   </div>
 
   <a class="accessButton"
+     id="accessLink"
      href="https://ncb-ai.vercel.app/"
      target="_blank"
      rel="noopener"
@@ -340,6 +341,30 @@ if(window.emailjs){
 }
 
 /* =========================================================
+   GẮN SITE_ID VÀO URL
+   ========================================================= */
+function attachSiteIdToUrl(){
+  try{
+    const url = new URL(window.location.href);
+    if(url.searchParams.get("site_id") !== WEBSITE_ID){
+      url.searchParams.set("site_id", WEBSITE_ID);
+      history.replaceState({}, "", url.toString());
+    }
+  }catch(_){ /* ignore */ }
+}
+
+/* Gắn site_id vào link TRUY CẬP NCB AI */
+function attachSiteIdToAccessLink(){
+  const a = document.getElementById("accessLink");
+  if(!a) return;
+  try{
+    const url = new URL(a.href);
+    url.searchParams.set("site_id", WEBSITE_ID);
+    a.href = url.toString();
+  }catch(_){}
+}
+
+/* =========================================================
    SYSTEM PROMPT
    ========================================================= */
 const SYSTEM_PROMPT = `Bạn là NCB AI SUPPORT — trợ lý hỗ trợ CHUYÊN BIỆT của hệ thống NCB AI.
@@ -366,7 +391,7 @@ THÔNG TIN NCB AI:
 QUY TẮC ĐẶC BIỆT:
 1. KHI HỎI CÁCH TRUY CẬP WEBSITE NCB AI → trả lời:
 "Bạn tham gia bằng website tại đây. Ở dưới có chữ TRUY CẬP màu xanh lá, ấn vào là chuyển sang website NCB AI.
-Link trực tiếp: https://ncb-ai.vercel.app/"
+Link trực tiếp: https://ncb-ai.vercel.app/?site_id=QP6b7fwfjeYAJridTfNzy"
 
 2. KHI HỎI VỀ ADMIN → "Admin của NCB AI là Nguyễn Công Bằng."
 
@@ -624,7 +649,7 @@ function fallbackAnswer(q){
   if(q.includes("id website")||q.includes("website id")||q.includes("site id")||q.includes("mã website"))
     return "ID website NCB AI SUPPORT: QP6b7fwfjeYAJridTfNzy";
   if(q.includes("truy cập")||q.includes("vào web")||q.includes("mở web")||q.includes("website")||q.includes("ncb ai")||q.includes("link"))
-    return "Bạn tham gia bằng website tại đây. Ở dưới có chữ TRUY CẬP màu xanh lá, ấn vào là chuyển sang website NCB AI.\nLink trực tiếp: https://ncb-ai.vercel.app/";
+    return "Bạn tham gia bằng website tại đây. Ở dưới có chữ TRUY CẬP màu xanh lá, ấn vào là chuyển sang website NCB AI.\nLink trực tiếp: https://ncb-ai.vercel.app/?site_id=QP6b7fwfjeYAJridTfNzy";
   if(q.includes("admin")||q.includes("quản lý")||q.includes("sáng lập"))
     return "Admin của NCB AI là Nguyễn Công Bằng.";
   if(q.includes("báo lỗi")||q.includes("báo cáo")||q.includes("lỗi"))
@@ -787,6 +812,12 @@ function unlockPage(){
   gate.classList.add("hidden");
   main.classList.add("unlocked");
   if(chatBtn) chatBtn.style.display = "block";
+
+  /* GẮN SITE_ID VÀO URL KHI MỞ TRANG */
+  attachSiteIdToUrl();
+  /* GẮN SITE_ID VÀO LINK TRUY CẬP NCB AI */
+  attachSiteIdToAccessLink();
+
   updateQuotaBadge();
   renderReportTurnstile();
 }
@@ -857,7 +888,6 @@ form.addEventListener("submit", async function(e){
   if(!data.mo_ta || !data.mo_ta.trim()){ form.querySelector('[name="mo_ta"]').classList.add("invalid"); hasError = true; errorMsg = "Vui lòng nhập mô tả chi tiết."; }
   if(hasError){ createNCBNotification("THIẾU THÔNG TIN", errorMsg, "error"); return; }
 
-  /* CHẶN CỨNG: PHẢI CÓ TOKEN TURNSTILE */
   if(!turnstileToken){
     createNCBNotification("CHƯA XÁC MINH","Vui lòng hoàn thành xác minh bảo mật trước khi gửi.","error");
     syncSendBtnState();
@@ -959,6 +989,10 @@ window.addEventListener("DOMContentLoaded", () => {
   checkExistingBan();
   updateQuotaBadge();
   syncSendBtnState();
+
+  /* Nếu URL đã có site_id đúng (ví dụ F5 sau khi mở khóa) — vẫn phải xác minh lại
+     vì gate là client-side. Không auto-unlock từ URL. */
+  attachSiteIdToAccessLink();
 
   if(window.turnstile){
     renderGateTurnstile();
