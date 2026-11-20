@@ -98,7 +98,7 @@ img{
 h1{font-size:27px;margin-bottom:8px}
 .desc{color:#94a3b8;line-height:1.6}
 
-/* ===== CARDS (đổi thành button có chức năng) ===== */
+/* ===== CARDS ===== */
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:25px 0}
 .card{
   background:#111c30;border:1px solid #26344e;padding:17px;border-radius:15px;
@@ -160,9 +160,12 @@ button{border:0;cursor:pointer;font-family:inherit}
 .ncbNotice.error b{color:#f87171}
 @keyframes noticeIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
 
+/* =========================================================
+   NÚT CÀI ĐẶT – HÌNH VUÔNG, GÓC TRÊN BÊN PHẢI (KHÔNG ICON)
+   ========================================================= */
 #ncbSettingsBtn{
-  position:fixed;right:20px;bottom:22px;
-  width:52px;height:52px;border-radius:50%;
+  position:fixed;top:16px;right:16px;
+  width:56px;height:56px;border-radius:14px;
   border:2px solid #60a5fa;background:#0d1729;
   color:#60a5fa;
   display:none;
@@ -171,11 +174,67 @@ button{border:0;cursor:pointer;font-family:inherit}
   box-shadow:0 5px 20px #2563eb55, 0 0 0 3px #0d1729;
   transition:transform .15s ease, box-shadow .2s ease, background .2s ease;
   -webkit-tap-highlight-color:transparent;
+  font-family:Arial,sans-serif;
+  font-weight:bold;
+  font-size:13px;
+  letter-spacing:.3px;
+  text-transform:uppercase;
 }
 #ncbSettingsBtn:hover{background:#13213a;box-shadow:0 8px 26px #2563eb88, 0 0 0 3px #0d1729}
 #ncbSettingsBtn:active{transform:scale(.94)}
-#ncbSettingsBtn svg{width:24px;height:24px;display:block}
 
+/* =========================================================
+   KHUNG THÔNG BÁO VUÔNG LỚN BÊN PHẢI (KHÔNG ICON)
+   ========================================================= */
+#ncbOfficialBanner{
+  position:fixed;
+  top:84px;
+  right:16px;
+  width:min(300px,calc(100vw - 32px));
+  z-index:9998;
+  background:linear-gradient(135deg,#0f1b2d,#13233c);
+  border:2px solid #3b82f6;
+  border-radius:16px;
+  padding:16px;
+  box-shadow:0 10px 34px #000a, 0 0 0 3px #0d1729;
+  color:#e2e8f0;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  animation:noticeIn .4s ease;
+  transform-origin:top right;
+}
+#ncbOfficialBanner.hidden{display:none}
+#ncbOfficialBanner .banner-head{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+#ncbOfficialBanner .banner-title{
+  font-size:13px;font-weight:bold;color:#60a5fa;letter-spacing:.4px;
+  text-transform:uppercase;
+}
+#ncbBannerClose{
+  width:34px;height:30px;border-radius:8px;
+  background:#ffffff14;color:#e2e8f0;
+  font-weight:bold;font-size:12px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  transition:background .15s ease;
+  text-transform:uppercase;
+  letter-spacing:.3px;
+}
+#ncbBannerClose:hover{background:#ef444466}
+#ncbOfficialBanner .banner-body{
+  font-size:14px;line-height:1.55;color:#cbd5e1;
+}
+#ncbOfficialBanner .banner-body b{color:#93c5fd}
+#ncbOfficialBanner .banner-foot{
+  font-size:11px;color:#64748b;border-top:1px solid #1e2a42;padding-top:8px;
+  letter-spacing:.2px;
+}
+
+/* =========================================================
+   SETTINGS PANEL
+   ========================================================= */
 #ncbSettingsPanel{
   position:fixed;top:0;right:0;bottom:0;
   width:min(320px,88vw);
@@ -200,11 +259,13 @@ button{border:0;cursor:pointer;font-family:inherit}
 }
 .settingsHeader b{font-size:16px;color:#93c5fd;letter-spacing:.3px}
 #ncbSettingsClose{
-  width:34px;height:34px;border-radius:9px;
+  width:56px;height:34px;border-radius:9px;
   background:rgba(255,255,255,0.08);
-  color:#e2e8f0;font-weight:bold;font-size:16px;line-height:1;
+  color:#e2e8f0;font-weight:bold;font-size:12px;line-height:1;
   display:flex;align-items:center;justify-content:center;
   transition:background .15s ease;
+  text-transform:uppercase;
+  letter-spacing:.3px;
 }
 #ncbSettingsClose:hover{background:rgba(239,68,68,0.35)}
 
@@ -293,9 +354,11 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
 }
 .ncbHistoryHeader b{font-size:15px;color:#fff}
 #ncbHistoryClose{
-  width:34px;height:34px;border-radius:9px;background:#ffffff22;color:#fff;
-  font-weight:bold;font-size:16px;line-height:1;
+  width:56px;height:34px;border-radius:9px;background:#ffffff22;color:#fff;
+  font-weight:bold;font-size:12px;line-height:1;
   display:flex;align-items:center;justify-content:center;
+  text-transform:uppercase;
+  letter-spacing:.3px;
 }
 #ncbHistoryClose:hover{background:#ef444466}
 
@@ -376,9 +439,11 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
 }
 .ncbDetailHeader b{font-size:14px;color:#fff;letter-spacing:.3px}
 #ncbDetailClose{
-  width:34px;height:34px;border-radius:9px;background:#ffffff22;color:#fff;
-  font-weight:bold;font-size:16px;line-height:1;
+  width:56px;height:34px;border-radius:9px;background:#ffffff22;color:#fff;
+  font-weight:bold;font-size:12px;line-height:1;
   display:flex;align-items:center;justify-content:center;
+  text-transform:uppercase;
+  letter-spacing:.3px;
 }
 #ncbDetailClose:hover{background:#ef444466}
 
@@ -458,7 +523,6 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   <h1>Xin chào!</h1>
   <p class="desc">Chào mừng đến với trung tâm hỗ trợ NCB AI SUPPORT. Hãy gửi yêu cầu hoặc báo cáo lỗi để chúng tôi tiếp nhận.</p>
 
-  <!-- 2 CARD ĐỔI THÀNH 2 NÚT CÓ CHỨC NĂNG -->
   <div class="cards">
     <button class="card" type="button" id="cardNewReport">
       <b>Báo cáo lỗi</b>
@@ -531,12 +595,26 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
 
 <div id="ncbNotifications"></div>
 
+<!-- ============ KHUNG THÔNG BÁO VUÔNG LỚN BÊN PHẢI (KHÔNG ICON) ============ -->
+<div id="ncbOfficialBanner">
+  <div class="banner-head">
+    <div class="banner-title">Thông báo chính thức</div>
+    <button id="ncbBannerClose" title="Đóng thông báo" aria-label="Đóng thông báo">Đóng</button>
+  </div>
+  <div class="banner-body">
+    Đây là <b>website chính thức của NCB AI SUPPORT</b> — chuyên <b>hỗ trợ báo lỗi</b> cho người dùng NCB AI.
+  </div>
+  <div class="banner-foot">
+    NCB AI SUPPORT · Trung tâm hỗ trợ chính thức
+  </div>
+</div>
+
 <!-- ============ MODAL LỊCH SỬ BÁO CÁO ============ -->
 <div id="ncbHistoryModal">
   <div class="ncbHistoryBox">
     <div class="ncbHistoryHeader">
       <b>LỊCH SỬ BÁO CÁO LỖI</b>
-      <button id="ncbHistoryClose" title="Đóng">✕</button>
+      <button id="ncbHistoryClose" title="Đóng">Đóng</button>
     </div>
     <div id="ncbHistoryList"></div>
   </div>
@@ -547,23 +625,19 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   <div class="ncbDetailBox">
     <div class="ncbDetailHeader">
       <b>CHI TIẾT BÁO CÁO</b>
-      <button id="ncbDetailClose" title="Đóng">✕</button>
+      <button id="ncbDetailClose" title="Đóng">Đóng</button>
     </div>
     <div id="ncbDetailBody"></div>
   </div>
 </div>
 
-<button id="ncbSettingsBtn" title="Cài đặt">
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/>
-    <circle cx="12" cy="12" r="3"/>
-  </svg>
-</button>
+<!-- ============ NÚT CÀI ĐẶT – HÌNH VUÔNG, GÓC TRÊN BÊN PHẢI (KHÔNG ICON) ============ -->
+<button id="ncbSettingsBtn" title="Cài đặt">Cài đặt</button>
 
 <div id="ncbSettingsPanel">
   <div class="settingsHeader">
     <b>CÀI ĐẶT</b>
-    <button id="ncbSettingsClose" title="Đóng">✕</button>
+    <button id="ncbSettingsClose" title="Đóng">Đóng</button>
   </div>
   <div class="settingsBody">
     <div class="settingRow">
@@ -1321,7 +1395,6 @@ form.addEventListener("submit", async function(e){
       incrementReportCount();
       updateQuotaBadge();
 
-      /* Lưu lịch sử */
       pushHistory(historyItem);
 
       const newRemaining = getRemainingReports();
@@ -1356,6 +1429,24 @@ form.addEventListener("submit", async function(e){
     syncSendBtnState();
   }
 });
+
+/* =========================================================
+   KHUNG THÔNG BÁO – NÚT ĐÓNG
+   ========================================================= */
+const officialBanner = document.getElementById("ncbOfficialBanner");
+const bannerClose = document.getElementById("ncbBannerClose");
+if(bannerClose){
+  bannerClose.addEventListener("click", () => {
+    if(officialBanner){
+      officialBanner.style.transition = "opacity .25s ease, transform .25s ease";
+      officialBanner.style.opacity = "0";
+      officialBanner.style.transform = "translateX(30px)";
+      setTimeout(() => {
+        officialBanner.classList.add("hidden");
+      }, 250);
+    }
+  });
+}
 
 /* =========================================================
    KHỞI ĐỘNG
