@@ -161,7 +161,7 @@ button{border:0;cursor:pointer;font-family:inherit}
 @keyframes noticeIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
 
 /* =========================================================
-   NÚT CÀI ĐẶT – HÌNH VUÔNG, GÓC TRÊN BÊN PHẢI (CÓ ICON BÁNH RĂNG)
+   NÚT CÀI ĐẶT
    ========================================================= */
 #ncbSettingsBtn{
   position:fixed;top:16px;right:16px;
@@ -403,9 +403,6 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
 .ncbHistoryItem .hi-type{
   color:#a78bfa;
 }
-.ncbHistoryItem .hi-arrow{
-  color:#475569;font-size:16px;flex-shrink:0;
-}
 
 /* =========================================================
    MODAL CHI TIẾT BÁO CÁO
@@ -484,6 +481,69 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   max-height:200px;
   overflow-y:auto;
 }
+
+/* =========================================================
+   MODAL XÁC MINH CON NGƯỜI
+   ========================================================= */
+#ncbBotVerifyModal{
+  position:fixed;inset:0;z-index:18000;
+  background:rgba(0,0,0,0.88);
+  display:none;align-items:center;justify-content:center;
+  padding:20px;
+  animation:fadeIn .25s ease;
+}
+#ncbBotVerifyModal.open{display:flex}
+
+.bot-verify-box{
+  background:#000;
+  border:2px solid #3b82f6;
+  border-radius:18px;
+  width:min(360px,100%);
+  padding:26px 22px 22px;
+  display:flex;flex-direction:column;align-items:center;
+  gap:14px;
+  box-shadow:0 0 0 4px #0d1729, 0 20px 60px #000d, 0 0 40px #2563eb44;
+  animation:modalIn .3s ease;
+}
+.bot-verify-icon{
+  width:72px;height:72px;border-radius:16px;
+  background:linear-gradient(135deg,#1e3a8a,#2563eb);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;
+  box-shadow:0 0 20px #2563eb66;
+}
+.bot-verify-title{
+  font-size:14px;font-weight:bold;color:#60a5fa;
+  letter-spacing:.5px;text-transform:uppercase;
+  text-align:center;line-height:1.4;
+}
+.bot-verify-desc{
+  font-size:13px;color:#94a3b8;line-height:1.55;
+  text-align:center;
+}
+#ncbBotTurnstile{
+  display:flex;justify-content:center;
+  min-height:65px;width:100%;
+}
+.bot-verify-status{
+  font-size:12px;color:#60a5fa;
+  min-height:16px;text-align:center;
+}
+.bot-verify-status.error{color:#f87171}
+.bot-verify-btn{
+  width:100%;padding:13px;
+  border-radius:11px;border:0;
+  background:linear-gradient(135deg,#16a34a,#22c55e);
+  color:#fff;font-weight:bold;font-size:14px;
+  letter-spacing:.5px;cursor:pointer;
+  transition:opacity .2s,transform .1s;
+  box-shadow:0 4px 16px #22c55e55;
+}
+.bot-verify-btn:disabled{
+  background:#334155;color:#64748b;
+  cursor:not-allowed;box-shadow:none;
+}
+.bot-verify-btn:not(:disabled):active{transform:scale(.97)}
 </style>
 </head>
 <body>
@@ -627,7 +687,7 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   </div>
 </div>
 
-<!-- ============ NÚT CÀI ĐẶT – HÌNH VUÔNG, GÓC TRÊN BÊN PHẢI, CÓ ICON BÁNH RĂNG ============ -->
+<!-- ============ NÚT CÀI ĐẶT ============ -->
 <button id="ncbSettingsBtn" title="Cài đặt" aria-label="Cài đặt">
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/>
@@ -666,6 +726,27 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   </div>
 </div>
 
+<!-- ============ MODAL XÁC MINH CON NGƯỜI ============ -->
+<div id="ncbBotVerifyModal">
+  <div class="bot-verify-box">
+    <div class="bot-verify-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 8V4H8"/>
+        <rect width="16" height="12" x="4" y="8" rx="2"/>
+        <path d="M2 14h2"/>
+        <path d="M20 14h2"/>
+        <path d="M15 13v2"/>
+        <path d="M9 13v2"/>
+      </svg>
+    </div>
+    <div class="bot-verify-title">XÁC MINH BẠN CÓ PHẢI LÀ CON NGƯỜI HAY KHÔNG?</div>
+    <div class="bot-verify-desc">Vui lòng xác nhận bạn không phải là robot để tiếp tục sử dụng.</div>
+    <div id="ncbBotTurnstile"></div>
+    <div id="ncbBotStatus" class="bot-verify-status">Đang tải xác minh…</div>
+    <button id="ncbBotConfirm" class="bot-verify-btn" disabled>XÁC NHẬN</button>
+  </div>
+</div>
+
 <audio id="ncbBgMusic" src="https://files.catbox.moe/jv9cvp.mp3" preload="auto"></audio>
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -698,6 +779,7 @@ const COOLDOWN_MS = 15000;
 const TURNSTILE_SITEKEY = "0x4AAAAAAGKIbsCOoqg2qN0G";
 const TURNSTILE_ACTION  = "report";
 const GATE_ACTION       = "page-gate";
+const BOT_ACTION        = "bot-verify";
 
 let reportWidgetId = null;
 let turnstileToken  = null;
@@ -707,7 +789,6 @@ const MUSIC_VOLUME_KEY = "ncb_music_volume";
 const MUSIC_ENABLED_KEY = "ncb_music_enabled";
 const DEFAULT_VOLUME = 0.8;
 
-/* LỊCH SỬ BÁO CÁO */
 const HISTORY_KEY = "ncb_report_history";
 const HISTORY_MAX = 50;
 
@@ -961,7 +1042,12 @@ function unlockPage(){
   updateQuotaBadge();
   renderReportTurnstile();
   tryInitMusicAfterUnlock();
+
+  if(window.NCB_BOT_VERIFY && typeof window.NCB_BOT_VERIFY.start === "function"){
+    window.NCB_BOT_VERIFY.start();
+  }
 }
+
 function renderGateTurnstile(){
   if(!window.turnstile){ return; }
 
@@ -1121,7 +1207,7 @@ if(volumeSlider){
 }
 
 /* =========================================================
-   LỊCH SỬ BÁO CÁO (localStorage)
+   LỊCH SỬ BÁO CÁO
    ========================================================= */
 function loadHistory(){
   try{
@@ -1150,7 +1236,6 @@ function escapeHtml(s){
   }[c]));
 }
 
-/* Mở modal lịch sử */
 const historyModal = document.getElementById("ncbHistoryModal");
 const historyList = document.getElementById("ncbHistoryList");
 const historyClose = document.getElementById("ncbHistoryClose");
@@ -1255,7 +1340,6 @@ if(detailModal){
   });
 }
 
-/* ESC để đóng modal */
 document.addEventListener("keydown", (e) => {
   if(e.key === "Escape"){
     closeHistoryModal();
@@ -1448,6 +1532,106 @@ if(bannerClose){
     }
   });
 }
+
+/* =========================================================
+   XÁC MINH CON NGƯỜI (tự hiện sau 2 phút, lặp lại mỗi 2 phút)
+   ========================================================= */
+window.NCB_BOT_VERIFY = (function(){
+  const SHOW_AFTER_MS = 120000; // 2 phút
+  let botWidgetId = null;
+  let botToken = null;
+  let botTimer = null;
+  let isOpen = false;
+
+  const botModal     = document.getElementById("ncbBotVerifyModal");
+  const botContainer = document.getElementById("ncbBotTurnstile");
+  const botStatus    = document.getElementById("ncbBotStatus");
+  const botConfirm   = document.getElementById("ncbBotConfirm");
+
+  function updateBtn(){
+    if(!botConfirm) return;
+    if(botToken){
+      botConfirm.disabled = false;
+      botStatus.textContent = "Xác minh thành công. Nhấn XÁC NHẬN để tiếp tục.";
+      botStatus.classList.remove("error");
+    } else {
+      botConfirm.disabled = true;
+      botStatus.textContent = "Vui lòng hoàn thành xác minh…";
+    }
+  }
+
+  function renderTurnstile(){
+    if(!window.turnstile) return;
+    if(botWidgetId !== null) return;
+    if(!botContainer) return;
+    botWidgetId = turnstile.render(botContainer, {
+      sitekey: TURNSTILE_SITEKEY,
+      action: BOT_ACTION,
+      callback: function(token){
+        botToken = token;
+        updateBtn();
+      },
+      "error-callback": function(code){
+        console.warn("[Turnstile bot] error:", code);
+        botToken = null;
+        botStatus.textContent = "Xác minh thất bại. Vui lòng thử lại.";
+        botStatus.classList.add("error");
+        updateBtn();
+      },
+      "expired-callback": function(){
+        botToken = null;
+        botStatus.textContent = "Phiên xác minh hết hạn. Vui lòng xác minh lại.";
+        botStatus.classList.add("error");
+        updateBtn();
+      }
+    });
+  }
+
+  function showModal(){
+    if(isOpen) return;
+    if(!botModal) return;
+    const gate = document.getElementById("ncbGate");
+    if(gate && !gate.classList.contains("hidden")) return;
+
+    isOpen = true;
+    botModal.classList.add("open");
+    renderTurnstile();
+  }
+
+  function hideModal(){
+    if(!botModal) return;
+    botModal.classList.remove("open");
+    isOpen = false;
+    botToken = null;
+    if(window.turnstile && botWidgetId !== null){
+      try { turnstile.reset(botWidgetId); } catch(_){}
+    }
+    updateBtn();
+  }
+
+  function scheduleNext(){
+    if(botTimer) clearTimeout(botTimer);
+    botTimer = setTimeout(showModal, SHOW_AFTER_MS);
+  }
+
+  function start(){
+    scheduleNext();
+  }
+
+  if(botConfirm){
+    botConfirm.addEventListener("click", function(){
+      if(!botToken){
+        botStatus.textContent = "Chưa xác minh xong.";
+        botStatus.classList.add("error");
+        return;
+      }
+      hideModal();
+      scheduleNext(); // hẹn 2 phút tiếp theo
+    });
+  }
+
+  return { start: start };
+})();
 
 /* =========================================================
    KHỞI ĐỘNG
