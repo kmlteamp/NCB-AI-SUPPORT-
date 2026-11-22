@@ -626,11 +626,12 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
 <div id="ncbGate">
   <div id="ncbUpdateBox">
     <div class="upd-title">
-      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/>
-        <path d="M21 3v5h-5"/>
+      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-hammer preview-icon">
+        <path d="m15 12-9.373 9.373a1 1 0 0 1-3.001-3L12 9"/>
+        <path d="m18 15 4-4"/>
+        <path d="m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172v-.344a2 2 0 0 0-.586-1.414l-1.657-1.657A6 6 0 0 0 12.516 3H9l1.243 1.243A6 6 0 0 1 12 8.485V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5"/>
       </svg>
-      UPDATE
+      FIX LỖI (1.1)
     </div>
     <div class="upd-body">
       Hiện tại website đang <b>sửa một số lỗi</b>, vui lòng đợi.
@@ -653,7 +654,6 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
       <b id="ncbProgressPercent">0%</b>
     </div>
 
-    <!-- Nút NHẮC NHỞ (khi chưa đầy) -->
     <button id="ncbReminderBtn" type="button">
       <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M10.268 21a2 2 0 0 0 3.464 0"/>
@@ -662,7 +662,6 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
       <span id="ncbReminderText">NHẮC NHỞ KHI HOÀN TẤT</span>
     </button>
 
-    <!-- Nút VÀO WEBSITE (khi đầy) -->
     <button id="ncbEnterBtn">XÁC MINH & VÀO WEBSITE</button>
   </div>
 </div>
@@ -755,7 +754,6 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
 
 <div id="ncbNotifications"></div>
 
-<!-- ============ KHUNG THÔNG BÁO VUÔNG LỚN BÊN PHẢI ============ -->
 <div id="ncbOfficialBanner">
   <div class="banner-head">
     <div class="banner-title">Thông báo chính thức</div>
@@ -769,7 +767,6 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   </div>
 </div>
 
-<!-- ============ MODAL LỊCH SỬ BÁO CÁO ============ -->
 <div id="ncbHistoryModal">
   <div class="ncbHistoryBox">
     <div class="ncbHistoryHeader">
@@ -780,7 +777,6 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   </div>
 </div>
 
-<!-- ============ MODAL CHI TIẾT BÁO CÁO ============ -->
 <div id="ncbDetailModal">
   <div class="ncbDetailBox">
     <div class="ncbDetailHeader">
@@ -791,7 +787,6 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   </div>
 </div>
 
-<!-- ============ NÚT CÀI ĐẶT ============ -->
 <button id="ncbSettingsBtn" title="Cài đặt" aria-label="Cài đặt">
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/>
@@ -830,7 +825,6 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   </div>
 </div>
 
-<!-- ============ MODAL XÁC MINH CON NGƯỜI ============ -->
 <div id="ncbBotVerifyModal">
   <div class="bot-verify-box">
     <div class="bot-verify-icon">
@@ -903,7 +897,7 @@ if(window.emailjs){
 }
 
 /* =========================================================
-   TIẾN TRÌNH UPDATE ĐẾN 12 GIỜ ĐÊM
+   TIẾN TRÌNH FIX LỖI ĐẾN 12 GIỜ ĐÊM
    ========================================================= */
 function getVNTime() {
   const now = new Date();
@@ -926,7 +920,6 @@ function calcProgressPercent(){
 
 function isProgressFull(){
   const { h, m, s } = getVNTime();
-  // Đầy khi đã qua 23:59:55 hoặc đúng 00:00:00 - 00:00:05
   if (h === 23 && m === 59 && s >= 55) return true;
   if (h === 0 && m === 0 && s < 10) return true;
   return false;
@@ -949,17 +942,12 @@ function initUpdateProgress(){
     percentText.textContent = Math.round(percent) + "%";
 
     if (full) {
-      // Ẩn nút nhắc nhở, hiện nút xác minh & vào website
       if (reminderBtn) reminderBtn.style.display = "none";
       if (enterBtn) enterBtn.classList.add("show");
 
-      // Nếu người dùng đã bấm nhắc nhở trước đó → thông báo hoàn tất
       if (localStorage.getItem(NOTIFY_REGISTERED_KEY) === "1"){
-        // Chỉ thông báo 1 lần
         if (localStorage.getItem(NOTIFY_REGISTERED_KEY + "_done") !== "1"){
-          try{
-            localStorage.setItem(NOTIFY_REGISTERED_KEY + "_done", "1");
-          }catch(_){}
+          try{ localStorage.setItem(NOTIFY_REGISTERED_KEY + "_done", "1"); }catch(_){}
           showSystemNotification(
             "NCB AI SUPPORT",
             "Website đã hoàn tất cập nhật! Bấm XÁC MINH & VÀO WEBSITE để tiếp tục."
@@ -975,9 +963,7 @@ function initUpdateProgress(){
   updateProgress();
   setInterval(updateProgress, 1000);
 
-  // Xử lý nút NHẮC NHỞ
   if (reminderBtn){
-    // Khôi phục trạng thái đã đăng ký
     if (localStorage.getItem(NOTIFY_REGISTERED_KEY) === "1"){
       reminderBtn.classList.add("active");
       const t = document.getElementById("ncbReminderText");
@@ -985,21 +971,15 @@ function initUpdateProgress(){
     }
 
     reminderBtn.addEventListener("click", async () => {
-      // Đăng ký nhận thông báo
-      try{
-        localStorage.setItem(NOTIFY_REGISTERED_KEY, "1");
-      }catch(_){}
-
+      try{ localStorage.setItem(NOTIFY_REGISTERED_KEY, "1"); }catch(_){}
       reminderBtn.classList.add("active");
       const t = document.getElementById("ncbReminderText");
       if (t) t.textContent = "ĐÃ ĐĂNG KÝ NHẮC NHỞ";
 
-      // Xin quyền thông báo trình duyệt nếu có
       if ("Notification" in window && Notification.permission === "default"){
         try{ await Notification.requestPermission(); }catch(_){}
       }
 
-      // Hiện thông báo xác nhận đăng ký
       showSystemNotification(
         "NCB AI SUPPORT",
         "Đã đăng ký nhắc nhở! Bạn sẽ được thông báo khi website hoàn tất cập nhật lúc 12 giờ đêm (giờ VN)."
@@ -1007,23 +987,19 @@ function initUpdateProgress(){
     });
   }
 
-  // Xử lý nút XÁC MINH & VÀO WEBSITE
   if (enterBtn){
     enterBtn.addEventListener("click", () => {
-      // Mở khung xác minh có sẵn
       openBotVerifyForGate();
     });
   }
 }
 
 function showSystemNotification(title, body){
-  // 1) Thông báo qua Notification API nếu được phép
   if ("Notification" in window && Notification.permission === "granted"){
     try{
       new Notification(title, { body: body, icon: "https://i.ibb.co/jPJvrJxJ/file-000000008ba48211bd900fefe8143556.png" });
     }catch(_){}
   }
-  // 2) Luôn hiện toast nội bộ
   createNCBNotification(title, body, "success");
 }
 
@@ -1033,19 +1009,16 @@ function showSystemNotification(title, body){
 function openBotVerifyForGate(){
   const modal = document.getElementById("ncbBotVerifyModal");
   if(!modal) return;
-  // Đảm bảo gate vẫn đang hiển thị (không bị ẩn)
   const gate = document.getElementById("ncbGate");
   if(!gate || gate.classList.contains("hidden")) return;
 
   modal.classList.add("open");
 
-  // Reset trạng thái
   const botStatus = document.getElementById("ncbBotStatus");
   const botConfirm = document.getElementById("ncbBotConfirm");
   if(botStatus){ botStatus.textContent = "Đang tải xác minh…"; botStatus.classList.remove("error"); }
   if(botConfirm){ botConfirm.disabled = true; }
 
-  // Render Turnstile nếu chưa có
   if(window.turnstile){
     const container = document.getElementById("ncbBotTurnstile");
     if(container && !container.dataset.rendered){
@@ -1075,7 +1048,6 @@ function openBotVerifyForGate(){
     }
   }
 
-  // Gắn handler cho nút XÁC NHẬN (chỉ 1 lần)
   if(botConfirm && !botConfirm.dataset.gateBound){
     botConfirm.dataset.gateBound = "1";
     botConfirm.addEventListener("click", () => {
@@ -1083,9 +1055,7 @@ function openBotVerifyForGate(){
         if(botStatus){ botStatus.textContent = "Chưa xác minh xong."; botStatus.classList.add("error"); }
         return;
       }
-      // Đóng modal xác minh
       modal.classList.remove("open");
-      // Mở khóa vào website
       unlockPage();
     });
   }
@@ -1291,7 +1261,6 @@ function unlockPage(){
   renderReportTurnstile();
   tryInitMusicAfterUnlock();
 
-  // Khởi động vòng lặp xác minh bot định kỳ sau khi vào trang
   if(window.NCB_BOT_VERIFY && typeof window.NCB_BOT_VERIFY.start === "function"){
     window.NCB_BOT_VERIFY.start();
   }
@@ -1747,7 +1716,7 @@ if(bannerClose){
    XÁC MINH CON NGƯỜI ĐỊNH KỲ (sau khi đã vào website)
    ========================================================= */
 window.NCB_BOT_VERIFY = (function(){
-  const SHOW_AFTER_MS = 120000; // 2 phút
+  const SHOW_AFTER_MS = 120000;
   let botWidgetId = null;
   let botToken = null;
   let botTimer = null;
@@ -1831,7 +1800,6 @@ window.NCB_BOT_VERIFY = (function(){
   if(botConfirm && !botConfirm.dataset.periodicBound){
     botConfirm.dataset.periodicBound = "1";
     botConfirm.addEventListener("click", function(){
-      // Nếu modal đang mở do gate (đã có handler riêng) thì bỏ qua
       if(botConfirm.dataset.gateBound) return;
       if(!botToken){
         botStatus.textContent = "Chưa xác minh xong.";
@@ -1869,7 +1837,6 @@ window.addEventListener("DOMContentLoaded", () => {
   if(musicToggle) musicToggle.checked = prefs.enabled;
   applyMusicVolume(prefs.vol);
 
-  // Khởi tạo tiến trình update (gate)
   initUpdateProgress();
 });
 
