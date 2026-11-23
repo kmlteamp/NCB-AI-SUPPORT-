@@ -932,7 +932,6 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   </div>
 </div>
 
-<!-- ================= NÚT CPU AI (GIỮA DƯỚI) — 52px ================= -->
 <button id="ncbChatBtn" title="Chat với AI" aria-label="Chat với AI">
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cpu-ai preview-icon">
     <path d="M12 20v2"/>
@@ -954,7 +953,6 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   </svg>
 </button>
 
-<!-- ================= KHUNG CHAT AI ================= -->
 <div id="ncbChatModal">
   <div class="ncbChatBox">
     <div class="ncbChatHeader">
@@ -1859,7 +1857,7 @@ window.NCB_BOT_VERIFY = (function(){
 })();
 
 /* =========================================================
-   CHAT AI — Groq API
+   CHAT AI — Gọi qua proxy /api/groq (tránh CORS)
    ========================================================= */
 (function(){
   const chatBtn = document.getElementById("ncbChatBtn");
@@ -1871,9 +1869,8 @@ window.NCB_BOT_VERIFY = (function(){
 
   if(!chatBtn || !chatModal) return;
 
-  // ===== CẤU HÌNH GROQ API =====
-  const CHAT_API_KEY = "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";
-  const CHAT_API_URL = "https://api.groq.com/openai/v1/chat/completions";
+  // Gọi proxy nội bộ (cùng domain) — proxy sẽ gọi Groq
+  const CHAT_API_URL = "/api/groq";
   const CHAT_MODEL   = "llama-3.3-70b-versatile";
 
   const CHAT_SYSTEM_PROMPT =
@@ -1960,16 +1957,8 @@ window.NCB_BOT_VERIFY = (function(){
 
       const res = await fetch(CHAT_API_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer " + CHAT_API_KEY
-        },
-        body: JSON.stringify({
-          model: CHAT_MODEL,
-          messages: messages,
-          temperature: 0.8,
-          max_tokens: 800
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ model: CHAT_MODEL, messages })
       });
 
       removeTyping();
