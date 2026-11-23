@@ -562,14 +562,14 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
 .bot-verify-btn:not(:disabled):active{transform:scale(.97)}
 
 /* =========================================================
-   NÚT CPU AI (GIỮA DƯỚI MÀN HÌNH) — ĐÃ THU NHỎ
+   NÚT CPU AI (GIỮA DƯỚI MÀN HÌNH) — 52px
    ========================================================= */
 #ncbChatBtn{
   position:fixed;
   bottom:16px;
   left:50%;
   transform:translateX(-50%);
-  width:52px;height:52px;                 /* ← nhỏ hơn (trước 64px) */
+  width:52px;height:52px;
   border-radius:50%;
   border:2px solid #60a5fa;
   background:linear-gradient(135deg,#1e3a8a,#2563eb);
@@ -585,7 +585,7 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
 #ncbChatBtn.show{display:flex}
 #ncbChatBtn:hover{transform:translateX(-50%) translateY(-3px);box-shadow:0 8px 24px #2563ebaa, 0 0 0 3px #0d1729}
 #ncbChatBtn:active{transform:translateX(-50%) scale(.94)}
-#ncbChatBtn svg{width:24px;height:24px;display:block}   /* ← icon nhỏ hơn (trước 30px) */
+#ncbChatBtn svg{width:24px;height:24px;display:block}
 @keyframes chatBtnFloat{
   0%,100%{box-shadow:0 4px 18px #2563eb77, 0 0 0 3px #0d1729}
   50%{box-shadow:0 4px 24px #3b82f6cc, 0 0 0 3px #0d1729}
@@ -932,7 +932,7 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   </div>
 </div>
 
-<!-- ================= NÚT CPU AI (GIỮA DƯỚI) — ĐÃ THU NHỎ ================= -->
+<!-- ================= NÚT CPU AI (GIỮA DƯỚI) — 52px ================= -->
 <button id="ncbChatBtn" title="Chat với AI" aria-label="Chat với AI">
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cpu-ai preview-icon">
     <path d="M12 20v2"/>
@@ -1859,7 +1859,7 @@ window.NCB_BOT_VERIFY = (function(){
 })();
 
 /* =========================================================
-   CHAT AI — endpoint ai.mongodb.com
+   CHAT AI — Groq API
    ========================================================= */
 (function(){
   const chatBtn = document.getElementById("ncbChatBtn");
@@ -1871,10 +1871,10 @@ window.NCB_BOT_VERIFY = (function(){
 
   if(!chatBtn || !chatModal) return;
 
-  // ===== CẤU HÌNH API AI.MONGODB.COM =====
-  const CHAT_API_KEY = "al-lMvtIfMtvCutfweqFgTTG7txGjWEIWaOG0I_lvM3L7d";
-  const CHAT_API_URL = "https://ai.mongodb.com/v1/chat/completions";
-  const CHAT_MODEL   = "gpt-4o-mini";
+  // ===== CẤU HÌNH GROQ API =====
+  const CHAT_API_KEY = "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";
+  const CHAT_API_URL = "https://api.groq.com/openai/v1/chat/completions";
+  const CHAT_MODEL   = "llama-3.3-70b-versatile";
 
   const CHAT_SYSTEM_PROMPT =
     "Bạn là một người bạn thân thiện, vui vẻ, nhiệt tình. Hãy trò chuyện với người dùng như một người bạn thực sự: quan tâm, lắng nghe, chia sẻ. " +
@@ -1989,10 +1989,6 @@ window.NCB_BOT_VERIFY = (function(){
       let reply = "";
       if(data && data.choices && data.choices[0] && data.choices[0].message){
         reply = data.choices[0].message.content || "";
-      } else if(data && data.output && data.output.text){
-        reply = data.output.text;
-      } else if(data && data.reply){
-        reply = data.reply;
       }
 
       reply = (reply || "").trim();
