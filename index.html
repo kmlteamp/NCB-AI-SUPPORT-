@@ -562,14 +562,14 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
 .bot-verify-btn:not(:disabled):active{transform:scale(.97)}
 
 /* =========================================================
-   NÚT CPU AI (GIỮA DƯỚI MÀN HÌNH)
+   NÚT CPU AI (GIỮA DƯỚI MÀN HÌNH) — ĐÃ THU NHỎ
    ========================================================= */
 #ncbChatBtn{
   position:fixed;
   bottom:16px;
   left:50%;
   transform:translateX(-50%);
-  width:64px;height:64px;
+  width:52px;height:52px;                 /* ← nhỏ hơn (trước 64px) */
   border-radius:50%;
   border:2px solid #60a5fa;
   background:linear-gradient(135deg,#1e3a8a,#2563eb);
@@ -577,18 +577,18 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   display:none;
   align-items:center;justify-content:center;
   z-index:9997;cursor:pointer;
-  box-shadow:0 6px 24px #2563eb77, 0 0 0 4px #0d1729;
+  box-shadow:0 4px 18px #2563eb77, 0 0 0 3px #0d1729;
   transition:transform .15s ease, box-shadow .2s ease, background .2s ease;
   -webkit-tap-highlight-color:transparent;
   animation:chatBtnFloat 3s ease-in-out infinite;
 }
 #ncbChatBtn.show{display:flex}
-#ncbChatBtn:hover{transform:translateX(-50%) translateY(-3px);box-shadow:0 10px 30px #2563ebaa, 0 0 0 4px #0d1729}
+#ncbChatBtn:hover{transform:translateX(-50%) translateY(-3px);box-shadow:0 8px 24px #2563ebaa, 0 0 0 3px #0d1729}
 #ncbChatBtn:active{transform:translateX(-50%) scale(.94)}
-#ncbChatBtn svg{width:30px;height:30px;display:block}
+#ncbChatBtn svg{width:24px;height:24px;display:block}   /* ← icon nhỏ hơn (trước 30px) */
 @keyframes chatBtnFloat{
-  0%,100%{box-shadow:0 6px 24px #2563eb77, 0 0 0 4px #0d1729}
-  50%{box-shadow:0 6px 30px #3b82f6cc, 0 0 0 4px #0d1729}
+  0%,100%{box-shadow:0 4px 18px #2563eb77, 0 0 0 3px #0d1729}
+  50%{box-shadow:0 4px 24px #3b82f6cc, 0 0 0 3px #0d1729}
 }
 
 /* =========================================================
@@ -932,7 +932,7 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   </div>
 </div>
 
-<!-- ================= NÚT CPU AI (GIỮA DƯỚI) ================= -->
+<!-- ================= NÚT CPU AI (GIỮA DƯỚI) — ĐÃ THU NHỎ ================= -->
 <button id="ncbChatBtn" title="Chat với AI" aria-label="Chat với AI">
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cpu-ai preview-icon">
     <path d="M12 20v2"/>
@@ -1019,12 +1019,6 @@ const TURNSTILE_SITEKEY = "0x4AAAAAAGKIbsCOoqg2qN0G";
 const TURNSTILE_ACTION  = "report";
 const GATE_ACTION       = "page-gate";
 const BOT_ACTION        = "bot-verify";
-
-/* ==== CHAT AI ==== */
-const CHAT_API_KEY = "al-lMvtIfMtvCutfweqFgTTG7txGjWEIWaOG0I_lvM3L7d";
-const CHAT_API_URL = "https://api.alibaba.com/v1/chat/completions"; // placeholder endpoint
-const CHAT_MODEL   = "qwen-turbo"; // placeholder model
-const CHAT_SYSTEM_PROMPT = "Bạn là một người bạn thân thiện, vui vẻ, nhiệt tình. Hãy trò chuyện với người dùng như một người bạn thực sự: quan tâm, lắng nghe, chia sẻ. TUYỆT ĐỐI KHÔNG hỗ trợ viết code, lập trình, sửa lỗi code. Nếu người dùng hỏi về code, hãy lịch sự từ chối và khuyên họ dùng mục Báo cáo lỗi hoặc hỏi vấn đề khác. Các câu hỏi khác thì trả lời thân thiện, tự nhiên, xưng 'mình' - gọi 'bạn'.";
 
 let reportWidgetId = null;
 let turnstileToken  = null;
@@ -1865,7 +1859,7 @@ window.NCB_BOT_VERIFY = (function(){
 })();
 
 /* =========================================================
-   CHAT AI
+   CHAT AI — endpoint ai.mongodb.com
    ========================================================= */
 (function(){
   const chatBtn = document.getElementById("ncbChatBtn");
@@ -1877,7 +1871,18 @@ window.NCB_BOT_VERIFY = (function(){
 
   if(!chatBtn || !chatModal) return;
 
-  let chatHistory = []; // {role:'user'|'assistant', content:string}
+  // ===== CẤU HÌNH API AI.MONGODB.COM =====
+  const CHAT_API_KEY = "al-lMvtIfMtvCutfweqFgTTG7txGjWEIWaOG0I_lvM3L7d";
+  const CHAT_API_URL = "https://ai.mongodb.com/v1/chat/completions";
+  const CHAT_MODEL   = "gpt-4o-mini";
+
+  const CHAT_SYSTEM_PROMPT =
+    "Bạn là một người bạn thân thiện, vui vẻ, nhiệt tình. Hãy trò chuyện với người dùng như một người bạn thực sự: quan tâm, lắng nghe, chia sẻ. " +
+    "TUYỆT ĐỐI KHÔNG hỗ trợ viết code, lập trình, sửa lỗi code. " +
+    "Nếu người dùng hỏi về code, hãy lịch sự từ chối và khuyên họ dùng mục Báo cáo lỗi hoặc hỏi vấn đề khác. " +
+    "Các câu hỏi khác thì trả lời thân thiện, tự nhiên, xưng 'mình' - gọi 'bạn'.";
+
+  let chatHistory = [];
   let isSending = false;
   let sessionGreeted = false;
 
@@ -1911,7 +1916,11 @@ window.NCB_BOT_VERIFY = (function(){
   function greetIfNeeded(){
     if(sessionGreeted) return;
     sessionGreeted = true;
-    addMessage("bot", "Chào bạn! Mình là NCB AI — rất vui được trò chuyện với bạn. Bạn muốn kể mình nghe gì hôm nay? (Lưu ý: mình là bạn trò chuyện, không hỗ trợ code nhé!)");
+    addMessage("bot",
+      "Chào bạn! Mình là NCB AI — rất vui được trò chuyện với bạn. " +
+      "Bạn muốn kể mình nghe gì hôm nay? " +
+      "(Lưu ý: mình là bạn trò chuyện, không hỗ trợ code nhé!)"
+    );
   }
 
   function openChat(){
@@ -1968,7 +1977,11 @@ window.NCB_BOT_VERIFY = (function(){
       if(!res.ok){
         const errText = await res.text().catch(() => "");
         console.warn("[Chat AI] HTTP", res.status, errText);
-        addMessage("bot", "Xin lỗi bạn, mình đang gặp chút trục trặc khi trả lời. Bạn thử lại sau một lát nhé!", "error");
+        addMessage("bot",
+          "Xin lỗi bạn, mình đang gặp chút trục trặc khi trả lời. " +
+          "Bạn thử lại sau một lát nhé!",
+          "error"
+        );
         return;
       }
 
@@ -1993,7 +2006,10 @@ window.NCB_BOT_VERIFY = (function(){
     } catch(err){
       removeTyping();
       console.error("[Chat AI] error:", err);
-      addMessage("bot", "Xin lỗi bạn, kết nối đang bị gián đoạn. Bạn thử lại sau một chút nhé!", "error");
+      addMessage("bot",
+        "Xin lỗi bạn, kết nối đang bị gián đoạn. Bạn thử lại sau một chút nhé!",
+        "error"
+      );
     } finally {
       isSending = false;
       chatSend.disabled = false;
