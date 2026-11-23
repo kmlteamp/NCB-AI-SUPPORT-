@@ -62,7 +62,6 @@ img{
 }
 #ncbGate.hidden{display:none}
 
-/* Khung xác minh trên gate (dùng lại style bot-verify) */
 .gate-verify-box{
   background:#000;
   border:2px solid #3b82f6;
@@ -100,16 +99,8 @@ img{
   margin-top:6px;letter-spacing:.3px;word-break:break-all;
 }
 
-#ncbGateIdError{
-  display:none;
-  color:#f87171;background:#3b1c1c;border:1px solid #ef4444;
-  padding:12px 16px;border-radius:10px;font-size:13px;max-width:340px;
-  line-height:1.5;text-align:center;
-}
-#ncbGateIdError.show{display:block}
-
 #ncbMain{display:none}
-#ncbMain.unlocked{display:block}
+#ncbMain.unlocked{display:block; padding-bottom:100px}
 
 .header{display:flex;align-items:center;gap:12px;margin:10px 0 35px}
 .logo{
@@ -569,11 +560,185 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   cursor:not-allowed;box-shadow:none;
 }
 .bot-verify-btn:not(:disabled):active{transform:scale(.97)}
+
+/* =========================================================
+   NÚT CPU AI (GIỮA DƯỚI MÀN HÌNH)
+   ========================================================= */
+#ncbChatBtn{
+  position:fixed;
+  bottom:16px;
+  left:50%;
+  transform:translateX(-50%);
+  width:64px;height:64px;
+  border-radius:50%;
+  border:2px solid #60a5fa;
+  background:linear-gradient(135deg,#1e3a8a,#2563eb);
+  color:#e0e7ff;
+  display:none;
+  align-items:center;justify-content:center;
+  z-index:9997;cursor:pointer;
+  box-shadow:0 6px 24px #2563eb77, 0 0 0 4px #0d1729;
+  transition:transform .15s ease, box-shadow .2s ease, background .2s ease;
+  -webkit-tap-highlight-color:transparent;
+  animation:chatBtnFloat 3s ease-in-out infinite;
+}
+#ncbChatBtn.show{display:flex}
+#ncbChatBtn:hover{transform:translateX(-50%) translateY(-3px);box-shadow:0 10px 30px #2563ebaa, 0 0 0 4px #0d1729}
+#ncbChatBtn:active{transform:translateX(-50%) scale(.94)}
+#ncbChatBtn svg{width:30px;height:30px;display:block}
+@keyframes chatBtnFloat{
+  0%,100%{box-shadow:0 6px 24px #2563eb77, 0 0 0 4px #0d1729}
+  50%{box-shadow:0 6px 30px #3b82f6cc, 0 0 0 4px #0d1729}
+}
+
+/* =========================================================
+   KHUNG CHAT AI
+   ========================================================= */
+#ncbChatModal{
+  position:fixed;inset:0;z-index:19000;
+  background:rgba(0,0,0,0.72);
+  display:none;align-items:flex-end;justify-content:center;
+  padding:12px;
+  animation:fadeIn .2s ease;
+}
+#ncbChatModal.open{display:flex}
+
+.ncbChatBox{
+  background:#0d1729;
+  border:2px solid #3b82f6;
+  border-radius:18px;
+  width:min(520px,100%);
+  height:min(640px,85vh);
+  display:flex;flex-direction:column;
+  box-shadow:0 20px 60px #000b, 0 0 40px #2563eb55;
+  animation:modalIn .25s ease;
+  overflow:hidden;
+}
+.ncbChatHeader{
+  padding:14px 18px;
+  background:linear-gradient(120deg,#1e3a8a,#2563eb);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.ncbChatHeader .chat-head-left{
+  display:flex;align-items:center;gap:10px;
+}
+.ncbChatHeader .chat-avatar{
+  width:38px;height:38px;border-radius:50%;
+  background:#00000033;
+  display:flex;align-items:center;justify-content:center;
+  color:#e0e7ff;
+  border:1px solid #ffffff33;
+}
+.ncbChatHeader .chat-avatar svg{width:22px;height:22px}
+.ncbChatHeader .chat-title-wrap{display:flex;flex-direction:column}
+.ncbChatHeader .chat-title{font-size:14px;font-weight:bold;color:#fff;letter-spacing:.3px}
+.ncbChatHeader .chat-subtitle{font-size:11px;color:#bfdbfe;margin-top:1px}
+#ncbChatClose{
+  width:52px;height:34px;border-radius:9px;background:#ffffff22;color:#fff;
+  font-weight:bold;font-size:12px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  text-transform:uppercase;
+  letter-spacing:.3px;
+}
+#ncbChatClose:hover{background:#ef444466}
+
+#ncbChatMessages{
+  flex:1;overflow-y:auto;padding:16px;
+  display:flex;flex-direction:column;gap:12px;
+  background:#070f1c;
+}
+#ncbChatMessages::-webkit-scrollbar{width:6px}
+#ncbChatMessages::-webkit-scrollbar-thumb{background:#2563eb;border-radius:3px}
+
+.chat-msg{
+  max-width:82%;
+  padding:10px 14px;
+  border-radius:14px;
+  font-size:14px;
+  line-height:1.5;
+  overflow-wrap:anywhere;
+  white-space:pre-wrap;
+  animation:msgIn .25s ease;
+}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.chat-msg.bot{
+  align-self:flex-start;
+  background:#111c30;
+  color:#e2e8f0;
+  border:1px solid #1e2a42;
+  border-bottom-left-radius:4px;
+}
+.chat-msg.user{
+  align-self:flex-end;
+  background:linear-gradient(135deg,#2563eb,#1d4ed8);
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.chat-msg.typing{
+  align-self:flex-start;
+  background:#111c30;
+  border:1px solid #1e2a42;
+  color:#94a3b8;
+  font-style:italic;
+  font-size:13px;
+}
+.chat-msg.error{
+  align-self:flex-start;
+  background:#2a1416;
+  border:1px solid #ef4444;
+  color:#fca5a5;
+  font-size:13px;
+}
+
+.chat-input-row{
+  display:flex;gap:8px;
+  padding:12px;
+  background:#0d1729;
+  border-top:1px solid #1e2a42;
+  flex-shrink:0;
+}
+#ncbChatInput{
+  flex:1;
+  padding:12px 14px;
+  border-radius:12px;
+  border:1px solid #34445d;
+  background:#0b1424;
+  color:#fff;
+  font-size:14px;
+  outline:none;
+  resize:none;
+  max-height:90px;
+  min-height:44px;
+  font-family:inherit;
+}
+#ncbChatInput:focus{border-color:#3b82f6}
+#ncbChatSend{
+  width:52px;height:44px;border-radius:12px;
+  background:linear-gradient(135deg,#2563eb,#1d4ed8);
+  color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  transition:transform .12s ease, opacity .2s;
+}
+#ncbChatSend:hover{transform:translateY(-1px)}
+#ncbChatSend:active{transform:scale(.95)}
+#ncbChatSend:disabled{opacity:.45;cursor:not-allowed}
+#ncbChatSend svg{width:20px;height:20px}
+
+.chat-hint{
+  padding:0 14px 8px;
+  font-size:11px;
+  color:#64748b;
+  text-align:center;
+  background:#0d1729;
+}
 </style>
 </head>
 <body>
 
-<!-- ================= GATE: THAY KHUNG UPDATE BẰNG KHUNG XÁC MINH ================= -->
+<!-- ================= GATE: KHUNG XÁC MINH ================= -->
 <div id="ncbGate">
   <div class="gate-verify-box">
     <div class="gate-verify-logo">
@@ -767,6 +932,60 @@ input[type="range"].ncbRange::-moz-range-track{height:6px;border-radius:6px;back
   </div>
 </div>
 
+<!-- ================= NÚT CPU AI (GIỮA DƯỚI) ================= -->
+<button id="ncbChatBtn" title="Chat với AI" aria-label="Chat với AI">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cpu-ai preview-icon">
+    <path d="M12 20v2"/>
+    <path d="M12 2v2"/>
+    <path d="M16 9v6"/>
+    <path d="M17 20v2"/>
+    <path d="M17 2v2"/>
+    <path d="M2 12h2"/>
+    <path d="M2 17h2"/>
+    <path d="M2 7h2"/>
+    <path d="M20 12h2"/>
+    <path d="M20 17h2"/>
+    <path d="M20 7h2"/>
+    <path d="M7 20v2"/>
+    <path d="M7 2v2"/>
+    <path d="M8 13h4"/>
+    <path d="M8 15v-4a2 2 0 014 0v4"/>
+    <rect x="4" y="4" width="16" height="16" rx="2"/>
+  </svg>
+</button>
+
+<!-- ================= KHUNG CHAT AI ================= -->
+<div id="ncbChatModal">
+  <div class="ncbChatBox">
+    <div class="ncbChatHeader">
+      <div class="chat-head-left">
+        <div class="chat-avatar">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20v2"/><path d="M12 2v2"/><path d="M16 9v6"/><path d="M17 20v2"/><path d="M17 2v2"/>
+            <path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/>
+            <path d="M7 20v2"/><path d="M7 2v2"/><path d="M8 13h4"/><path d="M8 15v-4a2 2 0 014 0v4"/><rect x="4" y="4" width="16" height="16" rx="2"/>
+          </svg>
+        </div>
+        <div class="chat-title-wrap">
+          <div class="chat-title">NCB AI</div>
+          <div class="chat-subtitle">Người bạn đồng hành</div>
+        </div>
+      </div>
+      <button id="ncbChatClose" title="Đóng">Đóng</button>
+    </div>
+    <div id="ncbChatMessages"></div>
+    <div class="chat-input-row">
+      <textarea id="ncbChatInput" rows="1" placeholder="Nhập tin nhắn..."></textarea>
+      <button id="ncbChatSend" title="Gửi" aria-label="Gửi">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>
+        </svg>
+      </button>
+    </div>
+    <div class="chat-hint">AI là bạn trò chuyện — không hỗ trợ code.</div>
+  </div>
+</div>
+
 <audio id="ncbBgMusic" src="https://files.catbox.moe/jv9cvp.mp3" preload="auto"></audio>
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -800,6 +1019,12 @@ const TURNSTILE_SITEKEY = "0x4AAAAAAGKIbsCOoqg2qN0G";
 const TURNSTILE_ACTION  = "report";
 const GATE_ACTION       = "page-gate";
 const BOT_ACTION        = "bot-verify";
+
+/* ==== CHAT AI ==== */
+const CHAT_API_KEY = "al-lMvtIfMtvCutfweqFgTTG7txGjWEIWaOG0I_lvM3L7d";
+const CHAT_API_URL = "https://api.alibaba.com/v1/chat/completions"; // placeholder endpoint
+const CHAT_MODEL   = "qwen-turbo"; // placeholder model
+const CHAT_SYSTEM_PROMPT = "Bạn là một người bạn thân thiện, vui vẻ, nhiệt tình. Hãy trò chuyện với người dùng như một người bạn thực sự: quan tâm, lắng nghe, chia sẻ. TUYỆT ĐỐI KHÔNG hỗ trợ viết code, lập trình, sửa lỗi code. Nếu người dùng hỏi về code, hãy lịch sự từ chối và khuyên họ dùng mục Báo cáo lỗi hoặc hỏi vấn đề khác. Các câu hỏi khác thì trả lời thân thiện, tự nhiên, xưng 'mình' - gọi 'bạn'.";
 
 let reportWidgetId = null;
 let turnstileToken  = null;
@@ -851,7 +1076,6 @@ function getSiteIdFromUrl(){
 
 function validateSiteIdOrBlock(){
   const gotId = getSiteIdFromUrl();
-  const gateError = document.getElementById("ncbGateIdError");
   const gateStatus = document.getElementById("ncbGateStatus");
 
   if(!gotId){
@@ -1038,9 +1262,11 @@ function unlockPage(){
   const gate = document.getElementById("ncbGate");
   const main = document.getElementById("ncbMain");
   const settingsBtn = document.getElementById("ncbSettingsBtn");
+  const chatBtn = document.getElementById("ncbChatBtn");
   if(gate) gate.classList.add("hidden");
   if(main) main.classList.add("unlocked");
   if(settingsBtn) settingsBtn.style.display = "flex";
+  if(chatBtn) chatBtn.classList.add("show");
 
   markActivity();
   attachSiteIdToUrl();
@@ -1636,6 +1862,165 @@ window.NCB_BOT_VERIFY = (function(){
   }
 
   return { start: start };
+})();
+
+/* =========================================================
+   CHAT AI
+   ========================================================= */
+(function(){
+  const chatBtn = document.getElementById("ncbChatBtn");
+  const chatModal = document.getElementById("ncbChatModal");
+  const chatClose = document.getElementById("ncbChatClose");
+  const chatMessages = document.getElementById("ncbChatMessages");
+  const chatInput = document.getElementById("ncbChatInput");
+  const chatSend = document.getElementById("ncbChatSend");
+
+  if(!chatBtn || !chatModal) return;
+
+  let chatHistory = []; // {role:'user'|'assistant', content:string}
+  let isSending = false;
+  let sessionGreeted = false;
+
+  function scrollChatToBottom(){
+    if(chatMessages) chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function addMessage(role, text, extraClass){
+    const el = document.createElement("div");
+    el.className = "chat-msg " + role + (extraClass ? " " + extraClass : "");
+    el.textContent = text;
+    chatMessages.appendChild(el);
+    scrollChatToBottom();
+    return el;
+  }
+
+  function addTyping(){
+    const el = document.createElement("div");
+    el.className = "chat-msg typing";
+    el.id = "ncbTypingIndicator";
+    el.textContent = "Đang trả lời…";
+    chatMessages.appendChild(el);
+    scrollChatToBottom();
+    return el;
+  }
+  function removeTyping(){
+    const el = document.getElementById("ncbTypingIndicator");
+    if(el) el.remove();
+  }
+
+  function greetIfNeeded(){
+    if(sessionGreeted) return;
+    sessionGreeted = true;
+    addMessage("bot", "Chào bạn! Mình là NCB AI — rất vui được trò chuyện với bạn. Bạn muốn kể mình nghe gì hôm nay? (Lưu ý: mình là bạn trò chuyện, không hỗ trợ code nhé!)");
+  }
+
+  function openChat(){
+    chatModal.classList.add("open");
+    greetIfNeeded();
+    setTimeout(() => { if(chatInput) chatInput.focus(); }, 200);
+  }
+  function closeChat(){
+    chatModal.classList.remove("open");
+  }
+
+  chatBtn.addEventListener("click", openChat);
+  if(chatClose) chatClose.addEventListener("click", closeChat);
+  chatModal.addEventListener("click", (e) => {
+    if(e.target === chatModal) closeChat();
+  });
+
+  async function sendMessage(){
+    if(isSending) return;
+    const text = (chatInput.value || "").trim();
+    if(!text) return;
+
+    chatInput.value = "";
+    chatInput.style.height = "auto";
+    addMessage("user", text);
+    chatHistory.push({ role: "user", content: text });
+
+    isSending = true;
+    chatSend.disabled = true;
+    addTyping();
+
+    try {
+      const messages = [
+        { role: "system", content: CHAT_SYSTEM_PROMPT },
+        ...chatHistory.slice(-12)
+      ];
+
+      const res = await fetch(CHAT_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + CHAT_API_KEY
+        },
+        body: JSON.stringify({
+          model: CHAT_MODEL,
+          messages: messages,
+          temperature: 0.8,
+          max_tokens: 800
+        })
+      });
+
+      removeTyping();
+
+      if(!res.ok){
+        const errText = await res.text().catch(() => "");
+        console.warn("[Chat AI] HTTP", res.status, errText);
+        addMessage("bot", "Xin lỗi bạn, mình đang gặp chút trục trặc khi trả lời. Bạn thử lại sau một lát nhé!", "error");
+        return;
+      }
+
+      const data = await res.json();
+      let reply = "";
+      if(data && data.choices && data.choices[0] && data.choices[0].message){
+        reply = data.choices[0].message.content || "";
+      } else if(data && data.output && data.output.text){
+        reply = data.output.text;
+      } else if(data && data.reply){
+        reply = data.reply;
+      }
+
+      reply = (reply || "").trim();
+      if(!reply){
+        reply = "Mình chưa nghe rõ ý bạn, bạn nói lại giúp mình nhé!";
+      }
+
+      addMessage("bot", reply);
+      chatHistory.push({ role: "assistant", content: reply });
+
+    } catch(err){
+      removeTyping();
+      console.error("[Chat AI] error:", err);
+      addMessage("bot", "Xin lỗi bạn, kết nối đang bị gián đoạn. Bạn thử lại sau một chút nhé!", "error");
+    } finally {
+      isSending = false;
+      chatSend.disabled = false;
+      if(chatInput) chatInput.focus();
+    }
+  }
+
+  if(chatSend) chatSend.addEventListener("click", sendMessage);
+
+  if(chatInput){
+    chatInput.addEventListener("keydown", (e) => {
+      if(e.key === "Enter" && !e.shiftKey){
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+    chatInput.addEventListener("input", () => {
+      chatInput.style.height = "auto";
+      chatInput.style.height = Math.min(chatInput.scrollHeight, 90) + "px";
+    });
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if(e.key === "Escape" && chatModal.classList.contains("open")){
+      closeChat();
+    }
+  });
 })();
 
 /* =========================================================
